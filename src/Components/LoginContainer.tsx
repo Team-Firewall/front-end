@@ -84,6 +84,9 @@ export default function InputAdornments() {
             label="Password"
           />
         </FormControl>
+        <div className={cs('exclamation-phrases')}>
+          <span style={{ color: '#f00' }}>학번 또는 비밀번호가 올바르지 않습니다.</span>
+        </div>
 
         <button className={cs('login-btn')}>로그인</button>
 
