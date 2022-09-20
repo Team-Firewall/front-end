@@ -81,13 +81,14 @@
 
 .mileage-container {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    background: linear-gradient(-45deg, #7ef3ff, #61d596, #4db8e0, #3df1c6);
-    animation: gradient 10s ease infinite;
-    background-size: 400% 400%;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/foreground.png");
     width: 35%;
     height: 100%;
     float: left;
     border-radius: 0 7px 7px 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size : cover;
 }
 
 @keyframes gradient {
