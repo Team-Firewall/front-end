@@ -5,6 +5,7 @@ import Loading from "../Components/Loading";
 
 const RuleTable = () => {
   const { data, error } = useSWR('http://localhost:3001/table/regulate', fetcher)
+
   let bonusPoint: Array<any> = []
   let minusPoint: Array<any> = []
 
