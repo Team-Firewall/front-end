@@ -22,8 +22,6 @@ const RuleTable = () => {
         minusPoint.push(keyData[i])
       }
     }
-    console.log(bonusPoint)
-    console.log(minusPoint)
 
     return (
       <div>
