@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useSWR from 'swr'
 import fetcher from "../utils/fetcher";
 import Loading from "../Components/Loading";
 import classNames from "classnames/bind";
 import style from '../Style/RuleTable.module.css'
+import { AiOutlineHome } from 'react-icons/ai'
 
 const cs = classNames.bind(style)
 
@@ -117,7 +118,7 @@ const RuleTable = () => {
 
         </div>
 
-        <button>메인으로</button>
+        <button className={cs('main-btn')}><AiOutlineHome style={{ marginBottom: '-2px' }}/> <span>메인으로</span></button>
       </div>
     )
   }

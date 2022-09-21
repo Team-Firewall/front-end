@@ -60,10 +60,10 @@
 
 .container {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    width: 68vw;
-    height: 68vh;
-    min-width: 850px;
-    min-height: 450px;
+    width: 70vw;
+    height: 70vh;
+    min-width: 900px;
+    min-height: 550px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 8px;
@@ -71,6 +71,7 @@
     transition: all 0.7s;
     animation: fadein 1s ease-in-out;
     background-color: #fff;
+    margin-bottom: 100px;
 }
 
 .login-container {
@@ -148,7 +149,7 @@
 }
 
 .title {
-    margin-top: 11.5%;
+    margin-top: 10vh;
     text-align: center;
     font-family: 'Nanum Gothic', sans-serif;
     font-size: 20px;

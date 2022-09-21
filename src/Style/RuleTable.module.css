@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
 
 .table-container {
     width: 95%;
@@ -15,6 +16,7 @@ table {
     border-spacing: 0;
     overflow: hidden;
     border-radius: 6px 6px 6px 6px;
+    border: 1px solid #eee;
 }
 
 tr {
@@ -34,11 +36,11 @@ tr {
 }
 
 tr:nth-child(even) {
-    background: #fffde1;
+    background: #eee;
 }
 
 tr:nth-child(odd) {
-    background: #fffbc9;
+    background: #fff;
 }
 
 .score {
@@ -47,7 +49,7 @@ tr:nth-child(odd) {
 }
 
 tr:hover {
-    background-color: #eee;
+    background-color: #ddd;
 }
 
 .bonusPoint-table th {
@@ -133,29 +135,33 @@ h2 {
 }
 
 .box-1 {
+    font-family: 'Gothic A1', sans-serif;
     float: left;
     width: 48%;
 }
 
 .box-2 {
+    font-family: 'Gothic A1', sans-serif;
     float: right;
     width: 48%;
 }
 
-button {
+.main-btn {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    margin-bottom: 40px;
+    margin-top: 30px;
+    margin-bottom: 50px;
     width: 140px;
     height: 40px;
     border: none;
     border-radius: 6px;
     color: #fff;
-    background-color: #3669dd;
+    background-color: #0098b9;
+    font-size: 14px;
 }
 
-button:hover {
-    background-color: #2d59bd;
+.main-btn:hover {
+    background-color: #00829f;
     cursor: pointer;
 }
