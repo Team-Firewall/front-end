@@ -5,10 +5,12 @@ import Loading from "../Components/Loading";
 import classNames from "classnames/bind";
 import style from '../Style/RuleTable.module.css'
 import { AiOutlineHome } from 'react-icons/ai'
+import { useNavigate } from "react-router-dom";
 
 const cs = classNames.bind(style)
 
 const RuleTable = () => {
+  const navigate = useNavigate()
   const {data, error} = useSWR('http://localhost:3001/table/regulate', fetcher)
 
   let bonusPoint: Array<any> = []
@@ -89,7 +91,8 @@ const RuleTable = () => {
         <div className={cs('text-container')}>
 
           <div className={cs('box-1')}>
-            <h2>벌점 유의 사항</h2>
+            <div className={cs('title')}>벌점 유의 사항</div>
+            <br/>
             <div>
               * 같은 항목에 대하여 한 수업 시간에 1회 이상 지도함에도 불구하고 개선의 모습이 없으며, 수업을 방해할 시 바로 학생안전생활부로 송치하여 확인 후 선도 처리한다.
               <br/><br/>
@@ -98,7 +101,8 @@ const RuleTable = () => {
           </div>
 
           <div className={cs('box-2')}>
-            <h2>점수에 따른 선도처리 방법</h2>
+            <div className={cs('title')}>점수에 따른 선도처리 방법</div>
+            <br/>
             <div>
               - 벌점 20점 시 → 1차 경고 <br/>
               - 벌점 40점 시 → 2차 경고 <br/>
@@ -118,7 +122,7 @@ const RuleTable = () => {
 
         </div>
 
-        <button className={cs('main-btn')}><AiOutlineHome style={{ marginBottom: '-2px' }}/> <span>메인으로</span></button>
+        <button className={cs('main-btn')} onClick={() => navigate('/')}><AiOutlineHome style={{ marginBottom: '-2px' }}/> <span>메인으로</span></button>
       </div>
     )
   }

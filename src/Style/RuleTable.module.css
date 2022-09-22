@@ -124,12 +124,13 @@ th {
 .text-container {
     margin-top: 20px;
     width: 94%;
-    height: 38vh;
+    height: 20vh;
     margin-left: auto;
     margin-right: auto;
 }
 
-h2 {
+.text-container .title {
+    margin-top: -5px;
     font-size: 20px;
     font-family: 'IBM Plex Sans KR', sans-serif;
 }
@@ -138,19 +139,22 @@ h2 {
     font-family: 'Gothic A1', sans-serif;
     float: left;
     width: 48%;
+    height: 100%;
+    overflow: scroll;
 }
 
 .box-2 {
     font-family: 'Gothic A1', sans-serif;
     float: right;
     width: 48%;
+    height: 100%;
+    overflow: scroll;
 }
 
 .main-btn {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    margin-top: 30px;
     margin-bottom: 50px;
     width: 140px;
     height: 40px;
@@ -159,6 +163,7 @@ h2 {
     color: #fff;
     background-color: #0098b9;
     font-size: 14px;
+    margin-top: 30px;
 }
 
 .main-btn:hover {
