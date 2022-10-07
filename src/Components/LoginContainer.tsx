@@ -39,8 +39,6 @@ export default function InputAdornments() {
         alert(token.name + '님 로그인 테스트 성공')
       }
     })
-
-
   }
 
   const [passwordValues, setPasswordValues] = React.useState<State>({
