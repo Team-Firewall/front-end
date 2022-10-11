@@ -7,46 +7,6 @@
     font-style: normal;
 }
 
-.login {
-    height: 40px;
-    width: 200px;
-    border: 1px solid #aaa;
-    border-radius: 7px;
-    color: #666;
-    margin-left: -8px;
-    transition: all 0.5s;
-}
-
-.login:hover {
-    border: 1px solid #ccc;
-    background-color: #ccc;
-    color: #333;
-    transition: all 0.3s;
-}
-
-.icons {
-    margin-left: 18px;
-    margin-bottom: -3px;
-    color: #000;
-    font-size: 18px;
-}
-
-.text {
-    margin-top: 11px;
-    text-align: center;
-}
-
-.bar-icon {
-    font-size: 30px;
-    color: #555;
-}
-
-.logo-img {
-    width: 210px;
-    margin-bottom: 20px;
-    margin-left: -15px;
-}
-
 .not-login-menu {
     margin-top: 15px;
     text-align: center;
@@ -162,6 +122,8 @@
 .exclamation-phrases {
     margin-left: 10px;
     font-size: 12px;
+    width: 95%;
+    height: 18px;
 }
 
 .gbsw-logo {

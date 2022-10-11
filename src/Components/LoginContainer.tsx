@@ -10,8 +10,10 @@ import classNames from "classnames/bind"
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import styles from '../Style/Login.module.css'
 import { AiFillExclamationCircle } from 'react-icons/ai'
-import jwt_decode from "jwt-decode";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
+import { getItemWithExpireTime, setItemWithExpireTime } from "../utils/token";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const cs = classNames.bind(styles)
 
@@ -24,21 +26,29 @@ interface State {
 }
 
 export default function InputAdornments() {
+  const navigate = useNavigate()
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState<string>('')
 
   const login = () => {
+    setIsPasswordCorrect('loading')
+
     let data = {
       "account": idValues.password,
       "password": passwordValues.password
     }
 
-    axios.post('http://localhost:3001/sign/in', JSON.stringify(data), {
-      headers: {"Content-Type": "application/json"}
-    }).then((res: any) => {
-      if (res.data.success) {
-        let token: any = jwt_decode(res.data.token)
-        alert(token.name + '님 로그인 테스트 성공')
-      }
-    })
+    setTimeout(() => {
+      axios.post('http://localhost:3001/sign/in', JSON.stringify(data), {
+        headers: {"Content-Type": "application/json"}
+      }).then((res: any) => {
+        if (res.data.success) {
+          setItemWithExpireTime('item', res.data.token)
+          navigate('/points')
+        }
+      }).catch((err) => {
+        setIsPasswordCorrect('error')
+      })
+    }, 400);
   }
 
   const [passwordValues, setPasswordValues] = React.useState<State>({
@@ -96,7 +106,7 @@ export default function InputAdornments() {
         </div>
 
         <FormControl sx={{m: 1, width: '350px', marginTop: '25px'}} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password" >비밀번호</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-password">비밀번호</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={passwordValues.showPassword ? 'text' : 'password'}
@@ -118,9 +128,20 @@ export default function InputAdornments() {
           />
         </FormControl>
 
+
         <div className={cs('exclamation-phrases')}>
-          <span style={{color: '#f00'}}>학번 또는 비밀번호가 올바르지 않습니다.</span>
+          {
+            isPasswordCorrect === 'error' && (
+              <span style={{color: '#f00'}}>학번 또는 비밀번호가 올바르지 않습니다.</span>
+            )
+          }
+          {
+            isPasswordCorrect === 'loading' && (
+              <span style={{color: '#043db2'}}>잠시만 기다려주세요..</span>
+            )
+          }
         </div>
+
 
         <button className={cs('login-btn')} onClick={login}>로그인</button>
 
