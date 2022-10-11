@@ -10,14 +10,14 @@ import { TbUser } from "react-icons/tb";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import classNames from "classnames/bind";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Button from "@mui/material/Button";
 import { GoThreeBars } from "react-icons/go";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { getItemWithExpireTime } from "../utils/token";
+import { getItemWithExpireTime, Logout } from "../utils/token";
 import jwt_decode from "jwt-decode";
-
-// const cs = classNames.bind(styles)
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 
 type Anchor = 'left' | 'bottom' | 'right';
 
@@ -27,7 +27,7 @@ const Points = () => {
   let decodeToken: any
 
   useEffect(() => {
-    let temp_token = getItemWithExpireTime('item')
+    let temp_token = getItemWithExpireTime()
     temp_token = jwt_decode(temp_token)
     decodeToken = temp_token
     setUserName(decodeToken.name)
@@ -65,6 +65,7 @@ const Points = () => {
       <List>
         <ListItem>
           <ListItemButton style={{backgroundColor: '#fff'}}>
+
             <ListItemIcon>
               <div>
                 <img src={Logo} className={'logo-img'}/>
@@ -73,13 +74,14 @@ const Points = () => {
                 </div>
               </div>
             </ListItemIcon>
+
             <ListItemText/>
           </ListItemButton>
         </ListItem>
       </List>
       <Divider/>
       <List>
-        {/*<div className={cs('not-login-menu')}>접근 가능한 메뉴가 없습니다.</div>*/}
+
         <ListItem>
           <ListItemButton onClick={() => navigate('/rule-table')}>
             <ListItemIcon>
@@ -88,23 +90,41 @@ const Points = () => {
             <ListItemText primary={'상/벌점 표 확인'}/>
           </ListItemButton>
         </ListItem>
-        {/*{['상벌점 조회', 'Trash', 'Spam'].map((text, index) => (*/}
-        {/*  <ListItem key={text} disablePadding>*/}
-        {/*    <ListItemButton>*/}
-        {/*      <ListItemIcon>*/}
-        {/*        {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}*/}
-        {/*      </ListItemIcon>*/}
-        {/*      <ListItemText primary={text}/>*/}
-        {/*    </ListItemButton>*/}
-        {/*  </ListItem>*/}
-        {/*))}*/}
+
+        <ListItem>
+          <ListItemButton onClick={() => navigate('/rule-table')}>
+            <ListItemIcon>
+              <WorkspacePremiumOutlinedIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'상/벌점 조회'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
+          <ListItemButton onClick={() => navigate('/rule-table')}>
+            <ListItemIcon>
+              <AccountCircleIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'마이페이지'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
+          <ListItemButton onClick={Logout}>
+            <ListItemIcon>
+              <LogoutIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'로그아웃'}/>
+          </ListItemButton>
+        </ListItem>
+
       </List>
     </Box>
   );
 
   return (
     <div>
-      {(['left'] as const).map((anchor) => (
+      {(['left'] as const).map((anchor: "left") => (
         <React.Fragment key={anchor}>
           <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}><GoThreeBars
             className={'bar-icon'}/></Button>

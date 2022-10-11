@@ -16,6 +16,9 @@ import { GoThreeBars } from 'react-icons/go'
 import Logo from '../images/ScoolFullLogo.png'
 import LoginContainer from '../Components/LoginContainer'
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getItemWithExpireTime } from "../utils/token";
+import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
@@ -23,6 +26,16 @@ type Anchor = 'left' | 'bottom' | 'right';
 
 export default function SwipeableTemporaryDrawer() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (getItemWithExpireTime()) {
+      let token = getItemWithExpireTime()
+      token = jwt_decode(token)
+      if (token.iat) {
+        navigate('/points')
+      }
+    }
+  }, [])
 
   const [state, setState] = React.useState({
     top: false,

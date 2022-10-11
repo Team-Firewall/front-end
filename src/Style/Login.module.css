@@ -123,6 +123,7 @@
     margin-left: 10px;
     font-size: 12px;
     width: 95%;
+    min-width: 400px;
     height: 18px;
 }
 

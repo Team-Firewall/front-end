@@ -1,27 +1,33 @@
-let access_token: string = ''
-
-export const setItemWithExpireTime = (keyName: string, keyValue: string) => {
+export const setItemWithExpireTime = (keyValue: string) => {
   const obj = {
     value: keyValue,
-    expires: Date.now() + 10000
+    expires: Date.now() + 100000
   }
 
   const objString = JSON.stringify(obj)
-  window.localStorage.setItem(keyName, objString)
+  window.localStorage.setItem('item', objString)
 }
 
-export const getItemWithExpireTime = (keyName: string) => {
-  const objString = window.localStorage.getItem(keyName);
+export const getItemWithExpireTime = () => {
+  const objString = window.localStorage.getItem('item');
   if (!objString) {
     return null
   }
   const obj = JSON.parse(objString)
 
   if (Date.now() > obj.expires) {
-    alert('인증 시간 만료')
+    alert('세션이 만료되었습니다. 계속하려면 다시 로그인 하세요.')
     window.location.replace('/')
-    window.localStorage.removeItem(keyName)
+    window.localStorage.removeItem('item')
     return null
   }
   return obj.value;
+}
+
+export const Logout = () => {
+  if (window.confirm('로그아웃 하시겠습니까?')) {
+    window.location.replace('/')
+    window.localStorage.removeItem('item')
+  }
+  return null
 }

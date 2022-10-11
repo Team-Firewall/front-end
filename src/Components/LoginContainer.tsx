@@ -11,7 +11,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import styles from '../Style/Login.module.css'
 import { AiFillExclamationCircle } from 'react-icons/ai'
 import axios from "axios";
-import { getItemWithExpireTime, setItemWithExpireTime } from "../utils/token";
+import { setItemWithExpireTime } from "../utils/token";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -42,7 +42,7 @@ export default function InputAdornments() {
         headers: {"Content-Type": "application/json"}
       }).then((res: any) => {
         if (res.data.success) {
-          setItemWithExpireTime('item', res.data.token)
+          setItemWithExpireTime(res.data.token)
           navigate('/points')
         }
       }).catch((err) => {
@@ -142,9 +142,7 @@ export default function InputAdornments() {
           }
         </div>
 
-
         <button className={cs('login-btn')} onClick={login}>로그인</button>
-
       </div>
     </Box>
   );
