@@ -93,7 +93,9 @@ export default function InputAdornments() {
       <div className={cs('input-container')}>
 
         <FormControl sx={{m: 1, width: '350px'}} variant="outlined"
-                     onChange={handleChangeID('password')}>
+          onChange={handleChangeID('password')}
+          onKeyPress={(e) => {if (e.key === 'Enter') login()}}
+        >
           <InputLabel htmlFor="outlined-adornment-password">학번</InputLabel>
           <OutlinedInput
             label="학번"
@@ -105,7 +107,9 @@ export default function InputAdornments() {
           <span>아이디 또는 학번이 기억나지 않는다면 선생님께 문의해주세요.</span>
         </div>
 
-        <FormControl sx={{m: 1, width: '350px', marginTop: '25px'}} variant="outlined">
+        <FormControl sx={{m: 1, width: '350px', marginTop: '25px'}} variant="outlined"
+           onKeyPress={(e) => {if (e.key === 'Enter') login()}}
+        >
           <InputLabel htmlFor="outlined-adornment-password">비밀번호</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"

@@ -18,6 +18,12 @@ import { getItemWithExpireTime, Logout } from "../utils/token";
 import jwt_decode from "jwt-decode";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+import classNames from "classnames/bind";
+import styles from '../Style/Points.module.css'
+import PointTimeLine from "../Components/PointTimeLine";
+// import Timeline from "../Components/Timeline";
+
+const cs = classNames.bind(styles)
 
 type Anchor = 'left' | 'bottom' | 'right';
 
@@ -85,15 +91,6 @@ const Points = () => {
         <ListItem>
           <ListItemButton onClick={() => navigate('/rule-table')}>
             <ListItemIcon>
-              <ListAltIcon/>
-            </ListItemIcon>
-            <ListItemText primary={'상/벌점 표 확인'}/>
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem>
-          <ListItemButton onClick={() => navigate('/rule-table')}>
-            <ListItemIcon>
               <WorkspacePremiumOutlinedIcon/>
             </ListItemIcon>
             <ListItemText primary={'상/벌점 조회'}/>
@@ -106,6 +103,15 @@ const Points = () => {
               <AccountCircleIcon/>
             </ListItemIcon>
             <ListItemText primary={'마이페이지'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
+          <ListItemButton onClick={() => navigate('/rule-table')}>
+            <ListItemIcon>
+              <ListAltIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'상/벌점 표 확인'}/>
           </ListItemButton>
         </ListItem>
 
@@ -138,6 +144,15 @@ const Points = () => {
           </SwipeableDrawer>
         </React.Fragment>
       ))}
+
+      <div className={cs('top-tag')}>
+        <span className={cs('page-name')}>상벌점 이력 조회</span>
+        <div className={cs('divider-line')}/>
+      </div>
+
+      <div>
+        <PointTimeLine/>
+      </div>
 
     </div>
   )
