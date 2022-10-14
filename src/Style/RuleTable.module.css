@@ -11,7 +11,7 @@
     margin-top: 25px;
 }
 
-table {
+.rule-table table {
     border-collapse: collapse;
     border-spacing: 0;
     overflow: hidden;
@@ -19,7 +19,7 @@ table {
     border: 1px solid #eee;
 }
 
-tr {
+.rule-table tr {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -35,11 +35,11 @@ tr {
     color: #11ab11;
 }
 
-tr:nth-child(even) {
+.rule-table tr:nth-child(even) {
     background: #eee;
 }
 
-tr:nth-child(odd) {
+.rule-table tr:nth-child(odd) {
     background: #fff;
 }
 
@@ -48,7 +48,7 @@ tr:nth-child(odd) {
     font-weight: bold;
 }
 
-tr:hover {
+.rule-table tr:hover {
     background-color: #ddd;
 }
 
@@ -61,6 +61,11 @@ tr:hover {
     float: right;
     height: 100%;
 }
+
+.bonusPoint-table-container table {
+    width: 100%;
+}
+
 
 .bonusPoint-table {
     border-radius: 8px;
@@ -75,6 +80,11 @@ tr:hover {
     height: 90%;
 }
 
+.minusPoint-table-container table {
+    width: 100%;
+}
+
+
 .minusPoint-table {
     float: right;
     width: 100%;
@@ -83,7 +93,7 @@ tr:hover {
     border-radius: 8px;
 }
 
-th {
+.rule-table th {
     font-weight: bold;
     height: 40px;
     text-align: center;

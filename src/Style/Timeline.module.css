@@ -1,7 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap');
+
 .division {
     font-size: 16px;
 }
 
 .date {
     font-size: 14px;
+}
+
+.timeline-container {
+    float: right;
+    height: 100%;
+    width: 35%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    border-radius: 15px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.timeline-container::-webkit-scrollbar {
+    display: none;
+}
+
+.point-table {
+    width: 60%;
+    height: 100%;
+    float: left;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    overflow-y: scroll;
+}
+
+.point-table::-webkit-scrollbar {
+    display: none;
+}
+
+.point-table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.point-table td {
+    /*text-align: center;*/
+}
+
+.point-table thead {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+
+.point-table th {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    height: 30px;
+    background: #cddef3;
+    color: #000;
+}
+
+.point-table tr {
+    /*border: 1px solid #ccc;*/
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    height: 40px;
+}
+
+.division-tag {
+    width: 27vw;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tbody-tr {
+    border: 1px solid #ccc;
+}
+
+.tbody-td {
+    margin-top: 6.5px;
+}
+
+.span-align {
+    text-align: center;
 }

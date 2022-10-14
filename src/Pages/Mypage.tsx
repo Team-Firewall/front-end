@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { getItemWithExpireTime, Logout } from "../utils/ControllToken";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -9,27 +10,19 @@ import Logo from "../images/ScoolFullLogo.png";
 import { TbUser } from "react-icons/tb";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import { GoThreeBars } from "react-icons/go";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { getItemWithExpireTime, Logout } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
-import classNames from "classnames/bind";
-import styles from '../Style/Points.module.css'
-import PointTimeLine from "../Components/PointTimeLine";
-import PointTable from "../Components/PointTable";
-import { AiOutlineHome } from 'react-icons/ai'
-import LogoutButton from "../Components/LogoutButton";
-
-const cs = classNames.bind(styles)
 
 type Anchor = 'left' | 'bottom' | 'right';
 
-const Points = () => {
+const MyPage = () => {
+
   const [username, setUserName] = useState<string>('')
   const navigate = useNavigate()
 
@@ -146,22 +139,8 @@ const Points = () => {
           </SwipeableDrawer>
         </React.Fragment>
       ))}
-
-      <div className={cs('top-tag')}>
-        <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'} /></span> {'>'} 상•벌점 조회</span>
-        <span><LogoutButton/></span>
-        <div className={cs('divider-line')}/>
-      </div>
-
-      <div className={cs('container')}>
-        <div className={cs('username-tag')}>{username}님의 상벌점 이력</div>
-
-        <PointTable/>
-        <PointTimeLine/>
-      </div>
-
     </div>
   )
 }
 
-export default Points
+export default MyPage

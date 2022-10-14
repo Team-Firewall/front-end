@@ -11,7 +11,7 @@ const cs = classNames.bind(style)
 
 const RuleTable = () => {
   const navigate = useNavigate()
-  const {data, error} = useSWR('http://localhost:3001/table/regulate', fetcher)
+  const {data, error} = useSWR('http://localhost:8889/getRegulate', fetcher)
 
   let bonusPoint: Array<any> = []
   let minusPoint: Array<any> = []
@@ -21,7 +21,7 @@ const RuleTable = () => {
   } else if (!data) {
     return <Loading/>
   } else {
-    const keyData = data.isTable
+    const keyData = data
 
     for (let i = 0; i < keyData.length; i++) {
       if (keyData[i].point === '상점') {
@@ -32,7 +32,7 @@ const RuleTable = () => {
     }
 
     return (
-      <div>
+      <div className={cs('rule-table')}>
         <div className={cs('title')}>2022학년도 그린 마일리지(상·벌점제) 운영 기준</div>
         <div className={cs('table-container')}>
           <div className={cs('minusPoint-table-container')}>

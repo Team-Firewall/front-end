@@ -17,7 +17,7 @@ import Logo from '../images/ScoolFullLogo.png'
 import LoginContainer from '../Components/LoginContainer'
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { getItemWithExpireTime } from "../utils/token";
+import { getItemWithExpireTime } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
@@ -71,7 +71,7 @@ export default function SwipeableTemporaryDrawer() {
           <ListItemButton style={{backgroundColor: '#fff'}}>
             <ListItemIcon>
               <div>
-                <img src={Logo} className={cs('logo-img')}/>
+                <img src={Logo} className={cs('logo-img')} alt={'school-logo'}/>
                 <div className={cs('login')}>
                   <div className={cs('text')}>로그인이 필요합니다. <FiLogIn className={cs('icons')}/></div>
                 </div>
@@ -129,7 +129,7 @@ export default function SwipeableTemporaryDrawer() {
           <br/>
           <div className={cs('title')}>
             <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
-                 className={cs('gbsw-logo')}/>
+                 className={cs('gbsw-logo')} alt={'school-logo'}/>
             <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
             <div className={cs('tag-bottom')}>상벌점 시스템</div>
           </div>
