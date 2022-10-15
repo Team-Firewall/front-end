@@ -3,7 +3,7 @@
 .my-page-container {
     font-family: 'Nanum Gothic', sans-serif;
     width: 80%;
-    margin-top: 6vh;
+    margin-top: 4vh;
     margin-left: auto;
     margin-right: auto;
     height: 75vh;
@@ -19,10 +19,19 @@
 }
 
 .information-component-container {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    display: table;
     width: 52%;
     height: 100%;
     float: right;
     /*border: 1px solid #000;*/
+}
+
+.username-tag {
+    font-size: 20px;
+    font-family: 'Nanum Gothic', sans-serif;
+    margin-bottom: 2%;
 }
 
 .edit-box {
@@ -32,7 +41,7 @@
     height: 28%;
     /*border: 1px solid #000;*/
     min-width: 450px;
-    table-layout:fixed;
+    table-layout: fixed;
     border-radius: 5px;
 }
 
@@ -81,4 +90,9 @@
 .div-tag-bottom {
     margin-top: 7px;
     font-size: 15px;
+}
+
+.user-position {
+    font-size: 18px;
+    color: #0098b9;
 }

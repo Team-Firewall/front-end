@@ -41,6 +41,7 @@ const MyPage = () => {
     let temp_token = getItemWithExpireTime()
     temp_token = jwt_decode(temp_token)
     decodeToken = temp_token
+    console.log(decodeToken)
     setUserName(decodeToken.name)
   }, [])
 
@@ -157,6 +158,8 @@ const MyPage = () => {
       </div>
 
       <div className={cs('my-page-container')}>
+
+        <div className={cs('username-tag')}>{username}님의 정보</div>
 
         <div className={cs('edit-box-container')}>
           <div className={cs('edit-box', 'first-edit-box')}>

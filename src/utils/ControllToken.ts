@@ -1,7 +1,7 @@
 export const setItemWithExpireTime = (keyValue: string) => {
   const obj = {
     value: keyValue,
-    expires: Date.now() + 1000000
+    expires: Date.now() + 10000000
   }
 
   const objString = JSON.stringify(obj)

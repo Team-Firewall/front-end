@@ -1,4 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+@font-face {
+    font-family: 'NanumBarunGothic';
+    font-style: normal;
+    font-weight: 400;
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+    src: url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
+}
 
 .logout-span {
     font-family: 'Nanum Gothic', sans-serif;
@@ -17,4 +24,52 @@
     width: 50%;
     border: 1px solid #000;
     float: right;
+}
+
+.user-information-box {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.user-information-box div {
+    font-family: 'NanumBarunGothic';
+    font-size: 25px;
+}
+
+.user-information-box .user-position {
+    font-size: 21px;
+    color: #3669dd;
+}
+
+.point-information-container {
+    margin-left: 10%;
+    width: 175px;
+    /*border: 1px solid #000;*/
+    margin-top: 5%;
+}
+
+.user-information-box .subheading {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.basic-information-container .username {
+    margin-top: 200px;
+}
+
+.basic-information-container {
+    margin-left: 10%;
+    /*border: 1px solid #000;*/
+    width: 190px;
+}
+
+.basic-information-container div {
+    margin-top: 7px;
+}
+
+.exclamation-phrases {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10%;
+    color: #dc0e0e;
 }
