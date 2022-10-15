@@ -147,10 +147,10 @@ const Points = () => {
         </React.Fragment>
       ))}
 
-      <div className={cs('top-tag')}>
+      <div className={'top-tag'}>
         <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'} /></span> {'>'} 상•벌점 조회</span>
         <span><LogoutButton/></span>
-        <div className={cs('divider-line')}/>
+        <div className={'divider-line'}/>
       </div>
 
       <div className={cs('container')}>

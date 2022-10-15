@@ -12,3 +12,9 @@
     color: #000;
     font-weight: bold;
 }
+
+.user-information-container {
+    width: 50%;
+    border: 1px solid #000;
+    float: right;
+}

@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
+.my-page-container {
+    font-family: 'Nanum Gothic', sans-serif;
+    width: 80%;
+    margin-top: 6vh;
+    margin-left: auto;
+    margin-right: auto;
+    height: 75vh;
+    max-height: 600px;
+    /*border: 1px solid #000;*/
+}
+
+.edit-box-container {
+    float: left;
+    height: 100%;
+    width: 40%;
+    /*border: 1px solid #000;*/
+}
+
+.information-component-container {
+    width: 52%;
+    height: 100%;
+    float: right;
+    /*border: 1px solid #000;*/
+}
+
+.edit-box {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    display: table;
+    width: 100%;
+    height: 28%;
+    /*border: 1px solid #000;*/
+    min-width: 450px;
+    table-layout:fixed;
+    border-radius: 5px;
+}
+
+.edit-box button {
+    float: right;
+    margin-top: 8.5vh;
+    width: 70px;
+    height: 30px;
+    border-radius: 20px;
+    border: none;
+    margin-right: 30px;
+    background: #ededed;
+}
+
+.edit-box button:hover {
+    background: #dcdcdc;
+    cursor: pointer;
+}
+
+/*.second-edit-box, .third-edit-box {*/
+/*    margin-top: 2.3%;*/
+/*}*/
+
+.third-edit-box {
+    float: bottom;
+}
+
+.gap {
+    height: 8%;
+}
+
+.text-container {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.text-container div {
+    margin-left: 30px;
+}
+
+.div-tag-top {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.div-tag-bottom {
+    margin-top: 7px;
+    font-size: 15px;
+}
