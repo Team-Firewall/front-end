@@ -26,6 +26,11 @@
     float: right;
 }
 
+.change-password-container {
+    display: table-cell;
+    vertical-align: middle;
+}
+
 .user-information-box {
     display: table-cell;
     vertical-align: middle;
@@ -33,11 +38,10 @@
 
 .user-information-box div {
     font-family: 'NanumBarunGothic';
-    font-size: 25px;
 }
 
 .user-information-box .user-position {
-    font-size: 21px;
+    font-size: 16px;
     color: #3669dd;
 }
 
@@ -48,28 +52,81 @@
     margin-top: 5%;
 }
 
-.user-information-box .subheading {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.basic-information-container .username {
-    margin-top: 200px;
-}
-
 .basic-information-container {
     margin-left: 10%;
-    /*border: 1px solid #000;*/
-    width: 190px;
+    width: auto;
 }
 
-.basic-information-container div {
-    margin-top: 7px;
+.general-sentence {
+    color: #444;
+    margin-top: 4px;
+    font-size: 17px;
+}
+
+.general-sentence-point {
+    font-size: 20px;
+    margin-top: 4px;
 }
 
 .exclamation-phrases {
-    font-size: 12px;
+    font-size: 13px;
     text-align: center;
-    margin-top: 10%;
+    margin-top: 8%;
     color: #dc0e0e;
+}
+
+.input-box-container {
+    width: 60%;
+    height: auto;
+    /*border: 1px solid #000;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.change-password-heading {
+    font-size: 32px;
+    font-family: 'Nanum Gothic', sans-serif;
+    font-weight: bold;
+    margin-bottom: 7vh;
+    text-align: center;
+    color: #2750a2;
+}
+
+.change-password-box {
+    width: 100%;
+    height: 11vh;
+    /*border: 1px solid #0f0;*/
+}
+
+.change-password-field {
+    width: 100%;
+}
+
+.change-password-btn-checked {
+    background-color: #2d80ea;
+    color: #fff;
+}
+
+.change-password-btn-notChecked {
+    background-color: #ccc;
+    color: #000;
+}
+
+.change-password-btn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    width: 85px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+.error-message {
+    margin-left: 5px;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #f00;
 }

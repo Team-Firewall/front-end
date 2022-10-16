@@ -165,7 +165,7 @@ const MyPage = () => {
           <div className={cs('edit-box', 'first-edit-box')}>
             <div className={cs('text-container')}>
               <div className={cs('div-tag-top')}>기본정보</div>
-              <div className={cs('div-tag-bottom')}>이름, 전화번호, 학번</div>
+              <div className={cs('div-tag-bottom')}>이름, 전화번호, 학번, 상벌점</div>
             </div>
 
             <button onClick={() => setInformationState(0)}>보기</button>
@@ -175,8 +175,8 @@ const MyPage = () => {
 
           <div className={cs('edit-box', 'second-edit-box')}>
             <div className={cs('text-container')}>
-              <div className={cs('div-tag-top')}>학부모 정보</div>
-              <div className={cs('div-tag-bottom')}>전화번호 정보</div>
+              <div className={cs('div-tag-top')}>보호자 정보</div>
+              <div className={cs('div-tag-bottom')}>학부모, 담임선생님 정보</div>
             </div>
 
             <button onClick={() => setInformationState(1)}>보기</button>
