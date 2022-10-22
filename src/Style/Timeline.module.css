@@ -42,25 +42,19 @@
     width: 100%;
 }
 
-.point-table td {
-    /*text-align: center;*/
-}
-
 .point-table thead {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
-
 .point-table th {
     font-family: 'IBM Plex Sans KR', sans-serif;
     height: 30px;
-    background: #cddef3;
-    color: #000;
+    background: #0098b9;
+    color: #fff;
 }
 
 .point-table tr {
-    /*border: 1px solid #ccc;*/
     font-family: 'IBM Plex Sans KR', sans-serif;
     height: 40px;
 }
