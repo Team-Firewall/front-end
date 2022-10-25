@@ -5,15 +5,16 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
+import Visibility from '@mui/icons-material/Visibility'
 import classNames from "classnames/bind"
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import styles from '../Style/Login.module.css'
 import { AiFillExclamationCircle } from 'react-icons/ai'
-import axios from "axios";
-import { setItemWithExpireTime } from "../utils/ControllToken";
-import { useState } from "react";
+import axios from "axios"
+import { getItemWithExpireTime, setItemWithExpireTime } from "../utils/ControllToken"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
@@ -43,7 +44,14 @@ export default function InputAdornments() {
       }).then((res: any) => {
         if (res.data.success) {
           setItemWithExpireTime(res.data.token)
-          navigate('/points')
+          let token: any = getItemWithExpireTime()
+          token = jwt_decode(token)
+          let position: number = token.position
+          if (position === 0 || position === 2) {
+            navigate('/points')
+          } else if (position === 1 || position == 3 || position === 4) {
+            navigate('/admin/issuance')
+          }
         }
       }).catch((err) => {
         setIsPasswordCorrect('error')

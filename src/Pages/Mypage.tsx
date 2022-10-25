@@ -41,7 +41,6 @@ const MyPage = () => {
     let temp_token = getItemWithExpireTime()
     temp_token = jwt_decode(temp_token)
     decodeToken = temp_token
-    console.log(decodeToken)
     setUserName(decodeToken.name)
   }, [])
 
