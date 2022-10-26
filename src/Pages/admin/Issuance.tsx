@@ -167,6 +167,10 @@ const Issuance = () => {
           <span><LogoutButton/></span>
           <div className={'divider-line'}/>
         </div>
+
+        <div className={'container'}>
+
+        </div>
       </div>
     )
   }

@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap');
+
+.button-container {
+    width: 100%;
+    font-family: 'Nanum Gothic', sans-serif;
+}
+
+.button-container button {
+    width: 25%;
+    height: 7.5vh;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.button-container button:hover {
+    cursor: pointer;
+}
+
+.button-container .not-active-btn:hover {
+    color: rgb(22, 134, 255);
+    cursor: pointer;
+}
+
+.button-container .active-button {
+    background-color: rgb(22, 134, 255);
+    color: #fff;
+}
+
+.button-container .icon {
+    margin-bottom: -0.35vh;
+    font-size: 18px;
+}
+
+.button-border-right-none {
+    border-right: none;
+}
+
+.button-border-right {
+    border-right: 1px solid #ccc;
+}
