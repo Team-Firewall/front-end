@@ -29,6 +29,7 @@ import { AiOutlineUserAdd, AiOutlineUser } from 'react-icons/ai'
 import { RiFileExcel2Line, RiAdminLine } from 'react-icons/ri'
 import StudentParentManagement from "../../Components/AddUserComponents/StudentParentManagement";
 import TeacherManagement from "../../Components/AddUserComponents/TeacherManagement";
+import RuleIcon from '@mui/icons-material/Rule';
 
 const cs = classNames.bind(styles)
 
@@ -132,6 +133,15 @@ const AddUser = () => {
               <PersonAddIcon/>
             </ListItemIcon>
             <ListItemText primary={'사용자 추가/관리'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
+          <ListItemButton onClick={() => navigate('/admin/add-user')}>
+            <ListItemIcon>
+              <RuleIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'상벌점 규정 관리'}/>
           </ListItemButton>
         </ListItem>
 

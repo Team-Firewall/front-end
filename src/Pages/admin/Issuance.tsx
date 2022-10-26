@@ -24,6 +24,8 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import RuleIcon from "@mui/icons-material/Rule";
+import RecipientTable from "../../Components/IssuanceComponents/RecipientTable";
 
 type Anchor = 'left' | 'bottom' | 'right';
 
@@ -127,6 +129,15 @@ const Issuance = () => {
         </ListItem>
 
         <ListItem>
+          <ListItemButton onClick={() => navigate('/admin/add-user')}>
+            <ListItemIcon>
+              <RuleIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'상벌점 규정 관리'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
           <ListItemButton onClick={Logout}>
             <ListItemIcon>
               <LogoutIcon/>
@@ -169,7 +180,7 @@ const Issuance = () => {
         </div>
 
         <div className={'container'}>
-
+          <RecipientTable/>
         </div>
       </div>
     )

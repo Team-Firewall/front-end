@@ -155,7 +155,6 @@ const Points = () => {
 
       <div className={'container'}>
         <div className={cs('username-tag')}>{username}님의 상벌점 이력</div>
-
         <PointTable/>
         <PointTimeLine/>
       </div>
