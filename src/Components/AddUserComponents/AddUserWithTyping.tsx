@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 const AddUserWithTyping = () => {
 
@@ -28,7 +29,14 @@ const AddUserWithTyping = () => {
 
     axios.post('http://localhost:3001/addUser', JSON.stringify(data), {
       headers: {"Content-Type": "application/json"}
-    }).then(() => alert('유저가 추가되었습니다.'))
+    }).then(() => Swal.fire({
+      title: '유저 추가 완료',
+      text: '유저 추가가 완료되었습니다.',
+      icon: 'success',
+      confirmButtonText: '확인'
+    }).then(() => {
+      window.location.replace('/')
+    }))
       .catch(() => alert('ERROR'))
   }
 

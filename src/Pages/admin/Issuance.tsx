@@ -9,9 +9,6 @@ import Logo from "../../images/ScoolFullLogo.png";
 import { TbUser } from "react-icons/tb";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ListAltIcon from "@mui/icons-material/ListAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -26,6 +23,7 @@ import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import RuleIcon from "@mui/icons-material/Rule";
 import RecipientTable from "../../Components/IssuanceComponents/RecipientTable";
+import IssuanceModal from "../../Components/Modal/IssuanceModal";
 
 type Anchor = 'left' | 'bottom' | 'right';
 
@@ -180,6 +178,7 @@ const Issuance = () => {
         </div>
 
         <div className={'container'}>
+          <IssuanceModal/>
           <RecipientTable/>
         </div>
       </div>
