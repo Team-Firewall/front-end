@@ -21,6 +21,7 @@ const PointTable = () => {
   }, [])
 
   const {data, error} = useSWR(`http://localhost:8889/getUserPoint?id=${id}`, fetcher)
+  console.log(data)
 
   if (error) {
     return <div>Error</div>

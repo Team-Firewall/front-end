@@ -60,6 +60,8 @@ const IssuanceModal = () => {
   const [number, setNumber] = useState<number>()
   const [name, setName] = useState<string>()
 
+  let userArray:any = []
+
   const handleOpen = () => {
     setStudentDivision(0)
     setGrade(undefined)
@@ -72,14 +74,14 @@ const IssuanceModal = () => {
   const handleClose = () => setOpen(false);
   const handleClick = () => {
     setIsSearched(true)
-    console.log(studentDivision, grade, classNumber, number, name)
+    console.log(userArray)
   }
 
   const loopTable = () => {
     const result = [];
     for (let i = 0; i < 40; i++) {
       result.push(<tr>
-        <td><input type={"checkbox"}/></td>
+        <td><input type={"checkbox"} value={[`${i}`, 'sex']} onClick={(e: any) => userArray.push(e.target.value)}/></td>
         <td>kim</td>
         <td>kim</td>
         <td>kim</td>
@@ -147,7 +149,8 @@ const IssuanceModal = () => {
                         </thead>
                         <tbody>
                         <tr>
-                          <td><input type={"checkbox"}/></td>
+                          <td><input type={"checkbox"} value={'id'}
+                                     onClick={(e: any) => console.log(e.target.value)}/></td>
                           <td>kim</td>
                           <td>kim</td>
                           <td>kim</td>
@@ -159,9 +162,12 @@ const IssuanceModal = () => {
                       </table>
                     </div>
                     <div className={'button-container'}>
-                      <button className={'check-btn check-btn-1'}><ImCheckboxChecked className={'icon'}/> <span>전체 선택</span></button>
-                      <button className={'check-btn check-btn-2'}><ImCheckboxUnchecked className={'icon'}/> <span>선택 해제</span></button>
-                      <button className={'add-user-btn'}><AiOutlineUserAdd className={'icon'}/> <span>발급 대상자 추가</span></button>
+                      <button className={'check-btn check-btn-1'}><ImCheckboxChecked className={'icon'}/>
+                        <span>전체 선택</span></button>
+                      <button className={'check-btn check-btn-2'}><ImCheckboxUnchecked className={'icon'}/>
+                        <span>선택 해제</span></button>
+                      <button className={'add-user-btn'}><AiOutlineUserAdd className={'icon'}/> <span>발급 대상자 추가</span>
+                      </button>
                     </div>
                   </div>
                 )
