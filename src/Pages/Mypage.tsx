@@ -25,10 +25,9 @@ import classNames from "classnames/bind";
 import UserInformation from "../Components/MyPageComponents/UserInformation";
 import ParentsInformation from "../Components/MyPageComponents/ParentsInformation";
 import ChangePassword from "../Components/MyPageComponents/ChangePassword";
+import AdminSideBar from "../Components/Sidebar/AdminSideBar";
 
 const cs = classNames.bind(styles)
-
-type Anchor = 'left' | 'bottom' | 'right';
 
 const MyPage = () => {
 
@@ -44,111 +43,9 @@ const MyPage = () => {
     setUserName(decodeToken.name)
   }, [])
 
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-      (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (
-          event &&
-          event.type === 'keydown' &&
-          ((event as React.KeyboardEvent).key === 'Tab' ||
-            (event as React.KeyboardEvent).key === 'Shift')
-        ) {
-          return;
-        }
-
-        setState({...state, [anchor]: open});
-      };
-
-  const list = (anchor: Anchor) => (
-    <Box
-      sx={{width: 250}}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        <ListItem>
-          <ListItemButton style={{backgroundColor: '#fff'}}>
-
-            <ListItemIcon>
-              <div>
-                <img src={Logo} className={'logo-img'} alt={'school logo'}/>
-                <div className={'login'}>
-                  <div className={'text'}><TbUser className={'user-icons'}/> {username}님, 환영합니다.</div>
-                </div>
-              </div>
-            </ListItemIcon>
-
-            <ListItemText/>
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider/>
-      <List>
-
-        <ListItem>
-          <ListItemButton onClick={() => navigate('/points')}>
-            <ListItemIcon>
-              <WorkspacePremiumOutlinedIcon/>
-            </ListItemIcon>
-            <ListItemText primary={'상/벌점 조회'}/>
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem>
-          <ListItemButton onClick={() => navigate('/mypage')}>
-            <ListItemIcon>
-              <AccountCircleIcon/>
-            </ListItemIcon>
-            <ListItemText primary={'마이페이지'}/>
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem>
-          <ListItemButton onClick={() => navigate('/rule-table')}>
-            <ListItemIcon>
-              <ListAltIcon/>
-            </ListItemIcon>
-            <ListItemText primary={'상/벌점 표 확인'}/>
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem>
-          <ListItemButton onClick={Logout}>
-            <ListItemIcon>
-              <LogoutIcon/>
-            </ListItemIcon>
-            <ListItemText primary={'로그아웃'}/>
-          </ListItemButton>
-        </ListItem>
-
-      </List>
-    </Box>
-  );
-
   return (
     <div>
-      {(['left'] as const).map((anchor: "left") => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}><GoThreeBars
-            className={'bar-icon'}/></Button>
-          <SwipeableDrawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            onOpen={toggleDrawer(anchor, true)}
-          >
-            {list(anchor)}
-          </SwipeableDrawer>
-        </React.Fragment>
-      ))}
+     <AdminSideBar/>
 
       <div className={'top-tag'}>
         <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 마이페이지</span>
