@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getItemWithExpireTime, Logout } from "../../utils/ControllToken";
-import jwt_decode from "jwt-decode";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -23,15 +22,7 @@ type Anchor = 'left' | 'bottom' | 'right';
 
 export default function UserSideBar() {
   const navigate = useNavigate()
-  const [username, setUserName] = useState<string>('')
-
-  useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setUserName(decodeToken.name)
-  }, [])
+  const [username, setUserName] = useState<string>('테스트')
 
   const [state, setState] = React.useState({
     top: false,

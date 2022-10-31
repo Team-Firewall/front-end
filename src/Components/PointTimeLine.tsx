@@ -13,29 +13,47 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import classNames from "classnames/bind";
 import styles from "../Style/Timeline.module.css";
 import { Timeline, TimelineItem } from "@mui/lab";
-import { getItemWithExpireTime } from "../utils/ControllToken";
-import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
 const PointTimeLine = () => {
-  const [id, setId] = useState<number>()
-
-  useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setId(decodeToken.userid)
-  }, [])
-
-  const {data, error} = useSWR(`http://localhost:8889/getUserPoint?id=${id}`, fetcher)
-
-  if (error) {
-    return <div>Error</div>
-  } else if (!data) {
-    return <Loading/>
-  } else {
+  const data = [
+    {
+      'division': '성희롱',
+      'point': 10,
+      'accumulate': 10,
+      'issuer': '김진효',
+      'date': '2022-10-10'
+    },
+    {
+      'division': '성희롱',
+      'point': 10,
+      'accumulate': 10,
+      'issuer': '김진효',
+      'date': '2022-10-10'
+    },
+    {
+      'division': '성희롱',
+      'point': 10,
+      'accumulate': 10,
+      'issuer': '김진효',
+      'date': '2022-10-10'
+    },
+    {
+      'division': '성희롱',
+      'point': 10,
+      'accumulate': 10,
+      'issuer': '김진효',
+      'date': '2022-10-10'
+    },
+    {
+      'division': '전국대회 수상',
+      'point': -10,
+      'accumulate': 10,
+      'issuer': '김진효',
+      'date': '2022-10-10'
+    }
+  ]
     return (
       <div className={cs('timeline-container')}>
         <Timeline position="alternate">
@@ -73,7 +91,6 @@ const PointTimeLine = () => {
         </Timeline>
       </div>
     )
-  }
 }
 
 export default PointTimeLine

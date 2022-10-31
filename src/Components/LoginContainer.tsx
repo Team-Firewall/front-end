@@ -10,11 +10,8 @@ import classNames from "classnames/bind"
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import styles from '../Style/Login.module.css'
 import { AiFillExclamationCircle } from 'react-icons/ai'
-import axios from "axios"
-import { getItemWithExpireTime, setItemWithExpireTime } from "../utils/ControllToken"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
@@ -29,35 +26,6 @@ interface State {
 export default function InputAdornments() {
   const navigate = useNavigate()
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<string>('')
-
-  const login = () => {
-    setIsPasswordCorrect('loading')
-
-    let data = {
-      "account": idValues.password,
-      "password": passwordValues.password
-    }
-
-    setTimeout(() => {
-      axios.post('http://localhost:3001/sign/in', JSON.stringify(data), {
-        headers: {"Content-Type": "application/json"}
-      }).then((res: any) => {
-        if (res.data.success) {
-          setItemWithExpireTime(res.data.token)
-          let token: any = getItemWithExpireTime()
-          token = jwt_decode(token)
-          let position: number = token.position
-          if (position === 0 || position === 2) {
-            navigate('/points')
-          } else if (position === 1 || position == 3 || position === 4) {
-            navigate('/admin/issuance')
-          }
-        }
-      }).catch((err) => {
-        setIsPasswordCorrect('error')
-      })
-    }, 400);
-  }
 
   const [passwordValues, setPasswordValues] = React.useState<State>({
     amount: '',
@@ -74,6 +42,17 @@ export default function InputAdornments() {
     weightRange: '',
     showPassword: false,
   });
+
+  const login = () => {
+    setIsPasswordCorrect('loading')
+
+    if (idValues.password === 'student') {
+      navigate('/points')
+    } else if (idValues.password === 'admin') {
+      navigate('/admin/issuance')
+    }
+
+  }
 
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {

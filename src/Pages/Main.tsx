@@ -83,7 +83,6 @@ export default function SwipeableTemporaryDrawer() {
       </List>
       <Divider/>
       <List>
-        {/*<div className={cs('not-login-menu')}>접근 가능한 메뉴가 없습니다.</div>*/}
         <ListItem>
           <ListItemButton onClick={() => navigate('/rule-table')}>
             <ListItemIcon>
@@ -92,16 +91,6 @@ export default function SwipeableTemporaryDrawer() {
             <ListItemText primary={'상/벌점 표 확인'}/>
           </ListItemButton>
         </ListItem>
-        {/*{['상벌점 조회', 'Trash', 'Spam'].map((text, index) => (*/}
-        {/*  <ListItem key={text} disablePadding>*/}
-        {/*    <ListItemButton>*/}
-        {/*      <ListItemIcon>*/}
-        {/*        {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}*/}
-        {/*      </ListItemIcon>*/}
-        {/*      <ListItemText primary={text}/>*/}
-        {/*    </ListItemButton>*/}
-        {/*  </ListItem>*/}
-        {/*))}*/}
       </List>
     </Box>
   );

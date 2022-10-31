@@ -7,23 +7,11 @@ import jwt_decode from "jwt-decode";
 const cs = classNames.bind(styles)
 
 const UserInformation = () => {
-  const [userGrade, setUserGrade] = useState<number>()
-  const [userClass, setUserClass] = useState<number>()
-  const [userNumber, setUserNumber] = useState<number>()
-  const [userPosition, setUserPosition] = useState<number>()
-  const [username, setUserName] = useState<string>('')
-
-  useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setUserGrade(decodeToken.grade)
-    setUserClass(decodeToken.class)
-    setUserPosition(decodeToken.position)
-    setUserNumber(decodeToken.number)
-    setUserName(decodeToken.name)
-  }, [])
+  const [userGrade, setUserGrade] = useState<number>(2)
+  const [userClass, setUserClass] = useState<number>(2)
+  const [userNumber, setUserNumber] = useState<number>(2)
+  const [userPosition, setUserPosition] = useState<number>(0)
+  const [username, setUserName] = useState<string>('테스트')
 
   return (
     <div className={cs('user-information-box')}>

@@ -27,7 +27,6 @@ export const getItemWithExpireTime = () => {
 export const Logout = () => {
   if (window.confirm('로그아웃 하시겠습니까?')) {
     window.location.replace('/')
-    window.localStorage.removeItem('item')
   }
   return null
 }

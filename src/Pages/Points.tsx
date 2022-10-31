@@ -12,15 +12,7 @@ import UserSideBar from "../Components/Sidebar/UserSideBar";
 const cs = classNames.bind(styles)
 
 const Points = () => {
-  const [username, setUserName] = useState<string>('')
-
-  useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setUserName(decodeToken.name)
-  }, [])
+  const [username, setUserName] = useState<string>('테스트')
 
   return (
     <div>
