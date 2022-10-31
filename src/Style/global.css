@@ -175,65 +175,65 @@
     height: 35px;
 }
 
-
-.searched-component .button-container .check-btn {
+.button-container .exit-btn {
     text-align: center;
     width: 90px;
     float: left;
     border: none;
     border-radius: 4px;
-}
-
-.searched-component .button-container .check-btn-1 {
-    background-color: #4b89d7;
-    color: #fff;
-}
-
-.searched-component .button-container .check-btn-1:hover {
-    background-color: #2f6dbb;
-    cursor: pointer;
-}
-
-
-.searched-component .button-container .check-btn-2 {
-    margin-left: 2%;
     background-color: #d74b4b;
     color: #fff;
 }
 
-.searched-component .button-container .check-btn-2:hover {
+.button-container .exit-btn:hover {
     background-color: #ad2c2c;
     cursor: pointer;
 }
 
+.exit-btn-icon {
+    margin-bottom: -2px;
+    color: #fff;
+}
 
-.searched-component .button-container .add-user-btn {
+.add-user-btn {
     text-align: center;
-    width: 130px;
-    float: right;
-    background-color: #2cb261;
+    width: 33px;
+    height: 22px;
+    background-color: #1daf56;
     color: #fff;
     border: none;
     border-radius: 4px;
+    font-size: 18px;
 }
 
-.searched-component .button-container .add-user-btn:hover {
-    background-color: #1e9b4f;
+.add-user-btn:hover {
+    background-color: #1a8845;
     cursor: pointer;
-
 }
-
 
 .searched-component .icon {
     margin-bottom: -2px;
 }
 
 .searched-table-container {
+    animation: fadein 1s ease-in-out;
+    transition: all 0.2s;
     margin-top: 25px;
     width: 100%;
     height: 60vh;
     overflow: auto;
     position: relative;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .searched-table {
