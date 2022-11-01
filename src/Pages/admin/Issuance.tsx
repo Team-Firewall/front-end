@@ -69,14 +69,15 @@ const Issuance = () => {
   const [classNumber, setClassNumber] = useState<number>()
   const [number, setNumber] = useState<number>()
   const [name, setName] = useState<string>()
-
-  let userArray: any = [{
-    'studentDivision': '고등학생',
-    'grade': 2,
-    'classNumber': 2,
-    'studentNumber': 6,
-    'name': '김진효'
-  }]
+  const [userArray, setUserArray] = useState([
+    {
+      'studentDivision': '',
+      'grade': '',
+      'classNumber': '',
+      'studentNumber': undefined,
+      'name': ''
+    }
+  ])
 
   useEffect(() => {
     let decodeToken: any
@@ -92,6 +93,10 @@ const Issuance = () => {
     let tempArray = (e.currentTarget.value).split(',')
     let flag: boolean = true
 
+    if (userArray.length === 1 && userArray[0].studentNumber === undefined ) {
+      setUserArray([])
+    }
+
     for (let i = 0; i < userArray.length; i++) {
       console.log(userArray[i].studentNumber)
       if (userArray[i].studentNumber === tempArray[3]) {
@@ -100,19 +105,30 @@ const Issuance = () => {
     }
 
     if (flag) {
-      userArray.push({
-        'studentDivision': tempArray[0],
-        'grade': tempArray[1],
-        'classNumber': tempArray[2],
-        'studentNumber': tempArray[3],
-        'name': tempArray[4]
-      })
+      setUserArray(oldValue => ([
+        ...oldValue,
+        {
+          'studentDivision': tempArray[0],
+          'grade': tempArray[1],
+          'classNumber': tempArray[2],
+          'studentNumber': tempArray[3],
+          'name': tempArray[4]
+        }]))
       toast.success(`${tempArray[4]} 학생을 추가하였습니다.`)
     } else {
       toast.error(`${tempArray[4]} 학생이 이미 추가되었습니다.`)
     }
 
-    console.log(tempArray)
+    console.log(userArray)
+  }
+
+  const removeUser = (e: any) => {
+    console.log(e.target.value)
+    setUserArray(current => (
+      current.filter((user) => user.studentNumber !== e.target.value)
+    ))
+
+    console.log(userArray)
   }
 
   const handleOpen = () => {
@@ -224,8 +240,9 @@ const Issuance = () => {
                           </table>
                         </div>
                         <div className={'button-container'}>
-                          <button className={'exit-btn'} onClick={() => setOpen(false)}><IoMdExit className={'exit-btn-icon'}/>
-                            <span style={{ marginLeft: '3px' }}>창 닫기</span></button>
+                          <button className={'exit-btn'} onClick={() => setOpen(false)}><IoMdExit
+                            className={'exit-btn-icon'}/>
+                            <span style={{marginLeft: '3px'}}>창 닫기</span></button>
                         </div>
                       </div>
                     )
@@ -251,8 +268,8 @@ const Issuance = () => {
               </tr>
               </thead>
               <tbody>
-              {Object.values(userArray).map((log: any, index: number) => (
-                <tr key={index} style={{color: '#000'}}>
+              {Object.values(userArray).map((log: any, i: number) => (
+                <tr key={i} style={{color: '#000'}}>
                   <td>{log.studentDivision}</td>
                   <td>{log.grade}</td>
                   <td>{log.classNumber}</td>
@@ -260,7 +277,7 @@ const Issuance = () => {
                   <td>{log.name}</td>
                   <td><input style={{width: '50px'}}/></td>
                   <td><input/></td>
-                  <td><input/></td>
+                  <td><button onClick={removeUser} value={log.studentNumber}>제거</button></td>
                 </tr>
               ))}
               </tbody>
