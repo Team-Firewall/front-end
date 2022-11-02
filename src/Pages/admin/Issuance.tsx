@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiOutlineHome, AiOutlineUserAdd, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineUserAdd, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
 import LogoutButton from "../../Components/LogoutButton";
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 import { animated, useSpring } from "react-spring";
@@ -14,6 +14,11 @@ import { toast, Toaster } from "react-hot-toast";
 import classNames from "classnames/bind";
 import styles from '../../Style/IssuanceTable.module.css'
 import { IoMdExit } from 'react-icons/io'
+import { getTodayDate } from "../../utils/getTodayDate";
+import { FiUserPlus } from 'react-icons/fi'
+import { FaTrashAlt } from 'react-icons/fa'
+import { BiListPlus } from 'react-icons/bi'
+import Swal from "sweetalert2";
 
 const cs = classNames.bind(styles)
 
@@ -60,6 +65,14 @@ const style = {
   p: 4,
 };
 
+interface User {
+  studentDivision: string,
+  grade: number,
+  classNumber: number,
+  studentNumber: number,
+  name: string
+}
+
 const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
   const [open, setOpen] = useState(false);
@@ -69,15 +82,15 @@ const Issuance = () => {
   const [classNumber, setClassNumber] = useState<number>()
   const [number, setNumber] = useState<number>()
   const [name, setName] = useState<string>()
-  const [userArray, setUserArray] = useState([
-    {
-      'studentDivision': '',
-      'grade': '',
-      'classNumber': '',
-      'studentNumber': undefined,
-      'name': ''
-    }
-  ])
+  const [userArray, setUserArray] = useState<User[]>([])
+  const [isHover, setIsHover] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHover(false);
+  };
 
   useEffect(() => {
     let decodeToken: any
@@ -92,10 +105,6 @@ const Issuance = () => {
     e.preventDefault()
     let tempArray = (e.currentTarget.value).split(',')
     let flag: boolean = true
-
-    if (userArray.length === 1 && userArray[0].studentNumber === undefined ) {
-      setUserArray([])
-    }
 
     for (let i = 0; i < userArray.length; i++) {
       console.log(userArray[i].studentNumber)
@@ -122,13 +131,51 @@ const Issuance = () => {
     console.log(userArray)
   }
 
-  const removeUser = (e: any) => {
-    console.log(e.target.value)
+  const removeUser = (value: number, name: string) => {
     setUserArray(current => (
-      current.filter((user) => user.studentNumber !== e.target.value)
+      current.filter((user) => user.studentNumber !== value)
     ))
 
-    console.log(userArray)
+    toast(`${name} 학생이 삭제 되었습니다.`,
+      {
+        // icon: '',
+        style: {
+          borderRadius: '10px',
+          background: '#f14242',
+          color: '#fff',
+        },
+      }
+    );
+  }
+
+  const deleteAllUser = () => {
+    if (window.confirm('발급 대상자를 모두 삭제하시겠습니까?')) {
+      setUserArray([])
+    }
+  }
+
+  const issuance = () => {
+    let string: string = ''
+    if (userArray.length === 0) {
+      alert('발급 대상자가 없습니다.')
+    } else if (userArray.length === 1) {
+      string = `${userArray[0].name} 학생에게 점수를 발급 하시겠습니까?`
+    } else if (userArray.length > 1) {
+      string = `${userArray[0].name} 학생 외 ${userArray.length - 1}명에게 점수를 발급 하시겠습니까?`
+    }
+
+    if (userArray.length > 0) {
+      if (window.confirm(string)) {
+        Swal.fire({
+          title: '점수 발급 완료',
+          text: '점수 발급이 완료되었습니다.',
+          icon: 'success',
+          confirmButtonText: '확인'
+        }).then(() => {
+          window.location.reload()
+        })
+      }
+    }
   }
 
   const handleOpen = () => {
@@ -150,17 +197,43 @@ const Issuance = () => {
     const result = [];
     for (let i = 0; i < 40; i++) {
       result.push(<tr>
-        <td>kim</td>
-        <td>kim</td>
-        <td>kim</td>
-        <td>kim</td>
-        <td>kim</td>
-        <td>
-          <button className={'add-user-btn'} value={[`${i}`, `${i}학년`, `${i}반`, `${i}번`, `kim${i}`]} onClick={pushUser}>
-            <AiOutlineUserAdd/>
+        <td className={cs('border-td')}>kim</td>
+        <td className={cs('border-td')}>kim</td>
+        <td className={cs('border-td')}>kim</td>
+        <td className={cs('border-td')}>kim</td>
+        <td className={cs('border-td')}>kim</td>
+        <td className={cs('user-add-td')}>
+          <button className={cs('add-user-btn')}
+                  value={[`${i % 2 === 0 ? '중학생' : '고등학생'}`, `${i}`, `${i}`, `${i}`, `kim${i}`]} onClick={pushUser}>
+            <AiOutlineUserAdd style={{marginBottom: '-2px'}}/>
           </button>
         </td>
-      </tr>);
+      </tr>)
+
+      {/*  <td>고등학생</td>*/
+      }
+      {/*  <td>2</td>*/
+      }
+      {/*  <td>2</td>*/
+      }
+      {/*  <td>6</td>*/
+      }
+      {/*  <td>김진효</td>*/
+      }
+      {/*  <td>*/
+      }
+      {/*    <button className={'add-user-btn'}*/
+      }
+      {/*            value={['고등학생', '2', '2', '6', '김진효']} onClick={pushUser}>*/
+      }
+      {/*      <AiOutlineUserAdd/>*/
+      }
+      {/*    </button>*/
+      }
+      {/*  </td>*/
+      }
+      {/*</tr>);*/
+      }
     }
     return result;
   }
@@ -180,8 +253,7 @@ const Issuance = () => {
           <div className={'divider-line'}/>
         </div>
 
-        <div className={'container'}>
-          <Button onClick={handleOpen} style={{color: '#f00'}}>유저 추가</Button>
+        <div className={'container'} style={{width: userArray.length < 1 ? '60%' : '80%', transition: '0.5s'}}>
           <Modal
             aria-labelledby="spring-modal-title"
             aria-describedby="spring-modal-description"
@@ -221,30 +293,36 @@ const Issuance = () => {
 
                   {
                     isSearched && (
-                      <div className={'searched-component'}>
-                        <div className={'searched-table-container'}>
-                          <table className={'searched-table'}>
-                            <thead>
-                            <tr>
-                              <th>학생 구분</th>
-                              <th>학년</th>
-                              <th>반</th>
-                              <th>번호</th>
-                              <th>이름</th>
-                              <th>추가</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {loopTable()}
-                            </tbody>
-                          </table>
+                      <>
+                        <div className={cs('add-user-info')}>
+                          <div><AiOutlineUserAdd className={cs('user-add-icon')}/><span>을 클릭하여 점수를 발급 할 학생을 추가하세요.</span>
+                          </div>
                         </div>
-                        <div className={'button-container'}>
-                          <button className={'exit-btn'} onClick={() => setOpen(false)}><IoMdExit
-                            className={'exit-btn-icon'}/>
-                            <span style={{marginLeft: '3px'}}>창 닫기</span></button>
+                        <div className={'searched-component'}>
+                          <div className={'searched-table-container'}>
+                            <table className={'searched-table'}>
+                              <thead>
+                              <tr>
+                                <th style={{borderTopLeftRadius: '4px'}}>학생 구분</th>
+                                <th>학년</th>
+                                <th>반</th>
+                                <th>번호</th>
+                                <th>이름</th>
+                                <th style={{borderTopRightRadius: '4px', borderRight: 'none'}}></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              {loopTable()}
+                              </tbody>
+                            </table>
+                          </div>
+                          <div className={'button-container'}>
+                            <button className={'exit-btn'} onClick={() => setOpen(false)}><IoMdExit
+                              className={'exit-btn-icon'}/>
+                              <span style={{marginLeft: '3px'}}>창 닫기</span></button>
+                          </div>
                         </div>
-                      </div>
+                      </>
                     )
                   }
 
@@ -252,40 +330,96 @@ const Issuance = () => {
               </Box>
             </Fade>
           </Modal>
+          <div className={'recipient-table-container'}>
 
-          <div className={cs('recipient-table')}>
-            <table>
-              <thead>
-              <tr>
-                <th>학생구분</th>
-                <th>학년</th>
-                <th>반</th>
-                <th>번호</th>
-                <th>이름</th>
-                <th>구분</th>
-                <th>점수항목</th>
-                <th>메모</th>
-              </tr>
-              </thead>
-              <tbody>
-              {Object.values(userArray).map((log: any, i: number) => (
-                <tr key={i} style={{color: '#000'}}>
-                  <td>{log.studentDivision}</td>
-                  <td>{log.grade}</td>
-                  <td>{log.classNumber}</td>
-                  <td>{log.studentNumber}</td>
-                  <td>{log.name}</td>
-                  <td><input style={{width: '50px'}}/></td>
-                  <td><input/></td>
-                  <td><button onClick={removeUser} value={log.studentNumber}>제거</button></td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+            {
+              userArray.length === 0 && (
+                <div className={cs('not-add-user-tag')}><AiFillInfoCircle className={cs('info-icon')}/>
+                  <span> 발급 대상자를 추가해 주세요.</span>
+                  <div style={{fontSize: '14px', marginTop: '1vh'}}>발급 대상자 추가 후, 점수 발급하기를 누르면 점수가 발급됩니다.</div>
+                </div>
+              )
+            }
+
+            {
+              userArray.length > 0 && (
+                <table>
+                  <thead>
+                  <tr>
+                    <th style={{borderTopLeftRadius: '5px'}}>학생구분</th>
+                    <th>학년</th>
+                    <th>반</th>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>구분</th>
+                    <th>점수항목</th>
+                    <th>메모</th>
+                    <th>발급일자</th>
+                    <th style={{borderTopRightRadius: '5px', borderRight: 'none'}}></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+
+                  {Object.values(userArray).map((log: any, i: number) => (
+                    <tr key={i} style={{color: '#000'}}>
+                      <td>{log.studentDivision}</td>
+                      <td>{log.grade}</td>
+                      <td>{log.classNumber}</td>
+                      <td>{log.studentNumber}</td>
+                      <td>{log.name}</td>
+                      <td style={{ width: '6vw' }}>
+                        <select className={cs('select-division')}>
+                          <option>상점</option>
+                          <option>벌점</option>
+                          <option>상쇄점</option>
+                        </select>
+                      </td>
+                      <td style={{ width: '30vw' }}>
+                        <select className={cs('select-point')}>
+                          <option>[2점]학습활동에 도움을 줌</option>
+                          <option>[2점]휴지를 자발적으로 줍는 학생</option>
+                          <option>[5점]학교 홍보에 열심히 참여한 학생</option>
+                        </select>
+                      </td>
+                      <td><input className={cs('input-memo')} placeholder={'메모를 입력하세요.'}/></td>
+                      <td>{getTodayDate()}</td>
+                      <td style={{width: '40px', backgroundColor: '#fff'}}>
+                        <button onClick={() => removeUser(log.studentNumber, log.name)} value={log.studentNumber}
+                                className={cs('user-delete-btn')}>
+                          <AiOutlineDelete style={{marginBottom: '-2px', fontSize: '18px'}}/></button>
+                      </td>
+                    </tr>
+                  ))}
+                  </tbody>
+                </table>
+              )
+            }
+
+          </div>
+
+          <div className={cs('bottom-button-container')}>
+            <Button onClick={handleOpen} className={cs('modal-btn')}
+                    style={{backgroundColor: isHover ? '#d5f0fc' : '#edfbff'}}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}><FiUserPlus
+              style={{marginTop: '-2px', fontSize: '15px'}}/> <span> 발급 대상자 추가</span></Button>
+
+            <button onClick={deleteAllUser} className={cs('delete-all-btn')}><FaTrashAlt
+              style={{marginBottom: '-2px'}}/> <span>전체 삭제</span>
+            </button>
+
+            <button className={cs('same-item-apply-btn')}>
+              <BiListPlus style={{marginBottom: '-4px', fontSize: '20px'}}/> <span>같은 항목 적용</span>
+            </button>
+
+            <button className={cs('issue-btn')} onClick={issuance}>
+              <AiFillCheckCircle style={{marginBottom: '-2px'}}/><span> 점수 발급하기</span>
+            </button>
           </div>
         </div>
         <Toaster
-          position="top-right"
+          position="top-left"
           reverseOrder={false}
         />
       </div>

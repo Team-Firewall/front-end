@@ -1,0 +1,171 @@
+.user-delete-btn {
+    background-color: #fff;
+    color: #f00;
+    width: 30px;
+    height: 22px;
+    border: none;
+    border-radius: 3px;
+}
+
+.user-delete-btn:hover {
+    background-color: #fae7e7;
+    cursor: pointer;
+}
+
+.border-td {
+    border: 1px solid #ccc;
+}
+
+.add-user-info {
+    margin-top: 15px;
+    font-size: 17px;
+    color: #0446c4;
+    margin-bottom: -13px;
+    width: 100%;
+    background-color: #f4fbff;
+    height: 26px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.user-add-icon {
+    color: #1daf56;
+    margin-bottom: -2px;
+}
+
+.not-add-user-tag {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 30px;
+}
+
+.user-add-td {
+    width: 33px;
+    background-color: #fff;
+}
+
+.user-add-td:hover {
+    background-color: #e7fae5;
+    cursor: pointer;
+}
+
+.add-user-btn {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: #fff;
+    color: #1daf56;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.add-user-btn:hover {
+    background-color: #e7fae5;
+    cursor: pointer;
+}
+
+.info-icon {
+    margin-bottom: -5.5px;
+    font-size: 32px;
+    color: #4573e1;
+}
+
+.modal-btn {
+    float: left;
+    width: 150px;
+}
+
+.modal-btn span {
+    margin-left: 5px;
+}
+
+.bottom-button-container {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.delete-all-btn {
+    background-color: #fff3f3;
+    margin-left: 15px;
+    float: left;
+    color: #f33737;
+    border: none;
+    width: 100px;
+    height: 35px;
+    border-radius: 4px;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.delete-all-btn:hover {
+    background-color: #ffe2e2;
+    cursor: pointer;
+}
+
+.same-item-apply-btn {
+    transition: all 0.2s;
+    float: left;
+    margin-left: 15px;
+    background-color: #f3eeff;
+    color: #7637f3;
+    border: none;
+    width: 130px;
+    height: 35px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.same-item-apply-btn:hover {
+    background-color: #ece4fd;
+    cursor: pointer;
+}
+
+.issue-btn {
+    transition: all 0.2s;
+    float: right;
+    background-color: #f2fdf8;
+    color: #1daf56;
+    border: none;
+    width: 130px;
+    height: 40px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.issue-btn:hover {
+    background-color: #e5faf0;
+    cursor: pointer;
+}
+
+.select-division {
+    background: #f5f6ff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+    height: 25px;
+    width: 90%;
+}
+
+.select-point {
+    background: #f5f6ff;
+    border: none;
+    border-radius: 5px;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+    height: 25px;
+    width: 95%;
+}
+
+.input-memo {
+    background: #f5f6ff;
+    border: none;
+    border-radius: 5px;
+    height: 25px;
+    width: 90%;
+}
+

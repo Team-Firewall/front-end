@@ -1,22 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
 import { getItemWithExpireTime, Logout } from "../utils/ControllToken";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Logo from "../images/ScoolFullLogo.png";
-import { TbUser } from "react-icons/tb";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Button from "@mui/material/Button";
-import { GoThreeBars } from "react-icons/go";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import jwt_decode from "jwt-decode";
 import { AiOutlineHome } from "react-icons/ai";
 import LogoutButton from "../Components/LogoutButton";
@@ -33,7 +16,6 @@ const MyPage = () => {
 
   const [username, setUserName] = useState<string>('')
   const [informationState, setInformationState] = useState<number>(0)
-  const navigate = useNavigate()
 
   useEffect(() => {
     let decodeToken: any

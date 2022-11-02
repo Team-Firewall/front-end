@@ -1,26 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getItemWithExpireTime, Logout } from "../../utils/ControllToken";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Logo from "../../images/ScoolFullLogo.png";
-import { TbUser } from "react-icons/tb";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import Button from "@mui/material/Button";
-import { GoThreeBars } from "react-icons/go";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { AiOutlineHome } from "react-icons/ai";
 import LogoutButton from "../../Components/LogoutButton";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import AddUserWithTyping from "../../Components/AddUserComponents/AddUserWithTyping";
 import AddUserWithFile from "../../Components/AddUserComponents/AddUserWithFile";
 import classNames from "classnames/bind";
@@ -29,11 +11,9 @@ import { AiOutlineUserAdd, AiOutlineUser } from 'react-icons/ai'
 import { RiFileExcel2Line, RiAdminLine } from 'react-icons/ri'
 import StudentParentManagement from "../../Components/AddUserComponents/StudentParentManagement";
 import TeacherManagement from "../../Components/AddUserComponents/TeacherManagement";
-import RuleIcon from '@mui/icons-material/Rule';
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 
 const cs = classNames.bind(styles)
-
 
 const AddUser = () => {
 

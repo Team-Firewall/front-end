@@ -87,7 +87,7 @@ export default function AdminSideBar() {
       <List>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('/points')}>
+          <ListItemButton onClick={() => navigate('/admin/issuance')}>
             <ListItemIcon>
               <ControlPointDuplicateIcon/>
             </ListItemIcon>
