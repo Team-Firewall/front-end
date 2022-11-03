@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiOutlineHome, AiOutlineUserAdd, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
+import { AiOutlineHome, AiFillCloseCircle, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
 import LogoutButton from "../../Components/LogoutButton";
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 import { animated, useSpring } from "react-spring";
@@ -18,6 +18,7 @@ import { getTodayDate } from "../../utils/getTodayDate";
 import { FiUserPlus } from 'react-icons/fi'
 import { FaTrashAlt } from 'react-icons/fa'
 import { BiListPlus } from 'react-icons/bi'
+import { BsCheckAll } from 'react-icons/bs'
 import Swal from "sweetalert2";
 
 const cs = classNames.bind(styles)
@@ -205,7 +206,8 @@ const Issuance = () => {
         <td className={cs('user-add-td')}>
           <button className={cs('add-user-btn')}
                   value={[`${i % 2 === 0 ? '중학생' : '고등학생'}`, `${i}`, `${i}`, `${i}`, `kim${i}`]} onClick={pushUser}>
-            <AiOutlineUserAdd style={{marginBottom: '-2px'}}/>
+            <FiUserPlus style={{marginBottom: '-3px'}}/>
+            {/*<AiOutlineUserAdd style={{marginBottom: '-2px'}}/>*/}
           </button>
         </td>
       </tr>)
@@ -295,7 +297,7 @@ const Issuance = () => {
                     isSearched && (
                       <>
                         <div className={cs('add-user-info')}>
-                          <div><AiOutlineUserAdd className={cs('user-add-icon')}/><span>을 클릭하여 점수를 발급 할 학생을 추가하세요.</span>
+                          <div><FiUserPlus className={cs('user-add-icon')}/><span> 을 클릭하여 점수를 발급 할 학생을 추가하세요.</span>
                           </div>
                         </div>
                         <div className={'searched-component'}>
@@ -317,9 +319,14 @@ const Issuance = () => {
                             </table>
                           </div>
                           <div className={'button-container'}>
-                            <button className={'exit-btn'} onClick={() => setOpen(false)}><IoMdExit
-                              className={'exit-btn-icon'}/>
-                              <span style={{marginLeft: '3px'}}>창 닫기</span></button>
+                            <button className={'exit-btn'} onClick={() => setOpen(false)}>
+                              <AiFillCloseCircle className={'exit-btn-icon'}/>
+                              <span style={{marginLeft: '3px'}}>창 닫기</span>
+                            </button>
+
+                            <button className={'add-all-user-btn'}>
+                              <BsCheckAll className={'double-check-icon'}/> 모든 학생 추가
+                            </button>
                           </div>
                         </div>
                       </>
@@ -330,7 +337,7 @@ const Issuance = () => {
               </Box>
             </Fade>
           </Modal>
-          <div className={'recipient-table-container'}>
+          <div className={'recipient-table-container'} style={{ display: userArray.length < 1 ? 'table' : ''}}>
 
             {
               userArray.length === 0 && (
@@ -368,14 +375,14 @@ const Issuance = () => {
                       <td>{log.classNumber}</td>
                       <td>{log.studentNumber}</td>
                       <td>{log.name}</td>
-                      <td style={{ width: '6vw' }}>
+                      <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}>
                           <option>상점</option>
                           <option>벌점</option>
                           <option>상쇄점</option>
                         </select>
                       </td>
-                      <td style={{ width: '30vw' }}>
+                      <td style={{width: '30vw'}}>
                         <select className={cs('select-point')}>
                           <option>[2점]학습활동에 도움을 줌</option>
                           <option>[2점]휴지를 자발적으로 줍는 학생</option>
@@ -402,8 +409,10 @@ const Issuance = () => {
             <Button onClick={handleOpen} className={cs('modal-btn')}
                     style={{backgroundColor: isHover ? '#d5f0fc' : '#edfbff'}}
                     onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}><FiUserPlus
-              style={{marginTop: '-2px', fontSize: '15px'}}/> <span> 발급 대상자 추가</span></Button>
+                    onMouseLeave={handleMouseLeave}>
+              <FiUserPlus style={{marginTop: '-2px', fontSize: '15px'}}/>
+              <span> 발급 대상자 추가</span>
+            </Button>
 
             <button onClick={deleteAllUser} className={cs('delete-all-btn')}><FaTrashAlt
               style={{marginBottom: '-2px'}}/> <span>전체 삭제</span>

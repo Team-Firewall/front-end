@@ -176,14 +176,36 @@
     height: 35px;
 }
 
+.button-container .add-all-user-btn {
+    text-align: center;
+    width: 130px;
+    float: left;
+    border: none;
+    border-radius: 4px;
+    background-color: #4ba1d7;
+    color: #fff;
+    font-size: 15px;
+}
+
+.button-container .add-all-user-btn:hover {
+    cursor: pointer;
+    background-color: #3a7da8;
+}
+
+.double-check-icon {
+    margin-bottom: -3.5px;
+    font-size: 18px;
+}
+
 .button-container .exit-btn {
+    float: right;
     text-align: center;
     width: 90px;
-    float: left;
     border: none;
     border-radius: 4px;
     background-color: #d74b4b;
     color: #fff;
+    font-size: 15px;
 }
 
 .button-container .exit-btn:hover {
@@ -192,8 +214,9 @@
 }
 
 .exit-btn-icon {
-    margin-bottom: -2px;
+    margin-bottom: -3.5px;
     color: #fff;
+    font-size: 18px;
 }
 
 .searched-component .icon {
@@ -222,19 +245,19 @@
 }
 
 .searched-table {
-    font-family: 'Nanum Gothic', sans-serif;
-    width: 96%;
+    width: 97%;
     border-collapse: collapse;
     font-family: 'Noto Sans KR', sans-serif;
     float: left;
 }
 
-.searched-table tr:nth-child(even) {background: #efefef}
+.searched-table tr:nth-child(even) {background: #f1f1f1
+}
 .searched-table tr:nth-child(odd) {background: #fff}
 
 .searched-table th {
-    background-color: #f6f8fa;
-    border: 1px solid #ccc;
+    background-color: #e0e0e0;
+    /*border: 1px solid #ccc;*/
     border-top: none;
     text-align: center;
     color: #000;
@@ -243,13 +266,12 @@
 }
 
 .searched-table td {
-    border: 1px solid #ccc;
+    border: 1px solid #eee;
     text-align: center;
 }
 
 .recipient-table-container {
     font-family: 'Nanum Gothic', sans-serif;
-    display: table;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -263,9 +285,7 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    /*border: 1px solid #ccc;*/
     border-collapse: collapse;
-    overflow: auto;
 }
 
 .recipient-table-container table td {
