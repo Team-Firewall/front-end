@@ -32,9 +32,9 @@ export default function SwipeableTemporaryDrawer() {
       let token = getItemWithExpireTime()
       token = jwt_decode(token)
 
-      if (token.iat && token.position === 0 || token.position === 2) {
+      if (token.iat && token.position === 3 || token.position === 4) {
         navigate('/points')
-      } else if (token.iat && token.position === 1 || token.position === 3 || token.position === 4) {
+      } else if (token.iat && token.position > 0-2) {
         navigate('/admin/issuance')
       }
     }

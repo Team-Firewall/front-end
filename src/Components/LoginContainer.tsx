@@ -47,15 +47,13 @@ export default function InputAdornments() {
           let token: any = getItemWithExpireTime()
           token = jwt_decode(token)
           let position: number = token.position
-          if (position === 0 || position === 2) {
-            navigate('/points')
-          } else if (position === 1 || position == 3 || position === 4) {
+          if (position === 0 || position === 1 || position === 2) {
             navigate('/admin/issuance')
+          } else if (position == 3 || position === 4) {
+            navigate('/points')
           }
         }
-      }).catch((err) => {
-        setIsPasswordCorrect('error')
-      })
+      }).catch(() => setIsPasswordCorrect('error'))
     }, 400);
   }
 

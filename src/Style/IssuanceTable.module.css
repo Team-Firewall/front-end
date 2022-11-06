@@ -63,7 +63,7 @@
 }
 
 .info-icon {
-    margin-bottom: -5.5px;
+    margin-bottom: -7px;
     font-size: 32px;
     color: #4573e1;
 }
@@ -136,8 +136,11 @@
 }
 
 .select-division {
-    background: #f5f6ff;
     border: none;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    outline: none;
     border-radius: 5px;
     text-align: center;
     text-align-last: center;

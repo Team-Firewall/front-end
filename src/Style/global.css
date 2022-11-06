@@ -129,7 +129,10 @@
 }
 
 .search-input-container select {
+    appearance: none;
     -webkit-appearance:none;
+    -webkit-border-radius: 0;
+    -moz-appearance: none;
     background: #fff;
     height: 35px;
     border: none;

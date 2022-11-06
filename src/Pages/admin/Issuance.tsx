@@ -13,7 +13,6 @@ import Typography from "@mui/material/Typography";
 import { toast, Toaster } from "react-hot-toast";
 import classNames from "classnames/bind";
 import styles from '../../Style/IssuanceTable.module.css'
-import { IoMdExit } from 'react-icons/io'
 import { getTodayDate } from "../../utils/getTodayDate";
 import { FiUserPlus } from 'react-icons/fi'
 import { FaTrashAlt } from 'react-icons/fa'
@@ -78,13 +77,15 @@ const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
   const [open, setOpen] = useState(false);
   const [isSearched, setIsSearched] = useState<boolean>(false)
-  const [studentDivision, setStudentDivision] = useState<number>(0)
-  const [grade, setGrade] = useState<number>()
-  const [classNumber, setClassNumber] = useState<number>()
-  const [number, setNumber] = useState<number>()
-  const [name, setName] = useState<string>()
+  const [studentDivision, setStudentDivision] = useState<number>(3)
+  const [grade, setGrade] = useState<number>(0)
+  const [classNumber, setClassNumber] = useState<number>(0)
+  const [number, setNumber] = useState<number>(0)
+  const [name, setName] = useState<string>('')
   const [userArray, setUserArray] = useState<User[]>([])
+  const [userTmpArray, setUserTmpArray] = useState<User[]>([])
   const [isHover, setIsHover] = useState(false);
+  const [pointDivision, setPointDivision] = useState<number>(0)
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -150,10 +151,39 @@ const Issuance = () => {
   }
 
   const deleteAllUser = () => {
-    if (window.confirm('발급 대상자를 모두 삭제하시겠습니까?')) {
+    if (userArray.length === 0) {
+      alert('삭제 할 대상자가 없습니다.')
+    } else if (window.confirm('발급 대상자를 모두 삭제하시겠습니까?')) {
       setUserArray([])
     }
   }
+
+  const getUserObject = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        'position': studentDivision,
+        'grade': grade,
+        'classNum': classNumber,
+        'number': number,
+        'name': name
+      })
+    };
+
+    fetch('http://localhost:3001/v1/user/student', requestOptions)
+      .then(res => res.json())
+      .then(data => {
+        setUserTmpArray(data)
+        setIsSearched(true)
+      })
+    // .then(() => console.log(res))
+    //   console.log(res)
+    //   // console.log(res.data)
+    //   // setUserTmpArray(res.data)
+    // })
+  }
+
 
   const issuance = () => {
     let string: string = ''
@@ -180,19 +210,15 @@ const Issuance = () => {
   }
 
   const handleOpen = () => {
-    setStudentDivision(0)
-    setGrade(undefined)
-    setClassNumber(undefined)
-    setNumber(undefined)
-    setName(undefined)
+    setStudentDivision(3)
+    setGrade(0)
+    setClassNumber(0)
+    setNumber(0)
+    setName('')
     setOpen(true)
     setIsSearched(false)
   };
   const handleClose = () => setOpen(false);
-  const handleClick = () => {
-    setIsSearched(true)
-    console.log(userArray)
-  }
 
   const loopTable = () => {
     const result = [];
@@ -211,36 +237,11 @@ const Issuance = () => {
           </button>
         </td>
       </tr>)
-
-      {/*  <td>고등학생</td>*/
-      }
-      {/*  <td>2</td>*/
-      }
-      {/*  <td>2</td>*/
-      }
-      {/*  <td>6</td>*/
-      }
-      {/*  <td>김진효</td>*/
-      }
-      {/*  <td>*/
-      }
-      {/*    <button className={'add-user-btn'}*/
-      }
-      {/*            value={['고등학생', '2', '2', '6', '김진효']} onClick={pushUser}>*/
-      }
-      {/*      <AiOutlineUserAdd/>*/
-      }
-      {/*    </button>*/
-      }
-      {/*  </td>*/
-      }
-      {/*</tr>);*/
-      }
     }
     return result;
   }
 
-  if (userPosition === 0 || userPosition === 2) {
+  if (userPosition === 3 || userPosition === 4) {
     return (
       <div>notFound</div>
     )
@@ -278,8 +279,8 @@ const Issuance = () => {
                       e.preventDefault()
                     }}>
                       <select onChange={(e) => setStudentDivision(Number(e.target.value))}>
-                        <option value={0}>고등학생</option>
-                        <option value={2}>중학생</option>
+                        <option value={3}>고등학생</option>
+                        <option value={4}>중학생</option>
                       </select>
                       <input placeholder={'학년'} className={'number-input'} type={'number'} min={1} max={3}
                              onChange={(e) => setGrade(Number(e.target.value))}/>
@@ -289,7 +290,7 @@ const Issuance = () => {
                              onChange={(e) => setNumber(Number(e.target.value))}/>
                       <input placeholder={'이름'} className={'name-search-input'}
                              onChange={(e) => setName(e.target.value)}/>
-                      <button onClick={handleClick} type={'submit'}>검색</button>
+                      <button onClick={getUserObject} type={'submit'}>검색</button>
                     </form>
                   </div>
 
@@ -314,7 +315,22 @@ const Issuance = () => {
                               </tr>
                               </thead>
                               <tbody>
-                              {loopTable()}
+                              {Object.values(userTmpArray).map((log: any, i: number) => (
+                                <tr key={i} style={{color: '#000'}}>
+                                  <td>{log.position % 2 === 0 ? '중학생' : '고등학생'}</td>
+                                  <td>{log.grade}</td>
+                                  <td>{log.classNum}</td>
+                                  <td>{log.number}</td>
+                                  <td>{log.name}</td>
+                                  <td className={cs('user-add-td')}>
+                                    <button className={cs('add-user-btn')}
+                                            value={[`${log.position % 2 === 0 ? '중학생' : '고등학생'}`, `${log.grade}`, `${log.classNum}`, `${log.number}`, `${log.name}`]}
+                                            onClick={pushUser}>
+                                      <FiUserPlus style={{marginBottom: '-3px'}}/>
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
                               </tbody>
                             </table>
                           </div>
@@ -337,13 +353,13 @@ const Issuance = () => {
               </Box>
             </Fade>
           </Modal>
-          <div className={'recipient-table-container'} style={{ display: userArray.length < 1 ? 'table' : ''}}>
+          <div className={'recipient-table-container'} style={{display: userArray.length < 1 ? 'table' : ''}}>
 
             {
               userArray.length === 0 && (
                 <div className={cs('not-add-user-tag')}><AiFillInfoCircle className={cs('info-icon')}/>
                   <span> 발급 대상자를 추가해 주세요.</span>
-                  <div style={{fontSize: '14px', marginTop: '1vh'}}>발급 대상자 추가 후, 점수 발급하기를 누르면 점수가 발급됩니다.</div>
+                  <div style={{fontSize: '13px', marginTop: '1.5vh'}}>발급 대상자 추가 후, 점수 발급하기를 누르면 점수가 발급됩니다.</div>
                 </div>
               )
             }
@@ -376,10 +392,15 @@ const Issuance = () => {
                       <td>{log.studentNumber}</td>
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
-                        <select className={cs('select-division')}>
-                          <option>상점</option>
-                          <option>벌점</option>
-                          <option>상쇄점</option>
+                        <select className={cs('select-division')}
+                                onChange={(e) => setPointDivision(Number(e.target.value))}
+                                style={{
+                                  background: pointDivision === 0 ? '#f2fff2' : pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
+                                }}
+                        >
+                          <option value={0}>상점</option>
+                          <option value={1}>벌점</option>
+                          <option value={2}>상쇄점</option>
                         </select>
                       </td>
                       <td style={{width: '30vw'}}>
@@ -389,7 +410,7 @@ const Issuance = () => {
                           <option>[5점]학교 홍보에 열심히 참여한 학생</option>
                         </select>
                       </td>
-                      <td><input className={cs('input-memo')} placeholder={'메모를 입력하세요.'}/></td>
+                      <td><input className={cs('input-memo')} placeholder={'  메모를 입력하세요.'}/></td>
                       <td>{getTodayDate()}</td>
                       <td style={{width: '40px', backgroundColor: '#fff'}}>
                         <button onClick={() => removeUser(log.studentNumber, log.name)} value={log.studentNumber}
