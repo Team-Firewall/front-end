@@ -73,6 +73,12 @@ interface User {
   name: string
 }
 
+interface optionDivision {
+  id: number,
+  regulate: string,
+  score: number
+}
+
 const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
   const [open, setOpen] = useState(false);
@@ -86,6 +92,7 @@ const Issuance = () => {
   const [userTmpArray, setUserTmpArray] = useState<User[]>([])
   const [isHover, setIsHover] = useState(false);
   const [pointDivision, setPointDivision] = useState<number>(0)
+  const [pointOptionArray, setPointOptionArray]= useState<optionDivision[]>([])
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -177,12 +184,23 @@ const Issuance = () => {
         setUserTmpArray(data)
         setIsSearched(true)
       })
-    // .then(() => console.log(res))
-    //   console.log(res)
-    //   // console.log(res.data)
-    //   // setUserTmpArray(res.data)
-    // })
   }
+
+  const setOptionValues = (e: number) => {
+    fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${e}`)
+      .then((response) => response.json())
+      .then((data) => setPointOptionArray(data))
+      .then(() => console.log(pointOptionArray))
+  }
+
+  // const optionValues = () => {
+  //   const result = [];
+  //   for (let i = 0; i < pointOptionArray.length; i++) {
+  //     result.push(<option>{pointOptionArray[i].regulate}</option>)
+  //   }
+  //   return result;
+  // }
+
 
 
   const issuance = () => {
@@ -219,27 +237,6 @@ const Issuance = () => {
     setIsSearched(false)
   };
   const handleClose = () => setOpen(false);
-
-  const loopTable = () => {
-    const result = [];
-    for (let i = 0; i < 40; i++) {
-      result.push(<tr>
-        <td className={cs('border-td')}>kim</td>
-        <td className={cs('border-td')}>kim</td>
-        <td className={cs('border-td')}>kim</td>
-        <td className={cs('border-td')}>kim</td>
-        <td className={cs('border-td')}>kim</td>
-        <td className={cs('user-add-td')}>
-          <button className={cs('add-user-btn')}
-                  value={[`${i % 2 === 0 ? '중학생' : '고등학생'}`, `${i}`, `${i}`, `${i}`, `kim${i}`]} onClick={pushUser}>
-            <FiUserPlus style={{marginBottom: '-3px'}}/>
-            {/*<AiOutlineUserAdd style={{marginBottom: '-2px'}}/>*/}
-          </button>
-        </td>
-      </tr>)
-    }
-    return result;
-  }
 
   if (userPosition === 3 || userPosition === 4) {
     return (
@@ -393,7 +390,7 @@ const Issuance = () => {
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}
-                                onChange={(e) => setPointDivision(Number(e.target.value))}
+                                onChange={(e) => setOptionValues(Number(e.target.value))}
                                 style={{
                                   background: pointDivision === 0 ? '#f2fff2' : pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
                                 }}
@@ -405,9 +402,9 @@ const Issuance = () => {
                       </td>
                       <td style={{width: '30vw'}}>
                         <select className={cs('select-point')}>
-                          <option>[2점]학습활동에 도움을 줌</option>
-                          <option>[2점]휴지를 자발적으로 줍는 학생</option>
-                          <option>[5점]학교 홍보에 열심히 참여한 학생</option>
+                          {Object.values(pointOptionArray).map((value: any, index: number) => (
+                            <option key={index}>{`[${value.score}점] ${value.regulate}`}</option>
+                          ))}
                         </select>
                       </td>
                       <td><input className={cs('input-memo')} placeholder={'  메모를 입력하세요.'}/></td>
