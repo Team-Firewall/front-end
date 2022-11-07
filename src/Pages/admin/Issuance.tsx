@@ -187,21 +187,12 @@ const Issuance = () => {
   }
 
   const setOptionValues = (e: number) => {
+    setPointDivision(e)
     fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${e}`)
       .then((response) => response.json())
       .then((data) => setPointOptionArray(data))
       .then(() => console.log(pointOptionArray))
   }
-
-  // const optionValues = () => {
-  //   const result = [];
-  //   for (let i = 0; i < pointOptionArray.length; i++) {
-  //     result.push(<option>{pointOptionArray[i].regulate}</option>)
-  //   }
-  //   return result;
-  // }
-
-
 
   const issuance = () => {
     let string: string = ''
