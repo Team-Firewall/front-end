@@ -66,11 +66,17 @@ const style = {
 };
 
 interface User {
+  studentId: number,
+  regulateId: number,
   studentDivision: string,
   grade: number,
   classNumber: number,
   studentNumber: number,
-  name: string
+  name: string,
+  pointDivision: string,
+  selectOption: number,
+  memo: string,
+  issuer: string
 }
 
 interface optionDivision {
@@ -81,6 +87,7 @@ interface optionDivision {
 
 const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
+  const [issuanceName, setIssuanceName]= useState<string>('')
   const [open, setOpen] = useState(false);
   const [isSearched, setIsSearched] = useState<boolean>(false)
   const [studentDivision, setStudentDivision] = useState<number>(3)
@@ -92,6 +99,7 @@ const Issuance = () => {
   const [userTmpArray, setUserTmpArray] = useState<User[]>([])
   const [isHover, setIsHover] = useState(false);
   const [pointDivision, setPointDivision] = useState<number>(0)
+  // const [issuanceList, setIssuanceList] = useState<issuanceForm[]>([])
   const [pointOptionArray, setPointOptionArray]= useState<optionDivision[]>([])
 
   const handleMouseEnter = () => {
@@ -106,17 +114,30 @@ const Issuance = () => {
     let temp_token = getItemWithExpireTime()
     temp_token = jwt_decode(temp_token)
     decodeToken = temp_token
+    console.log(decodeToken)
     setUserPosition(decodeToken.position)
+    setIssuanceName(decodeToken.name)
   }, [])
 
+  const editIssuanceList = (index: number, classification: string, value: any) => {
+    if (classification === 'selectOption') {
+      console.log(value)
+      console.log(index)
+      setUserArray(userArray.map((it) =>
+        it.studentId === index ? {...it, selectOption : value} : it
+      ))
+    }
+
+    console.log(userArray)
+  }
 
   const pushUser = (e: any) => {
     e.preventDefault()
+    console.log((e.currentTarget.value).split(','))
     let tempArray = (e.currentTarget.value).split(',')
     let flag: boolean = true
 
     for (let i = 0; i < userArray.length; i++) {
-      console.log(userArray[i].studentNumber)
       if (userArray[i].studentNumber === tempArray[3]) {
         flag = false
       }
@@ -126,11 +147,17 @@ const Issuance = () => {
       setUserArray(oldValue => ([
         ...oldValue,
         {
+          'studentId': tempArray[5],
+          'regulateId': 0,
           'studentDivision': tempArray[0],
           'grade': tempArray[1],
           'classNumber': tempArray[2],
           'studentNumber': tempArray[3],
-          'name': tempArray[4]
+          'pointDivision': '',
+          'selectOption': 0,
+          'memo': '',
+          'name': tempArray[4],
+          'issuer': issuanceName
         }]))
       toast.success(`${tempArray[4]} 학생을 추가하였습니다.`)
     } else {
@@ -312,7 +339,7 @@ const Issuance = () => {
                                   <td>{log.name}</td>
                                   <td className={cs('user-add-td')}>
                                     <button className={cs('add-user-btn')}
-                                            value={[`${log.position % 2 === 0 ? '중학생' : '고등학생'}`, `${log.grade}`, `${log.classNum}`, `${log.number}`, `${log.name}`]}
+                                            value={[`${log.position % 2 === 0 ? '중학생' : '고등학생'}`, `${log.grade}`, `${log.classNum}`, `${log.number}`, `${log.name}`,`${log.id}`]}
                                             onClick={pushUser}>
                                       <FiUserPlus style={{marginBottom: '-3px'}}/>
                                     </button>
@@ -381,10 +408,11 @@ const Issuance = () => {
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}
-                                onChange={(e) => setOptionValues(Number(e.target.value))}
+                                onChange={(e) => editIssuanceList(log.studentId, 'selectOption', e.target.value)}
                                 style={{
                                   background: pointDivision === 0 ? '#f2fff2' : pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
                                 }}
+                                value={userArray[i].selectOption}
                         >
                           <option value={0}>상점</option>
                           <option value={1}>벌점</option>
