@@ -170,7 +170,7 @@ const Issuance = () => {
     let flag: boolean = true
 
     for (let i = 0; i < userArray.length; i++) {
-      if (userArray[i].studentNumber === tempArray[3]) {
+      if (userArray[i].studentId === tempArray[5]) {
         flag = false
       }
     }
@@ -207,7 +207,6 @@ const Issuance = () => {
 
     toast(`${name} 학생이 삭제 되었습니다.`,
       {
-        // icon: '',
         style: {
           borderRadius: '10px',
           background: '#f14242',
@@ -247,28 +246,38 @@ const Issuance = () => {
   }
 
   const applySameValues = () => {
-    const newState = userArray.map(obj => {
-      for (let i = 1; i < userArray.length; i++) {
-        if (obj.index === i) {
-          console.log(userArray[0].regulateId)
-          return {
-            ...obj,
-            regulateId: userArray[0].regulateId,
-            pointDivision: userArray[0].pointDivision,
-            selectOption: userArray[0].selectOption,
-            memo: userArray[0].memo
-          };
-        }
-      }
-      return obj
+    Swal.fire({
+      html: '같은 항목 적용은 첫번째 학생의 항목으로 적용됩니다.<br/>' +
+        `전체 대상자에게 <strong style="color: #38a0e5">'${userArray[0].selectOption} </strong>` +
+        `점수 항목과 <strong style="color: #6f7bd9">'${userArray[0].memo}' </strong>메모를 적용하시겠습니까?`,
+      icon: 'warning',
+      iconColor: '#e56565',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
     })
-    console.log(newState)
-    setUserArray(newState)
+      .then(() => {
+      setUserArray(userArray.map((it) =>
+        it.index > 1 ? {
+          ...it,
+          pointDivision: userArray[0].pointDivision,
+          selectOption: userArray[0].selectOption,
+          memo: userArray[0].memo,
+        } : it
+      ))
 
+      console.log('new', userArray)
 
-    for (let i = 0; i < userArray.length; i++) {
-      console.log(`index: ${userArray[i].index}  학생 아이디 : ${userArray[i].studentId}, 규정 아이디 : ${userArray[i].regulateId}, 학년: ${userArray[i].grade}, 반: ${userArray[i].classNumber}, 번호: ${userArray[i].studentNumber}, 이름: ${userArray[i].name}, 점수구분: ${userArray[i].pointDivision}, 점수 옵션 : ${userArray[i].selectOption}, 메모: ${userArray[i].memo}, 발급자: ${userArray[i].issuer}`)
-    }
+      for (let i = 0; i < userArray.length; i++) {
+        console.log(`index: ${userArray[i].index}  학생 아이디 : ${userArray[i].studentId}, 규정 아이디 : ${userArray[i].regulateId}, 학년: ${userArray[i].grade}, 반: ${userArray[i].classNumber}, 번호: ${userArray[i].studentNumber}, 이름: ${userArray[i].name}, 점수구분: ${userArray[i].pointDivision}, 점수 옵션 : ${userArray[i].selectOption}, 메모: ${userArray[i].memo}, 발급자: ${userArray[i].issuer}`)
+      }
+    })
+  }
+
+  const addAllUser = () => {
+
   }
 
 
@@ -406,7 +415,7 @@ const Issuance = () => {
                               <span style={{marginLeft: '3px'}}>창 닫기</span>
                             </button>
 
-                            <button className={'add-all-user-btn'}>
+                            <button className={'add-all-user-btn'} onClick={addAllUser}>
                               <BsCheckAll className={'double-check-icon'}/> 모든 학생 추가
                             </button>
                           </div>
