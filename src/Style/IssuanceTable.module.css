@@ -150,17 +150,28 @@
     width: 90%;
 }
 
+.non-value-option {
+    padding-right: 100%;
+    text-align: center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+}
+
 .select-point {
     background: #f5f6ff;
     border: none;
     border-radius: 5px;
     -ms-text-align-last: center;
     -moz-text-align-last: center;
+    text-align: center;
+    text-align-last: center;
     height: 25px;
     width: 95%;
 }
 
 .input-memo {
+    padding-left: 10px;
     background: #f5f6ff;
     border: none;
     border-radius: 5px;

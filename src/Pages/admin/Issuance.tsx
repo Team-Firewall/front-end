@@ -66,6 +66,7 @@ const style = {
 };
 
 interface User {
+  index: number,
   studentId: number,
   regulateId: number,
   studentDivision: string,
@@ -73,8 +74,8 @@ interface User {
   classNumber: number,
   studentNumber: number,
   name: string,
-  pointDivision: string,
-  selectOption: number,
+  pointDivision: number,
+  selectOption: string,
   memo: string,
   issuer: string
 }
@@ -87,7 +88,7 @@ interface optionDivision {
 
 const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
-  const [issuanceName, setIssuanceName]= useState<string>('')
+  const [issuanceName, setIssuanceName] = useState<string>('')
   const [open, setOpen] = useState(false);
   const [isSearched, setIsSearched] = useState<boolean>(false)
   const [studentDivision, setStudentDivision] = useState<number>(3)
@@ -100,7 +101,10 @@ const Issuance = () => {
   const [isHover, setIsHover] = useState(false);
   const [pointDivision, setPointDivision] = useState<number>(0)
   // const [issuanceList, setIssuanceList] = useState<issuanceForm[]>([])
-  const [pointOptionArray, setPointOptionArray]= useState<optionDivision[]>([])
+  const [pointOptionArray, setPointOptionArray] = useState<optionDivision[]>([])
+  const [bonusPointList, setBonusPointList] = useState<optionDivision[]>([])
+  const [minusPointList, setMinusPointList] = useState<optionDivision[]>([])
+  const [offsetPointList, setOffsetPointList] = useState<optionDivision[]>([])
 
   const handleMouseEnter = () => {
     setIsHover(true);
@@ -117,14 +121,42 @@ const Issuance = () => {
     console.log(decodeToken)
     setUserPosition(decodeToken.position)
     setIssuanceName(decodeToken.name)
+
+    setOptionValues()
   }, [])
 
+  const setOptionValues = () => {
+    for (let i = 0; i < 3; i++) {
+      fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${i}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (i === 0) {
+            setBonusPointList(data)
+          } else if (i === 1) {
+            setMinusPointList(data)
+          } else if (i === 2) {
+            setOffsetPointList(data)
+          }
+        })
+    }
+  }
+
   const editIssuanceList = (index: number, classification: string, value: any) => {
-    if (classification === 'selectOption') {
-      console.log(value)
-      console.log(index)
+    if (classification === 'pointDivision') {
       setUserArray(userArray.map((it) =>
-        it.studentId === index ? {...it, selectOption : value} : it
+        it.studentId === index ? {...it, pointDivision: Number(value)} : it
+      ))
+    } else if (classification === 'selectOption') {
+      setUserArray(userArray.map((it) =>
+        it.studentId === index ? {...it, selectOption: String(value)} : it
+      ))
+    } else if (classification === 'memo') {
+      setUserArray(userArray.map((it) =>
+        it.studentId === index ? {...it, memo: String(value)} : it
+      ))
+    } else if (classification === 'regulateId') {
+      setUserArray(userArray.map((it) =>
+        it.studentId === index ? {...it, regulateId: Number(value)} : it
       ))
     }
 
@@ -147,14 +179,15 @@ const Issuance = () => {
       setUserArray(oldValue => ([
         ...oldValue,
         {
+          'index': userArray.length + 1,
           'studentId': tempArray[5],
           'regulateId': 0,
           'studentDivision': tempArray[0],
           'grade': tempArray[1],
           'classNumber': tempArray[2],
           'studentNumber': tempArray[3],
-          'pointDivision': '',
-          'selectOption': 0,
+          'pointDivision': 0,
+          'selectOption': '',
           'memo': '',
           'name': tempArray[4],
           'issuer': issuanceName
@@ -213,13 +246,31 @@ const Issuance = () => {
       })
   }
 
-  const setOptionValues = (e: number) => {
-    setPointDivision(e)
-    fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${e}`)
-      .then((response) => response.json())
-      .then((data) => setPointOptionArray(data))
-      .then(() => console.log(pointOptionArray))
+  const applySameValues = () => {
+    const newState = userArray.map(obj => {
+      for (let i = 1; i < userArray.length; i++) {
+        if (obj.index === i) {
+          console.log(userArray[0].regulateId)
+          return {
+            ...obj,
+            regulateId: userArray[0].regulateId,
+            pointDivision: userArray[0].pointDivision,
+            selectOption: userArray[0].selectOption,
+            memo: userArray[0].memo
+          };
+        }
+      }
+      return obj
+    })
+    console.log(newState)
+    setUserArray(newState)
+
+
+    for (let i = 0; i < userArray.length; i++) {
+      console.log(`index: ${userArray[i].index}  학생 아이디 : ${userArray[i].studentId}, 규정 아이디 : ${userArray[i].regulateId}, 학년: ${userArray[i].grade}, 반: ${userArray[i].classNumber}, 번호: ${userArray[i].studentNumber}, 이름: ${userArray[i].name}, 점수구분: ${userArray[i].pointDivision}, 점수 옵션 : ${userArray[i].selectOption}, 메모: ${userArray[i].memo}, 발급자: ${userArray[i].issuer}`)
+    }
   }
+
 
   const issuance = () => {
     let string: string = ''
@@ -339,7 +390,7 @@ const Issuance = () => {
                                   <td>{log.name}</td>
                                   <td className={cs('user-add-td')}>
                                     <button className={cs('add-user-btn')}
-                                            value={[`${log.position % 2 === 0 ? '중학생' : '고등학생'}`, `${log.grade}`, `${log.classNum}`, `${log.number}`, `${log.name}`,`${log.id}`]}
+                                            value={[`${log.position % 2 === 0 ? '중학생' : '고등학생'}`, `${log.grade}`, `${log.classNum}`, `${log.number}`, `${log.name}`, `${log.id}`]}
                                             onClick={pushUser}>
                                       <FiUserPlus style={{marginBottom: '-3px'}}/>
                                     </button>
@@ -408,11 +459,14 @@ const Issuance = () => {
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}
-                                onChange={(e) => editIssuanceList(log.studentId, 'selectOption', e.target.value)}
-                                style={{
-                                  background: pointDivision === 0 ? '#f2fff2' : pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
+                                onChange={(e) => {
+                                  editIssuanceList(log.studentId, 'pointDivision', e.target.value)
+                                  console.log('hi', userArray[i].pointDivision, i)
                                 }}
-                                value={userArray[i].selectOption}
+                                style={{
+                                  background: userArray[i].pointDivision === 0 ? '#f2fff2' : userArray[i].pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
+                                }}
+                                value={userArray[i].pointDivision}
                         >
                           <option value={0}>상점</option>
                           <option value={1}>벌점</option>
@@ -420,13 +474,21 @@ const Issuance = () => {
                         </select>
                       </td>
                       <td style={{width: '30vw'}}>
-                        <select className={cs('select-point')}>
-                          {Object.values(pointOptionArray).map((value: any, index: number) => (
-                            <option key={index}>{`[${value.score}점] ${value.regulate}`}</option>
+                        <select className={cs(userArray[i].regulateId === 0 ? 'select-point' : 'select-point')}
+                                onChange={(e) => editIssuanceList(log.studentId, 'selectOption', e.target.value)}
+                                value={userArray[i].selectOption}
+                        >
+                          <option value={0}> ------ 항목을 선택 해 주세요 ------</option>
+                          {Object.values(userArray[i].pointDivision === 0 ? bonusPointList : userArray[i].pointDivision === 1 ? minusPointList : offsetPointList).map((value: any, index: number) => (
+                            <option key={index}
+                                    onClick={() => editIssuanceList(log.studentId, 'regulateId', value.id)}>{`[${value.score}점] ${value.regulate}`}</option>
                           ))}
                         </select>
                       </td>
-                      <td><input className={cs('input-memo')} placeholder={'  메모를 입력하세요.'}/></td>
+                      <td><input onChange={(e) => editIssuanceList(log.studentId, 'memo', e.target.value)}
+                                 className={cs('input-memo')} placeholder={'메모를 입력하세요.'}
+                                 value={userArray[i].memo}
+                      /></td>
                       <td>{getTodayDate()}</td>
                       <td style={{width: '40px', backgroundColor: '#fff'}}>
                         <button onClick={() => removeUser(log.studentNumber, log.name)} value={log.studentNumber}
@@ -455,7 +517,7 @@ const Issuance = () => {
               style={{marginBottom: '-2px'}}/> <span>전체 삭제</span>
             </button>
 
-            <button className={cs('same-item-apply-btn')}>
+            <button className={cs('same-item-apply-btn')} onClick={applySameValues}>
               <BiListPlus style={{marginBottom: '-4px', fontSize: '20px'}}/> <span>같은 항목 적용</span>
             </button>
 
