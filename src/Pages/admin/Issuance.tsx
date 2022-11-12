@@ -19,6 +19,8 @@ import { FaTrashAlt } from 'react-icons/fa'
 import { BiListPlus } from 'react-icons/bi'
 import { BsCheckAll } from 'react-icons/bs'
 import Swal from "sweetalert2";
+import { Simulate } from "react-dom/test-utils";
+import error = Simulate.error;
 
 const cs = classNames.bind(styles)
 
@@ -80,6 +82,15 @@ interface User {
   issuer: string
 }
 
+interface UserTempArray {
+  classNum: number,
+  grade: number,
+  id: number,
+  name: string,
+  number: number,
+  position: number
+}
+
 interface optionDivision {
   id: number,
   regulate: string,
@@ -97,7 +108,7 @@ const Issuance = () => {
   const [number, setNumber] = useState<number>(0)
   const [name, setName] = useState<string>('')
   const [userArray, setUserArray] = useState<User[]>([])
-  const [userTmpArray, setUserTmpArray] = useState<User[]>([])
+  const [userTmpArray, setUserTmpArray] = useState<UserTempArray[]>([])
   const [isHover, setIsHover] = useState(false);
   const [pointDivision, setPointDivision] = useState<number>(0)
   // const [issuanceList, setIssuanceList] = useState<issuanceForm[]>([])
@@ -170,7 +181,7 @@ const Issuance = () => {
     let flag: boolean = true
 
     for (let i = 0; i < userArray.length; i++) {
-      if (userArray[i].studentId === tempArray[5]) {
+      if (userArray[i].studentId === Number(tempArray[5])) {
         flag = false
       }
     }
@@ -180,7 +191,7 @@ const Issuance = () => {
         ...oldValue,
         {
           'index': userArray.length + 1,
-          'studentId': tempArray[5],
+          'studentId': Number(tempArray[5]),
           'regulateId': 0,
           'studentDivision': tempArray[0],
           'grade': tempArray[1],
@@ -246,62 +257,130 @@ const Issuance = () => {
   }
 
   const applySameValues = () => {
-    Swal.fire({
-      html: '같은 항목 적용은 첫번째 학생의 항목으로 적용됩니다.<br/>' +
-        `전체 대상자에게 <strong style="color: #38a0e5">'${userArray[0].selectOption} </strong>` +
-        `점수 항목과 <strong style="color: #6f7bd9">'${userArray[0].memo}' </strong>메모를 적용하시겠습니까?`,
-      icon: 'warning',
-      iconColor: '#e56565',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '확인',
-      cancelButtonText: '취소'
-    })
-      .then(() => {
-      setUserArray(userArray.map((it) =>
-        it.index > 1 ? {
-          ...it,
-          pointDivision: userArray[0].pointDivision,
-          selectOption: userArray[0].selectOption,
-          memo: userArray[0].memo,
-        } : it
-      ))
+    if (userArray.length < 2) {
+      alert('같은 항목을 적용 할 대상자는 2명 이상이여야 합니다.')
+    } else if (userArray[0].regulateId === 0) {
+      alert('점수 항목을 선택해 주세요.')
+    } else {
+      let lastPhrase = userArray[0].memo.length === 0 ? '점수 항목을 적용하시겠습니까?' : `점수 항목과 <strong style="color: #6f7bd9">'${userArray[0].memo}' </strong>메모를 적용하시겠습니까?`
+      Swal.fire({
+        html: '<div style="font-size: 17px">전체 대상자 같은 항목 적용은 첫번째 학생의 항목으로 적용됩니다.</div> <br/>' +
+          `전체 대상자에게 <strong style="color: #38a0e5">'${userArray[0].selectOption} </strong>` +
+          lastPhrase,
+        icon: 'warning',
+        iconColor: '#e56565',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+      })
+        .then((res) => {
+          if (res.isConfirmed) {
+            setUserArray(userArray.map((it) =>
+              it.index > 1 ? {
+                ...it,
+                pointDivision: userArray[0].pointDivision,
+                selectOption: userArray[0].selectOption,
+                memo: userArray[0].memo,
+              } : it
+            ))
+          }
+          console.log('new', userArray)
 
-      console.log('new', userArray)
-
-      for (let i = 0; i < userArray.length; i++) {
-        console.log(`index: ${userArray[i].index}  학생 아이디 : ${userArray[i].studentId}, 규정 아이디 : ${userArray[i].regulateId}, 학년: ${userArray[i].grade}, 반: ${userArray[i].classNumber}, 번호: ${userArray[i].studentNumber}, 이름: ${userArray[i].name}, 점수구분: ${userArray[i].pointDivision}, 점수 옵션 : ${userArray[i].selectOption}, 메모: ${userArray[i].memo}, 발급자: ${userArray[i].issuer}`)
-      }
-    })
+          for (let i = 0; i < userArray.length; i++) {
+            console.log(`index: ${userArray[i].index}  학생 아이디 : ${userArray[i].studentId}, 규정 아이디 : ${userArray[i].regulateId}, 학년: ${userArray[i].grade}, 반: ${userArray[i].classNumber}, 번호: ${userArray[i].studentNumber}, 이름: ${userArray[i].name}, 점수구분: ${userArray[i].pointDivision}, 점수 옵션 : ${userArray[i].selectOption}, 메모: ${userArray[i].memo}, 발급자: ${userArray[i].issuer}`)
+          }
+        })
+    }
   }
 
   const addAllUser = () => {
+    let repeatedValue: number = 0, appliedValue: number = 0
 
+    if (window.confirm(`${userTmpArray[0].name} 학생 외 ${userTmpArray.length - 1}명 학생을 발급 대상자에 추가하시겠습니까?`)) {
+      let studentIdArray = []
+      for (let i = 0; i < userArray.length; i++) {
+        studentIdArray.push(userArray[i].studentId)
+      }
+
+      for (let j = 0; j < userTmpArray.length; j++) {
+        if (studentIdArray.includes(userTmpArray[j].id)) {
+          repeatedValue += 1
+        } else {
+          appliedValue += 1
+          setUserArray(oldValue => ([
+            ...oldValue,
+            {
+              'index': userArray.length + 1,
+              'studentId': userTmpArray[j].id,
+              'regulateId': 0,
+              'studentDivision': userTmpArray[j].position === 3 ? '고등학생' : '중학생',
+              'grade': userTmpArray[j].grade,
+              'classNumber': userTmpArray[j].classNum,
+              'studentNumber': userTmpArray[j].number,
+              'pointDivision': 0,
+              'selectOption': '',
+              'memo': '',
+              'name': userTmpArray[j].name,
+              'issuer': issuanceName
+            }]))
+        }
+      }
+    }
+
+    console.log('tmp', userTmpArray)
+    console.log('userarr', userArray)
+    console.log('중복값: ', repeatedValue, '적용값', appliedValue)
+    alert(`${repeatedValue > 0 && appliedValue === 0 ? '해당 학생이 이미 추가되었습니다.' : repeatedValue > 0 ? `중복된 학생 ${repeatedValue}명 외 ${appliedValue}명의 학생이 추가되었습니다.` : `${appliedValue}명의 학생이 추가되었습니다.`}`)
   }
 
 
   const issuance = () => {
     let string: string = ''
+    let flag: boolean = true
+
     if (userArray.length === 0) {
       alert('발급 대상자가 없습니다.')
-    } else if (userArray.length === 1) {
-      string = `${userArray[0].name} 학생에게 점수를 발급 하시겠습니까?`
-    } else if (userArray.length > 1) {
-      string = `${userArray[0].name} 학생 외 ${userArray.length - 1}명에게 점수를 발급 하시겠습니까?`
+    } else {
+      for (let i = 0; i < userArray.length; i++) {
+        if (userArray[i].regulateId === 0) {
+          flag = false
+          break
+        }
+      }
+
+      if (flag) {
+        if (userArray.length === 1) {
+          string = `${userArray[0].name} 학생에게 점수를 발급 하시겠습니까?`
+        } else if (userArray.length > 1) {
+          string = `${userArray[0].name} 학생 외 ${userArray.length - 1}명에게 점수를 발급 하시겠습니까?`
+        }
+      } else {
+        alert('모든 학생의 점수 항목을 선택해 주세요.')
+      }
     }
 
-    if (userArray.length > 0) {
-      if (window.confirm(string)) {
+    if (userArray.length > 0 && flag) {
+      Swal.fire({
+        text: string,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#dc3545',
+        confirmButtonColor: '#28a745',
+        confirmButtonText: '발급',
+        cancelButtonText: '취소'
+      }).then((res) => {
+        if (res.isConfirmed)
         Swal.fire({
           title: '점수 발급 완료',
           text: '점수 발급이 완료되었습니다.',
           icon: 'success',
           confirmButtonText: '확인'
         }).then(() => {
-          window.location.reload()
-        })
-      }
+            window.location.reload()
+          })
+      })
     }
   }
 
