@@ -277,9 +277,11 @@ const Issuance = () => {
       })
         .then((res) => {
           if (res.isConfirmed) {
+            console.log('true')
             setUserArray(userArray.map((it) =>
-              it.index > 1 ? {
+              it.index >= 0 ? {
                 ...it,
+                regulateId: userArray[0].regulateId,
                 pointDivision: userArray[0].pointDivision,
                 selectOption: userArray[0].selectOption,
                 memo: userArray[0].memo,
@@ -312,7 +314,7 @@ const Issuance = () => {
           setUserArray(oldValue => ([
             ...oldValue,
             {
-              'index': userArray.length + 1,
+              'index': userArray.length,
               'studentId': userTmpArray[j].id,
               'regulateId': 0,
               'studentDivision': userTmpArray[j].position === 3 ? '고등학생' : '중학생',
@@ -329,9 +331,9 @@ const Issuance = () => {
       }
     }
 
-    console.log('tmp', userTmpArray)
-    console.log('userarr', userArray)
-    console.log('중복값: ', repeatedValue, '적용값', appliedValue)
+    // console.log('tmp', userTmpArray)
+    // console.log('userarr', userArray)
+    // console.log('중복값: ', repeatedValue, '적용값', appliedValue)
     alert(`${repeatedValue > 0 && appliedValue === 0 ? '해당 학생이 이미 추가되었습니다.' : repeatedValue > 0 ? `중복된 학생 ${repeatedValue}명 외 ${appliedValue}명의 학생이 추가되었습니다.` : `${appliedValue}명의 학생이 추가되었습니다.`}`)
   }
 
@@ -372,12 +374,12 @@ const Issuance = () => {
         cancelButtonText: '취소'
       }).then((res) => {
         if (res.isConfirmed)
-        Swal.fire({
-          title: '점수 발급 완료',
-          text: '점수 발급이 완료되었습니다.',
-          icon: 'success',
-          confirmButtonText: '확인'
-        }).then(() => {
+          Swal.fire({
+            title: '점수 발급 완료',
+            text: '점수 발급이 완료되었습니다.',
+            icon: 'success',
+            confirmButtonText: '확인'
+          }).then(() => {
             window.location.reload()
           })
       })
