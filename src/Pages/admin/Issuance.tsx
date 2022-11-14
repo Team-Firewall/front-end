@@ -19,8 +19,6 @@ import { FaTrashAlt } from 'react-icons/fa'
 import { BiListPlus } from 'react-icons/bi'
 import { BsCheckAll } from 'react-icons/bs'
 import Swal from "sweetalert2";
-import { Simulate } from "react-dom/test-utils";
-import error = Simulate.error;
 
 const cs = classNames.bind(styles)
 
@@ -406,11 +404,11 @@ const Issuance = () => {
       <div>
         <AdminSideBar/>
 
-        <div className={'top-tag'}>
-          <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 점수 발급</span>
-          <span><LogoutButton/></span>
-          <div className={'divider-line'}/>
-        </div>
+        {/*<div className={'top-tag'}>*/}
+        {/*  <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 점수 발급</span>*/}
+        {/*  <span><LogoutButton/></span>*/}
+        {/*  <div className={'divider-line'}/>*/}
+        {/*</div>*/}
 
         <div className={'container'} style={{width: userArray.length < 1 ? '60%' : '80%', transition: '0.5s'}}>
           <Modal
