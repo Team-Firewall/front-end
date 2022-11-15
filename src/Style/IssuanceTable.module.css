@@ -121,7 +121,7 @@
 .issue-btn {
     transition: all 0.2s;
     float: right;
-    background-color: #f2fdf8;
+    background-color: #effff9;
     color: #1daf56;
     border: none;
     width: 130px;
@@ -131,7 +131,7 @@
 }
 
 .issue-btn:hover {
-    background-color: #e5faf0;
+    background-color: #d9f5e5;
     cursor: pointer;
 }
 

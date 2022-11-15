@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiOutlineHome, AiFillCloseCircle, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
-import LogoutButton from "../../Components/LogoutButton";
+import { AiFillCloseCircle, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 import { animated, useSpring } from "react-spring";
 import Button from "@mui/material/Button";
@@ -16,7 +15,7 @@ import styles from '../../Style/IssuanceTable.module.css'
 import { getTodayDate } from "../../utils/getTodayDate";
 import { FiUserPlus } from 'react-icons/fi'
 import { FaTrashAlt } from 'react-icons/fa'
-import { BiListPlus } from 'react-icons/bi'
+import { MdPlaylistAddCheck } from 'react-icons/md'
 import { BsCheckAll } from 'react-icons/bs'
 import Swal from "sweetalert2";
 
@@ -511,7 +510,8 @@ const Issuance = () => {
 
             {
               userArray.length === 0 && (
-                <div className={cs('not-add-user-tag')}><AiFillInfoCircle className={cs('info-icon')}/>
+                <div className={cs('not-add-user-tag')}>
+                  <AiFillInfoCircle className={cs('info-icon')}/>
                   <span> 발급 대상자를 추가해 주세요.</span>
                   <div style={{fontSize: '13px', marginTop: '1.5vh'}}>발급 대상자 추가 후, 점수 발급하기를 누르면 점수가 발급됩니다.</div>
                 </div>
@@ -606,7 +606,7 @@ const Issuance = () => {
             </button>
 
             <button className={cs('same-item-apply-btn')} onClick={applySameValues}>
-              <BiListPlus style={{marginBottom: '-4px', fontSize: '20px'}}/> <span>같은 항목 적용</span>
+              <MdPlaylistAddCheck style={{marginBottom: '-4.5px', fontSize: '20px'}}/> <span>같은 항목 적용</span>
             </button>
 
             <button className={cs('issue-btn')} onClick={issuance}>
