@@ -21,12 +21,12 @@
 }
 
 .button-container .not-active-btn:hover {
-    color: rgb(22, 134, 255);
+    color: #5c86e3;
     cursor: pointer;
 }
 
 .button-container .active-button {
-    background-color: rgb(22, 134, 255);
+    background-color: #5c86e3;
     color: #fff;
 }
 

@@ -107,11 +107,35 @@
     cursor: pointer;
 }
 
+.show-password-button {
+    color: #6722ad;
+    float: left;
+    margin-left: 15px;
+    background-color: #eee3fa;
+    width: 150px;
+}
+
+.show-password-button:hover {
+    background-color: #d8cce7;
+    cursor: pointer;
+}
+
+.eye-icon {
+    margin-bottom: -4.5px;
+    font-size: 22px;
+}
+
 .add-user-button {
     width: 120px;
     float: right;
     background-color: #e8efff;
     color: #3870d5;
+}
+
+.none-value-tag {
+    text-align: center;
+    color: #999;
+    font-size: 25px;
 }
 
 .add-user-button:hover {
@@ -130,8 +154,8 @@
 
 .user-table th {
     height: 35px;
-    background: #68bee4;
-    color: #fefefe;
+    background: #dedede;
+    color: #444;
     font-size: 15px;
 }
 
