@@ -143,7 +143,7 @@ const AddUserWithTyping = () => {
         ))
       }
     }
-    console.log(newUserArray)
+    // console.log(newUserArray)
   }
 
   const removeUser = () => {
