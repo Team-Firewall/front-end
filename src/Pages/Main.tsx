@@ -34,7 +34,7 @@ export default function SwipeableTemporaryDrawer() {
 
       if (token.iat && token.position === 3 || token.position === 4) {
         navigate('/points')
-      } else if (token.iat && token.position > 0-2) {
+      } else if (token.iat && token.position > 0 - 2) {
         navigate('/admin/issuance')
       }
     }
@@ -118,16 +118,16 @@ export default function SwipeableTemporaryDrawer() {
       <div className={cs('container')}>
 
         <div className={cs('login-container')}>
-          <br/>
-          <div className={cs('title')}>
-            <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
-                 className={cs('gbsw-logo')} alt={'school-logo'}/>
-            <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
-            <div className={cs('tag-bottom')}>상벌점 시스템</div>
+          <div className={cs('sub-container')}>
+            <div className={cs('title')}>
+              <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
+                   className={cs('gbsw-logo')} alt={'school-logo'}/>
+              <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
+              <div className={cs('tag-bottom')}>상벌점 시스템</div>
+            </div>
+
+            <LoginContainer/>
           </div>
-
-          <LoginContainer/>
-
         </div>
 
         <div className={cs('mileage-container')}>
@@ -148,7 +148,6 @@ export default function SwipeableTemporaryDrawer() {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );

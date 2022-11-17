@@ -32,12 +32,12 @@ const AddUser = () => {
 
   return (
     <div>
-     <AdminSideBar/>
+
       <div className={'top-tag'}>
-        <span className={'page-name'}><span><AiOutlineHome
-          className={'page-name-icon'}/></span> {'>'} 사용자 추가 및 관리</span>
-        <span><LogoutButton/></span>
-        <div className={'divider-line'}/>
+        <AdminSideBar/>
+        <div className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 사용자 추가 및 관리
+          <span><LogoutButton/></span>
+        </div>
       </div>
 
       <div className={'container'}>

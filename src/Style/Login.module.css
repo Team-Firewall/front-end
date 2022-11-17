@@ -15,19 +15,18 @@
 }
 
 .parent {
+    width: 100%;
     height: 100vh;
 }
 
 .container {
+    margin-top: 5vh;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    width: 70vw;
-    height: 70vh;
-    min-width: 900px;
-    min-height: 550px;
+    width: 70%;
+    height: 74%;
     margin-left: auto;
     margin-right: auto;
     border-radius: 8px;
-    margin-top: 10vh;
     transition: all 0.7s;
     animation: fadein 1s ease-in-out;
     background-color: #fff;
@@ -35,6 +34,7 @@
 }
 
 .login-container {
+    display: table;
     width: 65%;
     height: 100%;
     float: left;
@@ -108,8 +108,14 @@
     }
 }
 
+.sub-container {
+    width: auto;
+    height: auto;
+    display: table-cell;
+    vertical-align: middle;
+}
+
 .title {
-    margin-top: 10vh;
     text-align: center;
     font-family: 'Nanum Gothic', sans-serif;
     font-size: 20px;
@@ -139,11 +145,12 @@
 }
 
 .input-container {
-    margin-top: 55px;
+    /*border: 1px solid #f00;*/
+    margin-top: 5vh;
     margin-left: auto;
     margin-right: auto;
-    width: 365px;
-    height: 300px;
+    width: 55%;
+    height: auto;
 }
 
 .login-btn {
@@ -151,7 +158,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 350px;
+    width: 100%;
     border: none;
     background-color: #3669dd;
     height: 50px;
