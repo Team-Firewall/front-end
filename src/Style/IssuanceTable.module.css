@@ -179,3 +179,20 @@
     width: 90%;
 }
 
+.not-found-value {
+    font-family: 'Nanum Gothic', sans-serif;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 24px;
+}
+
+.not-found-value span {
+    margin-left: 10px;
+}
+
+.info-icon2 {
+    margin-bottom: -6px;
+    color: #e53333;
+    font-size: 26px;
+}

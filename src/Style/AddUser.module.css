@@ -8,12 +8,15 @@
 .button-container button {
     width: 25%;
     height: 7.5vh;
-    border-left: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-top: 1px solid #ccc;
+    /*box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;*/
+    /*border: 1px solid #efefef;*/
+    border-left: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    border-top: 1px solid #efefef;
     background-color: #fff;
     font-size: 17px;
     font-weight: bold;
+    transition: all 0.15s;
 }
 
 .button-container button:hover {
@@ -26,6 +29,7 @@
 }
 
 .button-container .active-button {
+    border: 1px solid #5c86e3;
     background-color: #5c86e3;
     color: #fff;
 }
@@ -40,5 +44,5 @@
 }
 
 .button-border-right {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #efefef;
 }

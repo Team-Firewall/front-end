@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
 import axios from "axios";
 import Swal from 'sweetalert2'
@@ -28,12 +28,12 @@ const AddUserWithTyping = () => {
   }
 
   interface insertUser {
-    position: number,
+    role: number,
     grade: number,
     number: number,
     classNum: number,
     name: string,
-    phoneNum: string,
+    phone: string,
     parentsPhoneNum1: string,
     parentsPhoneNum2: string,
     account: string,
@@ -43,7 +43,7 @@ const AddUserWithTyping = () => {
   const [newUserArray, setNewUserArray] = useState<NewUser[]>([])
   const [insertUserArray, setInsertUserArray] = useState<insertUser[]>([])
   const [showPassword, setShowPassword] = useState<boolean>(false)
-
+  const [isInputFilled, setIsInputFilled] = useState<boolean>(false)
   const isPresent = useIsPresent();
 
   const addNewUser = () => {
@@ -65,6 +65,8 @@ const AddUserWithTyping = () => {
   }
 
   const modifyUserItem = (idx: number, value: string, classification: string) => {
+    userNormalization()
+
     if (classification === 'grade') {
       setNewUserArray(newUserArray.map((it) =>
         it.index === idx ? {
@@ -169,12 +171,12 @@ const AddUserWithTyping = () => {
         setInsertUserArray(oldValue => ([
           ...oldValue,
           {
-            position: newUserArray[i].position,
+            role: newUserArray[i].position,
             grade: 0,
             number: 0,
             classNum: 0,
             name: newUserArray[i].name,
-            phoneNum: newUserArray[i].phoneNum.replace(/-/g, ''),
+            phone: newUserArray[i].phoneNum.replace(/-/g, ''),
             parentsPhoneNum1: '',
             parentsPhoneNum2: '',
             account: newUserArray[i].account,
@@ -184,12 +186,12 @@ const AddUserWithTyping = () => {
         setInsertUserArray(oldValue => ([
           ...oldValue,
           {
-            position: newUserArray[i].position === 5 ? 1 : 2,
+            role: newUserArray[i].position === 5 ? 1 : 2,
             grade: Number(newUserArray[i].grade),
             number: 0,
             classNum: Number(newUserArray[i].classNum),
             name: newUserArray[i].name,
-            phoneNum: newUserArray[i].phoneNum.replace(/-/g, ''),
+            phone: newUserArray[i].phoneNum.replace(/-/g, ''),
             parentsPhoneNum1: '',
             parentsPhoneNum2: '',
             account: newUserArray[i].account,
@@ -199,12 +201,12 @@ const AddUserWithTyping = () => {
         setInsertUserArray(oldValue => ([
           ...oldValue,
           {
-            position: newUserArray[i].position,
+            role: newUserArray[i].position,
             grade: Number(newUserArray[i].grade),
             number: Number(newUserArray[i].number),
             classNum: Number(newUserArray[i].classNum),
             name: newUserArray[i].name,
-            phoneNum: newUserArray[i].phoneNum.replace(/-/g, ''),
+            phone: newUserArray[i].phoneNum.replace(/-/g, ''),
             parentsPhoneNum1: newUserArray[i].parentsPhoneNum1.replace(/-/g, ''),
             parentsPhoneNum2: newUserArray[i].parentsPhoneNum2.replace(/-/g, ''),
             account: newUserArray[i].account,
@@ -216,7 +218,9 @@ const AddUserWithTyping = () => {
     console.log(insertUserArray)
   }
 
-  const AddUserHandler = () => {
+  const AddUserHandler = (e: FormEvent) => {
+    e.preventDefault()
+
     if (newUserArray.length === 0) {
       Swal.fire({
         icon: 'error',
@@ -233,45 +237,50 @@ const AddUserWithTyping = () => {
         showCancelButton: true,
         cancelButtonColor: '#dc3545',
         confirmButtonColor: '#28a745',
-        confirmButtonText: '발급',
+        confirmButtonText: '확인',
         cancelButtonText: '취소'
       }).then((res) => {
-        userNormalization()
-        // if (res.isConfirmed)
-        //   Swal.fire({
-        //     title: '점수 발급 완료',
-        //     text: '점수 발급이 완료되었습니다.',
-        //     icon: 'success',
-        //     confirmButtonText: '확인'
-        //   }).then(() => {
-        //     window.location.reload()
-        //   })
+        if (res.isConfirmed) {
+          axios.post('http://localhost:3001/addUserMany', JSON.stringify(insertUserArray), {
+            headers: {"Content-Type": "application/json"}
+          }).then((res) => {
+            console.log('this is response', res.data)
+            if (res.data.success) {
+              Swal.fire({
+                title: '학생 추가 완료',
+                text: '학생 추가가 완료되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+              }).then(() => {
+                window.location.reload()
+              })
+            }
+          })
+        }
       })
     }
   }
-
-
-  // let phoneNumber = newPhoneNumber.replace(/-/g, "")
-  //
-  // let data = {
-  //   "name": newUserName,
-  //   "phone": phoneNumber,
-  //   "account": newUserId,
-  //   "password": newUserPassword,
-  //   "role": newUserPosition
-  // }
-  //
-  // axios.post('http://localhost:3001/addUser', JSON.stringify(data), {
-  //   headers: {"Content-Type": "application/json"}
-  // }).then(() => Swal.fire({
-  //   title: '유저 추가 완료',
-  //   text: '유저 추가가 완료되었습니다.',
-  //   icon: 'success',
-  //   confirmButtonText: '확인'
-  // }).then(() => {
-  //   window.location.replace('/')
-  // }))
-  //   .catch(() => alert('ERROR'))
+// let phoneNumber = newPhoneNumber.replace(/-/g, "")
+//
+// let data = {
+//   "name": newUserName,
+//   "phone": phoneNumber,
+//   "account": newUserId,
+//   "password": newUserPassword,
+//   "role": newUserPosition
+// }
+//
+// axios.post('http://localhost:3001/addUser', JSON.stringify(data), {
+//   headers: {"Content-Type": "application/json"}
+// }).then(() => Swal.fire({
+//   title: '유저 추가 완료',
+//   text: '유저 추가가 완료되었습니다.',
+//   icon: 'success',
+//   confirmButtonText: '확인'
+// }).then(() => {
+//   window.location.replace('/')
+// }))
+//   .catch(() => alert('ERROR'))
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword)
@@ -280,7 +289,7 @@ const AddUserWithTyping = () => {
 
   return (
     <div>
-      <form>
+      <form onSubmit={AddUserHandler}>
         <div className={'add-user-container'}
              style={{width: newUserArray.length < 1 ? '80%' : '100%', transition: '0.5s'}}>
 
@@ -481,11 +490,13 @@ const AddUserWithTyping = () => {
 
                         <td>
                           <input
-                            onChange={(e) =>
-                              modifyUserItem(index, e.target.value, 'account')}
+                            onChange={(e) => {
+                              modifyUserItem(index, e.target.value, 'account')
+                            }}
                             value={newUserArray[index].account}
                             type={'text'}
-                            maxLength={10}
+                            minLength={4}
+                            maxLength={15}
                             required={true}
                             placeholder={'아이디 / 학번'}
                           />
@@ -496,7 +507,6 @@ const AddUserWithTyping = () => {
                             <input
                               onChange={(e) => {
                                 modifyUserItem(index, e.target.value, 'password')
-                                console.log(e.target.required)
                               }}
                               value={newUserArray[index].password}
                               type={showPassword ? "text" : "password"}
@@ -519,14 +529,14 @@ const AddUserWithTyping = () => {
 
           <div>
             <div className={cs('button-container')}>
-              <button onClick={addNewUser} className={cs('add-row-button')}>
+              <button onClick={addNewUser} className={cs('add-row-button')} type={'button'}>
                 <CgPlayListAdd className={cs('list-icon')}/> <span>행 추가</span></button>
-              <button onClick={removeUser} className={cs('remove-row-button')}>
+              <button onClick={removeUser} className={cs('remove-row-button')} type={'button'}>
                 <CgPlayListRemove className={cs('list-icon')}/> <span>행 제거</span></button>
               {
                 newUserArray.length > 0 &&
                 (
-                  <button onClick={handleShowPassword} className={cs('show-password-button')}>
+                  <button onClick={handleShowPassword} className={cs('show-password-button')} type={'button'}>
                     {
                       showPassword ? (
                           <div><AiFillEyeInvisible className={cs('eye-icon')}/> <span>비밀번호 숨김</span></div>) :
@@ -535,7 +545,7 @@ const AddUserWithTyping = () => {
                   </button>
                 )}
 
-              <button onClick={AddUserHandler} className={cs('add-user-button')} type={'submit'}>
+              <button className={cs('add-user-button')} type={'submit'}>
                 <FiUserPlus className={cs('add-user-icon2')}/> <span>사용자 추가</span></button>
             </div>
           </div>
