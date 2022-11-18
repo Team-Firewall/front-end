@@ -41,6 +41,7 @@
 }
 
 .mileage-container {
+    display: table;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../images/foreground.png");
     width: 35%;
@@ -65,12 +66,13 @@
 }
 
 .text-container {
-    margin-top: 65%;
+    vertical-align: middle;
+    display: table-cell;
 }
 
 .text-container div {
     font-family: 'MICEGothic Bold';
-    font-size: 20px;
+    font-size: 1.4vw;
     text-align: center;
     color: #fff;
     font-weight: bold;
@@ -126,7 +128,7 @@
 }
 
 .exclamation-phrases {
-    margin-left: 10px;
+    margin-left: 4px;
     font-size: 12px;
     width: 95%;
     min-width: 400px;

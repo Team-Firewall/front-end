@@ -1,0 +1,68 @@
+@font-face {
+    font-family: 'KOFIHDrLEEJWTTF-B';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/KOFIHDrLEEJWTTF-B.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.background {
+    transition: all 0.3s;
+    width: 100%;
+    background-color: #eee;
+    height: 100vh;
+    display: table;
+}
+
+.container {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.sub-container {
+    width: 470px;
+    height: 530px;
+    /*border: 1px solid #0f0;*/
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.img-tag {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background: #0e426c;
+    width: 100%;
+}
+
+.text-container {
+    background: #0e426c;
+    width: 100%;
+    height: 35%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: table;
+}
+
+.text {
+    font-family: 'Nanum Gothic', sans-serif;
+    color: #fff;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.top-div {
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.bottom-div {
+    margin-top: 35px;
+    font-size: 18px;
+}
+
+img {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+}

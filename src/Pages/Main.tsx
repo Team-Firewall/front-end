@@ -19,12 +19,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getItemWithExpireTime } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
+import { useMediaQuery } from 'react-responsive';
+import MinimalizedPage from "./MinimalizedPage";
 
 const cs = classNames.bind(styles)
 
 type Anchor = 'left' | 'bottom' | 'right';
 
 export default function SwipeableTemporaryDrawer() {
+  const isPC = useMediaQuery({
+    query: '(min-width: 1200px)'
+  })
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -99,56 +105,58 @@ export default function SwipeableTemporaryDrawer() {
   );
 
   return (
-    <div className={cs('parent')}>
-      {(['left'] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}><GoThreeBars
-            className={cs('bar-icon')}/></Button>
-          <SwipeableDrawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            onOpen={toggleDrawer(anchor, true)}
-          >
-            {list(anchor)}
-          </SwipeableDrawer>
-        </React.Fragment>
-      ))}
+    isPC ?
+      <div className={cs('parent')}>
+        {(['left'] as const).map((anchor) => (
+          <React.Fragment key={anchor}>
+            <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}><GoThreeBars
+              className={cs('bar-icon')}/></Button>
+            <SwipeableDrawer
+              anchor={anchor}
+              open={state[anchor]}
+              onClose={toggleDrawer(anchor, false)}
+              onOpen={toggleDrawer(anchor, true)}
+            >
+              {list(anchor)}
+            </SwipeableDrawer>
+          </React.Fragment>
+        ))}
 
-      <div className={cs('container')}>
+        <div className={cs('container')}>
 
-        <div className={cs('login-container')}>
-          <div className={cs('sub-container')}>
-            <div className={cs('title')}>
-              <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
-                   className={cs('gbsw-logo')} alt={'school-logo'}/>
-              <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
-              <div className={cs('tag-bottom')}>상벌점 시스템</div>
+          <div className={cs('login-container')}>
+            <div className={cs('sub-container')}>
+              <div className={cs('title')}>
+                <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
+                     className={cs('gbsw-logo')} alt={'school-logo'}/>
+                <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
+                <div className={cs('tag-bottom')}>상벌점 시스템</div>
+              </div>
+
+              <LoginContainer/>
             </div>
-
-            <LoginContainer/>
           </div>
-        </div>
 
-        <div className={cs('mileage-container')}>
-          <div className={cs('text-container')}>
-            <div>
-              경북소프트웨어고등학교<br/> 그린 마일리지 (상·벌점제) 운영 기준
-            </div>
+          <div className={cs('mileage-container')}>
+            <div className={cs('text-container')}>
+              <div>
+                경북소프트웨어고등학교<br/> 그린 마일리지 (상·벌점제) 운영 기준
+              </div>
 
-            <button onClick={() => navigate('/rule-table')}>
-              <span className={cs("label")}>상·벌점 규정</span>
-              <span className={cs("icon")}>
+              <button onClick={() => navigate('/rule-table')}>
+                <span className={cs("label")}>상·벌점 규정</span>
+                <span className={cs("icon")}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path fill="none" d="M0 0h24v24H0z"></path>
                 <path fill="currentColor"
                       d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"></path>
               </svg>
               </span>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      : <MinimalizedPage/>
   );
 }
