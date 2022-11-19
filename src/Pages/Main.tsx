@@ -28,7 +28,7 @@ type Anchor = 'left' | 'bottom' | 'right';
 
 export default function SwipeableTemporaryDrawer() {
   const isPC = useMediaQuery({
-    query: '(min-width: 1200px)'
+    query: '(min-width: 1300px)'
   })
 
   const navigate = useNavigate()

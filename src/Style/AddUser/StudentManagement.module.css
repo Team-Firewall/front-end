@@ -1,0 +1,11 @@
+.change-password-container {
+    margin-top: 2%;
+    min-height: 170px;
+    height: 25%;
+    width: 50%;
+    min-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #3d35ea;
+    transition: all 0.2s;
+}
