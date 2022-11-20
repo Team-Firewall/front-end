@@ -16,7 +16,8 @@ const StudentParentManagement = () => {
     checkNewPassword: string
   }
 
-  const {data, error} = useSWR('http://localhost:3001/v1/user/student', fetcher)
+  const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
+  console.log(data)
   const [isBoxOpen, setIsBoxOpen]= useState<boolean>(false)
   const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
 
@@ -53,6 +54,9 @@ const StudentParentManagement = () => {
               <th>반</th>
               <th>번호</th>
               <th>이름</th>
+              <th>학생 전화번호</th>
+              <th>학부모 전화번호1</th>
+              <th>학부모 전화번호2</th>
               <th>비밀번호 초기화</th>
               </thead>
               <tbody>
@@ -63,6 +67,9 @@ const StudentParentManagement = () => {
                   <td>{value.classNum}</td>
                   <td>{value.number}</td>
                   <td>{value.name}</td>
+                  <td>{value.phone}</td>
+                  <td>{value.parents[0]?.phone ? value.parents[0].phone : '-'}</td>
+                  <td>{value.parents[1]?.phone ? value.parents[1].phone : '-'}</td>
                   <td><button onClick={() => handleBoxOpen(value.id, value.name)}><GrPowerReset/> 초기화</button></td>
                 </tr>
               ))}

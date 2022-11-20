@@ -96,6 +96,13 @@ interface optionDivision {
   score: number
 }
 
+interface apiSenderOption {
+  userId: string,
+  regulateId: string,
+  reason: string,
+  token: string
+}
+
 const Issuance = () => {
   const [userPosition, setUserPosition] = useState<number>()
   const [issuanceName, setIssuanceName] = useState<string>('')
@@ -115,6 +122,7 @@ const Issuance = () => {
   const [bonusPointList, setBonusPointList] = useState<optionDivision[]>([])
   const [minusPointList, setMinusPointList] = useState<optionDivision[]>([])
   const [offsetPointList, setOffsetPointList] = useState<optionDivision[]>([])
+  const [apiSender, setApiSender] = useState<apiSenderOption[]>([])
   const [token, setToken] = useState<string>('')
 
   const handleMouseEnter = () => {
@@ -374,28 +382,30 @@ const Issuance = () => {
         cancelButtonText: '취소'
       }).then((res) => {
         if (res.isConfirmed) {
-          let data = {
-            'userId': String(userArray[0].studentId),
-            'regulateId': String(userArray[0].regulateId),
-            'reason': userArray[0].memo,
-            'token': token,
-          }
 
-          axios.post('http://localhost:3001/v1/point', JSON.stringify(data), {
-            headers: {"Content-Type": "application/json"}
-          }).then((res) => {
-            if (res.data.success) {
-              console.log(res.data)
-              Swal.fire({
-                title: '점수 발급 완료',
-                text: '점수 발급이 완료되었습니다.',
-                icon: 'success',
-                confirmButtonText: '확인'
-              }).then(() => {
-                window.location.reload()
-              })
-            }
-          })
+          console.log(userArray)
+          // let data = {
+          //   'userId': String(userArray[0].studentId),
+          //   'regulateId': String(userArray[0].regulateId),
+          //   'reason': userArray[0].memo,
+          //   'token': token,
+          // }
+          //
+          // axios.post('http://localhost:3001/v1/point', JSON.stringify(data), {
+          //   headers: {"Content-Type": "application/json"}
+          // }).then((res) => {
+          //   if (res.data.success) {
+          //     console.log(res.data)
+          //     Swal.fire({
+          //       title: '점수 발급 완료',
+          //       text: '점수 발급이 완료되었습니다.',
+          //       icon: 'success',
+          //       confirmButtonText: '확인'
+          //     }).then(() => {
+          //       window.location.reload()
+          //     })
+          //   }
+          // })
         }
       })
     }
