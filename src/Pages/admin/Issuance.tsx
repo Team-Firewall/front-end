@@ -347,6 +347,17 @@ const Issuance = () => {
 
 
   const issuance = () => {
+    for (let i = 0; i < userArray.length; i++) {
+      setApiSender(oldValue => ([
+        ...oldValue,
+        {
+          'userId': String(userArray[i].studentId),
+          'regulateId': String(userArray[i].regulateId),
+          'reason': userArray[i].memo,
+          'token': token
+        }]))
+    }
+
     let string: string = ''
     let flag: boolean = true
 
@@ -383,7 +394,6 @@ const Issuance = () => {
       }).then((res) => {
         if (res.isConfirmed) {
 
-          console.log(userArray)
           // let data = {
           //   'userId': String(userArray[0].studentId),
           //   'regulateId': String(userArray[0].regulateId),
