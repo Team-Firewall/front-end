@@ -6,29 +6,52 @@ import styles from '../../Style/AddUser/StudentManagement.module.css'
 import classNames from "classnames/bind";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
 import { GrPowerReset, GrCheckmark, GrClose } from 'react-icons/gr'
+import {IoMdClose, IoMdCheckmark} from 'react-icons/io'
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const cs = classNames.bind(styles)
 
 const StudentParentManagement = () => {
   interface changePasswordType {
+    amount: string;
+    password: string;
+    weight: string;
+    weightRange: string;
+    showPassword: boolean;
     userid: number,
     username: string,
-    newPassword: string,
-    checkNewPassword: string
   }
 
   const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
 
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState<boolean>(false)
   const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
+  const [values, setValues] = React.useState<changePasswordType>({
+    amount: '',
+    password: '',
+    weight: '',
+    weightRange: '',
+    showPassword: false,
+    userid: 0,
+    username: ''
+  });
 
   const handleBoxOpen = (id: number, username: string) => {
     setChangePasswordOption([
       {
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
         userid: id,
-        username: username,
-        newPassword: '',
-        checkNewPassword: ''
+        username: username
       }])
     setIsChangePasswordOpen(true)
 
@@ -38,6 +61,22 @@ const StudentParentManagement = () => {
   const handleChangePasswordClose = () => {
     setIsChangePasswordOpen(false)
   }
+
+  const handleChange =
+    (prop: keyof changePasswordType) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setValues({...values, [prop]: event.target.value});
+    };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   if (error) {
     return <h1>ERROR</h1>
@@ -79,9 +118,32 @@ const StudentParentManagement = () => {
                     {
                       isChangePasswordOpen === true && changePasswordOption[0].userid === value.id && (
                         <>
-                          <input/>
-                          <button onClick={handleChangePasswordClose}><GrClose/></button>
-                          <button><GrCheckmark/></button>
+                          <FormControl sx={{m: 1, width: '60%'}} variant="standard">
+                            {/*<InputLabel htmlFor="standard-adornment-password">새 비밀번호 입력</InputLabel>*/}
+                            <Input
+                              id="standard-adornment-password"
+                              type={values.showPassword ? 'text' : 'password'}
+                              value={values.password}
+                              placeholder={'새 비밀번호 입력'}
+                              onChange={handleChange('password')}
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                  >
+                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
+                                  </IconButton>
+                                </InputAdornment>
+                              }
+                            />
+                          </FormControl>
+                          <div className={'change-password-button-container'}>
+                            <button onClick={handleChangePasswordClose} className={'close-button'}><IoMdClose
+                              className={'change-password-icon'}/></button>
+                            <button className={'check-button'}><IoMdCheckmark className={'change-password-icon'}/></button>
+                          </div>
                         </>
                       )
                     }

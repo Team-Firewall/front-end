@@ -371,3 +371,31 @@ tr:nth-child(odd) {
     background-color: #fff;
 }
 
+.change-password-button-container {
+    width: auto;
+    margin-top: 15px;
+    margin-right: 28px;
+    float: right;
+}
+
+.change-password-button-container button {
+    color: #fff;
+    border: none;
+    width: 26px;
+    height: 22px;
+    border-radius: 3px;
+}
+
+.change-password-button-container .close-button {
+    background-color: #e33f3f;
+}
+
+.change-password-button-container .check-button {
+    background-color: #1daf56;
+    margin-left: 4px;
+}
+
+.change-password-icon {
+    color: #fff;
+    margin-bottom: -2px;
+}
