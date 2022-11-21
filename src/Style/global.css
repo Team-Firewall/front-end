@@ -134,7 +134,7 @@
 
 .search-input-container select {
     appearance: none;
-    -webkit-appearance:none;
+    -webkit-appearance: none;
     -webkit-border-radius: 0;
     -moz-appearance: none;
     background: #fff;
@@ -258,9 +258,13 @@
     float: left;
 }
 
-.searched-table tr:nth-child(even) {background: #f1f1f1
+.searched-table tr:nth-child(even) {
+    background: #f1f1f1
 }
-.searched-table tr:nth-child(odd) {background: #fff}
+
+.searched-table tr:nth-child(odd) {
+    background: #fff
+}
 
 .searched-table th {
     background-color: #e0e0e0;
@@ -312,8 +316,13 @@
     color: #fff;
 }
 
-.recipient-table-container tr:nth-child(even) {background: #f6f6f6}
-.recipient-table-container tr:nth-child(odd) {background: #fff}
+.recipient-table-container tr:nth-child(even) {
+    background: #f6f6f6
+}
+
+.recipient-table-container tr:nth-child(odd) {
+    background: #fff
+}
 
 .add-user-container {
     /*margin-top: 30px;*/
@@ -338,4 +347,27 @@
 .management-table-container table {
     width: 100%;
     text-align: center;
+    border-collapse: collapse;
 }
+
+.management-table-container th {
+    height: 35px;
+    background: #dedede;
+    color: #444;
+    font-size: 15px;
+}
+
+.management-table-container tr {
+    height: 37px;
+    font-size: 14px;
+    font-weight: 1;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #fff;
+}
+

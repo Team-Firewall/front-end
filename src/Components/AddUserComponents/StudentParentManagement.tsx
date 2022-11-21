@@ -4,7 +4,8 @@ import fetcher from "../../utils/fetcher";
 import Loading from "../Loading";
 import styles from '../../Style/AddUser/StudentManagement.module.css'
 import classNames from "classnames/bind";
-import { GrPowerReset } from 'react-icons/gr'
+import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
+import { GrPowerReset, GrCheckmark, GrClose } from 'react-icons/gr'
 
 const cs = classNames.bind(styles)
 
@@ -17,8 +18,8 @@ const StudentParentManagement = () => {
   }
 
   const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
-  console.log(data)
-  const [isBoxOpen, setIsBoxOpen]= useState<boolean>(false)
+
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState<boolean>(false)
   const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
 
   const handleBoxOpen = (id: number, username: string) => {
@@ -29,13 +30,13 @@ const StudentParentManagement = () => {
         newPassword: '',
         checkNewPassword: ''
       }])
-    setIsBoxOpen(true)
+    setIsChangePasswordOpen(true)
 
     console.log(changePasswordOption)
   }
 
-  const handleBoxClose = () => {
-    setIsBoxOpen(false)
+  const handleChangePasswordClose = () => {
+    setIsChangePasswordOpen(false)
   }
 
   if (error) {
@@ -46,7 +47,7 @@ const StudentParentManagement = () => {
     return (
       <div>
         <div className={'add-user-container'}>
-          <div className={'management-table-container'} style={{ height: isBoxOpen ? '80%' : '100%' }}>
+          <div className={'management-table-container'}>
             <table>
               <thead>
               <th>구분</th>
@@ -67,24 +68,29 @@ const StudentParentManagement = () => {
                   <td>{value.classNum}</td>
                   <td>{value.number}</td>
                   <td>{value.name}</td>
-                  <td>{value.phone}</td>
-                  <td>{value.parents[0]?.phone ? value.parents[0].phone : '-'}</td>
-                  <td>{value.parents[1]?.phone ? value.parents[1].phone : '-'}</td>
-                  <td><button onClick={() => handleBoxOpen(value.id, value.name)}><GrPowerReset/> 초기화</button></td>
+                  <td>{phoneNumberAutoFormat(value.phone)}</td>
+                  <td>{value.parents[0]?.phone ? phoneNumberAutoFormat(value.parents[0].phone) : '-'}</td>
+                  <td>{value.parents[1]?.phone ? phoneNumberAutoFormat(value.parents[1].phone) : '-'}</td>
+                  <td style={{width: '20vw'}}>
+                    {
+                      isChangePasswordOpen === false &&
+                      (<button onClick={() => handleBoxOpen(value.id, value.name)}><GrPowerReset/> 초기화</button>)
+                    }
+                    {
+                      isChangePasswordOpen === true && changePasswordOption[0].userid === value.id && (
+                        <>
+                          <input/>
+                          <button onClick={handleChangePasswordClose}><GrClose/></button>
+                          <button><GrCheckmark/></button>
+                        </>
+                      )
+                    }
+                  </td>
                 </tr>
               ))}
               </tbody>
             </table>
           </div>
-
-          {
-            isBoxOpen && (
-              <div className={cs('change-password-container')}>
-                <div>{changePasswordOption[0].username}님 비밀번호 변경</div>
-                <button onClick={handleBoxClose}>취소</button>
-              </div>
-            )
-          }
         </div>
       </div>
     )

@@ -116,9 +116,6 @@ const Issuance = () => {
   const [userArray, setUserArray] = useState<User[]>([])
   const [userTmpArray, setUserTmpArray] = useState<UserTempArray[]>([])
   const [isHover, setIsHover] = useState(false);
-  const [pointDivision, setPointDivision] = useState<number>(0)
-  // const [issuanceList, setIssuanceList] = useState<issuanceForm[]>([])
-  const [pointOptionArray, setPointOptionArray] = useState<optionDivision[]>([])
   const [bonusPointList, setBonusPointList] = useState<optionDivision[]>([])
   const [minusPointList, setMinusPointList] = useState<optionDivision[]>([])
   const [offsetPointList, setOffsetPointList] = useState<optionDivision[]>([])
@@ -345,17 +342,15 @@ const Issuance = () => {
     alert(`${repeatedValue > 0 && appliedValue === 0 ? '해당 학생이 이미 추가되었습니다.' : repeatedValue > 0 ? `중복된 학생 ${repeatedValue}명 외 ${appliedValue}명의 학생이 추가되었습니다.` : `${appliedValue}명의 학생이 추가되었습니다.`}`)
   }
 
-
   const issuance = () => {
+    let data: apiSenderOption[] = []
     for (let i = 0; i < userArray.length; i++) {
-      setApiSender(oldValue => ([
-        ...oldValue,
-        {
-          'userId': String(userArray[i].studentId),
-          'regulateId': String(userArray[i].regulateId),
-          'reason': userArray[i].memo,
-          'token': token
-        }]))
+      data.push({
+        'userId': String(userArray[i].studentId),
+        'regulateId': String(userArray[i].regulateId),
+        'reason': userArray[i].memo,
+        'token': token
+      })
     }
 
     let string: string = ''
@@ -393,29 +388,21 @@ const Issuance = () => {
         cancelButtonText: '취소'
       }).then((res) => {
         if (res.isConfirmed) {
-
-          // let data = {
-          //   'userId': String(userArray[0].studentId),
-          //   'regulateId': String(userArray[0].regulateId),
-          //   'reason': userArray[0].memo,
-          //   'token': token,
-          // }
-          //
-          // axios.post('http://localhost:3001/v1/point', JSON.stringify(data), {
-          //   headers: {"Content-Type": "application/json"}
-          // }).then((res) => {
-          //   if (res.data.success) {
-          //     console.log(res.data)
-          //     Swal.fire({
-          //       title: '점수 발급 완료',
-          //       text: '점수 발급이 완료되었습니다.',
-          //       icon: 'success',
-          //       confirmButtonText: '확인'
-          //     }).then(() => {
-          //       window.location.reload()
-          //     })
-          //   }
-          // })
+          axios.post('http://localhost:3001/v1/point', JSON.stringify(data), {
+            headers: {"Content-Type": "application/json"}
+          }).then((res) => {
+            if (res.data.success) {
+              console.log(res.data)
+              Swal.fire({
+                title: '점수 발급 완료',
+                text: '점수 발급이 완료되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+              }).then(() => {
+                window.location.reload()
+              })
+            }
+          })
         }
       })
     }

@@ -260,27 +260,6 @@ const AddUserWithTyping = () => {
       })
     }
   }
-// let phoneNumber = newPhoneNumber.replace(/-/g, "")
-//
-// let data = {
-//   "name": newUserName,
-//   "phone": phoneNumber,
-//   "account": newUserId,
-//   "password": newUserPassword,
-//   "role": newUserPosition
-// }
-//
-// axios.post('http://localhost:3001/addUser', JSON.stringify(data), {
-//   headers: {"Content-Type": "application/json"}
-// }).then(() => Swal.fire({
-//   title: '유저 추가 완료',
-//   text: '유저 추가가 완료되었습니다.',
-//   icon: 'success',
-//   confirmButtonText: '확인'
-// }).then(() => {
-//   window.location.replace('/')
-// }))
-//   .catch(() => alert('ERROR'))
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword)
