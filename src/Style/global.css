@@ -363,11 +363,11 @@
     font-weight: 1;
 }
 
-tr:nth-child(even) {
+.management-table-container tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
-tr:nth-child(odd) {
+.management-table-container tr:nth-child(odd) {
     background-color: #fff;
 }
 
@@ -390,12 +390,22 @@ tr:nth-child(odd) {
     background-color: #e33f3f;
 }
 
+.change-password-button-container .close-button:hover {
+    background-color: #c73434;
+    cursor: pointer;
+}
+
 .change-password-button-container .check-button {
     background-color: #1daf56;
     margin-left: 4px;
 }
 
+.change-password-button-container .check-button:hover {
+    background-color: #169447;
+    cursor: pointer;
+}
+
 .change-password-icon {
     color: #fff;
-    margin-bottom: -2px;
+    margin-bottom: -1.5px;
 }

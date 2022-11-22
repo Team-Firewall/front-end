@@ -6,7 +6,7 @@ import styles from '../../Style/AddUser/StudentManagement.module.css'
 import classNames from "classnames/bind";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
 import { GrPowerReset, GrCheckmark, GrClose } from 'react-icons/gr'
-import {IoMdClose, IoMdCheckmark} from 'react-icons/io'
+import { IoMdClose, IoMdCheckmark } from 'react-icons/io'
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -31,8 +31,8 @@ const StudentParentManagement = () => {
   const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
 
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState<boolean>(false)
-  const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
-  const [values, setValues] = React.useState<changePasswordType>({
+  // const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
+  const [values, setValues] = useState<changePasswordType>({
     amount: '',
     password: '',
     weight: '',
@@ -43,7 +43,7 @@ const StudentParentManagement = () => {
   });
 
   const handleBoxOpen = (id: number, username: string) => {
-    setChangePasswordOption([
+    setValues(
       {
         amount: '',
         password: '',
@@ -52,19 +52,28 @@ const StudentParentManagement = () => {
         showPassword: false,
         userid: id,
         username: username
-      }])
+      })
     setIsChangePasswordOpen(true)
-
-    console.log(changePasswordOption)
   }
 
   const handleChangePasswordClose = () => {
+    setValues(
+      {
+        amount: '',
+        password: '',
+        weight: '',
+        weightRange: '',
+        showPassword: false,
+        userid: 0,
+        username: ''
+      })
     setIsChangePasswordOpen(false)
   }
 
   const handleChange =
     (prop: keyof changePasswordType) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({...values, [prop]: event.target.value});
+      console.log(values)
     };
 
   const handleClickShowPassword = () => {
@@ -116,7 +125,7 @@ const StudentParentManagement = () => {
                       (<button onClick={() => handleBoxOpen(value.id, value.name)}><GrPowerReset/> 초기화</button>)
                     }
                     {
-                      isChangePasswordOpen === true && changePasswordOption[0].userid === value.id && (
+                      isChangePasswordOpen === true && values.userid === value.id && (
                         <>
                           <FormControl sx={{m: 1, width: '60%'}} variant="standard">
                             {/*<InputLabel htmlFor="standard-adornment-password">새 비밀번호 입력</InputLabel>*/}
@@ -140,9 +149,10 @@ const StudentParentManagement = () => {
                             />
                           </FormControl>
                           <div className={'change-password-button-container'}>
-                            <button onClick={handleChangePasswordClose} className={'close-button'}><IoMdClose
-                              className={'change-password-icon'}/></button>
-                            <button className={'check-button'}><IoMdCheckmark className={'change-password-icon'}/></button>
+                            <button onClick={handleChangePasswordClose} className={'close-button'}>
+                              <IoMdClose className={'change-password-icon'}/></button>
+                            <button className={'check-button'}><IoMdCheckmark className={'change-password-icon'}/>
+                            </button>
                           </div>
                         </>
                       )
