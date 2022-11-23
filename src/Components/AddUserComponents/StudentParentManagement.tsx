@@ -14,6 +14,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { BiReset } from 'react-icons/bi'
+import LockResetIcon from '@mui/icons-material/LockReset';
 
 const cs = classNames.bind(styles)
 
@@ -122,7 +124,8 @@ const StudentParentManagement = () => {
                   <td style={{width: '20vw'}}>
                     {
                       isChangePasswordOpen === false &&
-                      (<button onClick={() => handleBoxOpen(value.id, value.name)}><GrPowerReset/> 초기화</button>)
+                      (<button onClick={() => handleBoxOpen(value.id, value.name)} className={'password-reset-btn'}><LockResetIcon
+                        style={{color: '#267fbc', marginBottom: '-3px', fontSize: '16.5px'}}/> <span>초기화</span></button>)
                     }
                     {
                       isChangePasswordOpen === true && values.userid === value.id && (

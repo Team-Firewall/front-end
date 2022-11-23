@@ -325,12 +325,10 @@
 }
 
 .add-user-container {
-    /*margin-top: 30px;*/
     width: 100%;
     height: 67vh;
     margin-left: auto;
     margin-right: auto;
-    /*border: 1px solid #f00;*/
 }
 
 .management-table-container {
@@ -408,4 +406,18 @@
 .change-password-icon {
     color: #fff;
     margin-bottom: -1.5px;
+}
+
+.password-reset-btn {
+    width: 65px;
+    height: 25px;
+    background-color: #fff;
+    border: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 3px;
+}
+
+.password-reset-btn span {
+    font-size: 13px;
+    color: #267fbc;
 }
