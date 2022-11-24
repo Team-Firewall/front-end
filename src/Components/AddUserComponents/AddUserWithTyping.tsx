@@ -269,8 +269,7 @@ const AddUserWithTyping = () => {
   return (
     <div>
       <form onSubmit={AddUserHandler}>
-        <div className={'add-user-container'}
-             style={{width: newUserArray.length < 1 ? '80%' : '100%', transition: '0.5s'}}>
+        <div className={'add-user-container'}>
 
           <div className={cs('table-container')} style={{display: newUserArray.length === 0 ? 'table' : ''}}>
 

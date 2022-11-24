@@ -5,16 +5,13 @@ import Loading from "../Loading";
 import styles from '../../Style/AddUser/StudentManagement.module.css'
 import classNames from "classnames/bind";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
-import { GrPowerReset, GrCheckmark, GrClose } from 'react-icons/gr'
 import { IoMdClose, IoMdCheckmark } from 'react-icons/io'
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { BiReset } from 'react-icons/bi'
 import LockResetIcon from '@mui/icons-material/LockReset';
 
 const cs = classNames.bind(styles)
@@ -33,7 +30,6 @@ const StudentParentManagement = () => {
   const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
 
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState<boolean>(false)
-  // const [changePasswordOption, setChangePasswordOption] = useState<changePasswordType[]>([])
   const [values, setValues] = useState<changePasswordType>({
     amount: '',
     password: '',
@@ -131,7 +127,6 @@ const StudentParentManagement = () => {
                       isChangePasswordOpen === true && values.userid === value.id && (
                         <>
                           <FormControl sx={{m: 1, width: '60%'}} variant="standard">
-                            {/*<InputLabel htmlFor="standard-adornment-password">새 비밀번호 입력</InputLabel>*/}
                             <Input
                               id="standard-adornment-password"
                               type={values.showPassword ? 'text' : 'password'}
