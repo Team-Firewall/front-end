@@ -145,7 +145,6 @@ const AddUserWithTyping = () => {
         ))
       }
     }
-    // console.log(newUserArray)
   }
 
   const removeUser = () => {
