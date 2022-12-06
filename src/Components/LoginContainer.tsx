@@ -46,10 +46,10 @@ export default function InputAdornments() {
           setItemWithExpireTime(res.data.token)
           let token: any = getItemWithExpireTime()
           token = jwt_decode(token)
-          let position: number = token.position
-          if (position === 0 || position === 1 || position === 2) {
+          let permission: number = token.permission
+          if (permission === 0 || permission === 1 || permission === 2) {
             navigate('/admin/issuance')
-          } else if (position == 3 || position === 4) {
+          } else if (permission == 3 || permission === 4) {
             navigate('/points')
           }
         }
