@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { phoneNumberAutoFormat } from "../../utils/PhoneNumberFormatter";
 import axios from "axios";
 import Swal from 'sweetalert2'
@@ -65,8 +65,6 @@ const AddUserWithTyping = () => {
   }
 
   const modifyUserItem = (idx: number, value: string, classification: string) => {
-    userNormalization()
-
     if (classification === 'grade') {
       setNewUserArray(newUserArray.map((it) =>
         it.index === idx ? {
@@ -134,15 +132,13 @@ const AddUserWithTyping = () => {
         } : it
       ))
     } else if (classification === 'password') {
+      setNewUserArray(newUserArray.map((it) =>
+        it.index === idx ? {
+          ...it,
+          password: value,
+        } : it))
       if (showPassword) {
         setShowPassword(false)
-      } else {
-        setNewUserArray(newUserArray.map((it) =>
-          it.index === idx ? {
-            ...it,
-            password: value,
-          } : it
-        ))
       }
     }
   }
@@ -160,7 +156,6 @@ const AddUserWithTyping = () => {
     setNewUserArray(current => (
       current.filter((newUser) => newUser.index !== newUserArray.length - 1)
     ))
-    console.log(newUserArray)
   }
 
   const userNormalization = () => {
@@ -213,8 +208,6 @@ const AddUserWithTyping = () => {
           }]))
       }
     }
-
-    console.log(insertUserArray)
   }
 
   const AddUserHandler = (e: FormEvent) => {
@@ -239,6 +232,7 @@ const AddUserWithTyping = () => {
         confirmButtonText: '확인',
         cancelButtonText: '취소'
       }).then((res) => {
+        console.log('clicked', insertUserArray)
         if (res.isConfirmed) {
           axios.post('http://localhost:3001/addUserMany', JSON.stringify(insertUserArray), {
             headers: {"Content-Type": "application/json"}
@@ -246,8 +240,8 @@ const AddUserWithTyping = () => {
             console.log('this is response', res.data)
             if (res.data.success) {
               Swal.fire({
-                title: '학생 추가 완료',
-                text: '학생 추가가 완료되었습니다.',
+                title: '유저 추가 완료',
+                text: '유저 추가가 완료되었습니다.',
                 icon: 'success',
                 confirmButtonText: '확인'
               }).then(() => {
@@ -264,6 +258,9 @@ const AddUserWithTyping = () => {
     setShowPassword(!showPassword)
   }
 
+  useEffect(() => {
+    userNormalization()
+  }, [newUserArray])
 
   return (
     <div>
@@ -482,9 +479,7 @@ const AddUserWithTyping = () => {
                         <td>
                           <div>
                             <input
-                              onChange={(e) => {
-                                modifyUserItem(index, e.target.value, 'password')
-                              }}
+                              onChange={(e) => modifyUserItem(index, e.target.value, 'password')}
                               value={newUserArray[index].password}
                               type={showPassword ? "text" : "password"}
                               minLength={4}
@@ -513,7 +508,10 @@ const AddUserWithTyping = () => {
               {
                 newUserArray.length > 0 &&
                 (
-                  <button onClick={handleShowPassword} className={cs('show-password-button')} type={'button'}>
+                  <button onClick={() => {
+                    handleShowPassword()
+                    userNormalization()
+                  }} className={cs('show-password-button')} type={'button'}>
                     {
                       showPassword ? (
                           <div><AiFillEyeInvisible className={cs('eye-icon')}/> <span>비밀번호 숨김</span></div>) :
