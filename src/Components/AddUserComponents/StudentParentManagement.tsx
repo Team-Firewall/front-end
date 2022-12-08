@@ -109,7 +109,7 @@ const StudentParentManagement = () => {
               <tbody>
               {Object.values(data).map((value: any, index: number) => (
                 <tr key={index}>
-                  <td>{value.position === 3 ? '고등학생' : '중학생'}</td>
+                  <td>{value.permission === 3 ? '고등학생' : '중학생'}</td>
                   <td>{value.grade}</td>
                   <td>{value.classNum}</td>
                   <td>{value.number}</td>

@@ -5,6 +5,7 @@ import Points from "./Pages/Points";
 import MyPage from "./Pages/Mypage";
 import Issuance from "./Pages/admin/Issuance";
 import AddUser from "./Pages/admin/AddUser";
+import History from "./Pages/admin/History";
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
       <Route path={'/points'} element={<Points/>}/>
       <Route path={'/mypage'} element={<MyPage/>}/>
       <Route path={'/admin/issuance'} element={<Issuance/>}/>
-      <Route path={'/admin/add-user'} element={<AddUser/>}/>
+      <Route path={'/admin/manage'} element={<AddUser/>}/>
+      <Route path={'/admin/history'} element={<History/>}/>
       </Routes>
   )
 }

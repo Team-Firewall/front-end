@@ -6,13 +6,13 @@ const cs = classNames.bind(style)
 
 const Loading = () => {
   return (
-    <div className={cs("wrapper")}>
-      <div className={cs("circle")}></div>
-      <div className={cs("circle")}></div>
-      <div className={cs("circle")}></div>
-      <div className={cs("shadow")}></div>
-      <div className={cs("shadow")}></div>
-      <div className={cs("shadow")}></div>
+    <div className={cs('loading-container')}>
+      <div className={cs("spinner")}>
+        <svg viewBox="25 25 50 50" className={cs("circular")}>
+          <circle stroke-miterlimit="10" stroke-width="3" fill="none" r="20" cy="50" cx="50"
+                  className={cs("path")}></circle>
+        </svg>
+      </div>
     </div>
   )
 }

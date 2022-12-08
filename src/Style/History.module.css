@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.plus {
+    color: #0c9b46;
+}
+
+.minus {
+    color: #e32727;
+}
+
+.edit-tr:hover {
+    background-color: #edf4fc !important;
+    cursor: pointer;
+}
+
+.search-bar {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    height: 3rem;
+    border: 1px solid #000;
+}

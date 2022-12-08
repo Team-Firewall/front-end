@@ -43,7 +43,6 @@ const AddUserWithTyping = () => {
   const [newUserArray, setNewUserArray] = useState<NewUser[]>([])
   const [insertUserArray, setInsertUserArray] = useState<insertUser[]>([])
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isInputFilled, setIsInputFilled] = useState<boolean>(false)
   const isPresent = useIsPresent();
 
   const addNewUser = () => {

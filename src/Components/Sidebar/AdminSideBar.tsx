@@ -96,7 +96,7 @@ export default function AdminSideBar() {
         </ListItem>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('')}>
+          <ListItemButton onClick={() => navigate('/admin/history')}>
             <ListItemIcon>
               <BorderColorIcon/>
             </ListItemIcon>
@@ -114,7 +114,7 @@ export default function AdminSideBar() {
         </ListItem>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('/admin/add-user')}>
+          <ListItemButton onClick={() => navigate('/admin/manage')}>
             <ListItemIcon>
               <PersonAddIcon/>
             </ListItemIcon>

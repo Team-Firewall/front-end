@@ -245,13 +245,13 @@ const Issuance = () => {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        'position': studentDivision,
+        'permission': studentDivision,
         'grade': grade,
         'classNum': classNumber,
         'number': number,
         'name': name
       })
-    };
+    }
 
     fetch('http://localhost:3001/v1/user/student', requestOptions)
       .then(res => res.json())
@@ -336,9 +336,6 @@ const Issuance = () => {
       }
     }
 
-    // console.log('tmp', userTmpArray)
-    // console.log('userarr', userArray)
-    // console.log('중복값: ', repeatedValue, '적용값', appliedValue)
     alert(`${repeatedValue > 0 && appliedValue === 0 ? '해당 학생이 이미 추가되었습니다.' : repeatedValue > 0 ? `중복된 학생 ${repeatedValue}명 외 ${appliedValue}명의 학생이 추가되었습니다.` : `${appliedValue}명의 학생이 추가되었습니다.`}`)
   }
 

@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
 
 .logo-img {
     width: 210px;
@@ -349,24 +355,17 @@
 }
 
 .management-table-container th {
-    height: 35px;
-    background: #dedede;
-    color: #444;
+    height: 45px;
+    color: #333;
     font-size: 15px;
+    background-color: #e8f1f8;
+    font-weight: bold;
 }
 
 .management-table-container tr {
-    height: 37px;
+    height: 43px;
     font-size: 14px;
-    font-weight: 1;
-}
-
-.management-table-container tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.management-table-container tr:nth-child(odd) {
-    background-color: #fff;
+    border-bottom: 1px solid #dedede;
 }
 
 .change-password-button-container {
