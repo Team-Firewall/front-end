@@ -5,6 +5,7 @@ import LogoutButton from "../../Components/LogoutButton"
 import Loading from "../../Components/Loading"
 import classNames from "classnames/bind"
 import styles from '../../Style/History.module.css'
+import {BsArrowUp ,BsArrowDown} from 'react-icons/bs'
 
 const cs = classNames.bind(styles)
 
@@ -22,10 +23,19 @@ interface dataValue {
     division: string,
     regulate: string,
     score: number
-  }
+  },
+  isChecked: boolean
 }
 
 const History = () => {
+  const arrowUpButton = () => {
+    return (<button className={'arrowUpButton'}><BsArrowUp className={'arrow-icon'}/></button>)
+  }
+
+  const arrowDownButton = () => {
+    return (<button><BsArrowDown/></button>)
+  }
+
   const [data, setData] = useState<dataValue[]>([])
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false)
 
@@ -33,9 +43,21 @@ const History = () => {
     fetch('http://localhost:3001/v1/point')
       .then((response) => response.json())
       .then((data) => {
-        setData(data)
+        setData(data.map((v: any) => ({...v, isChecked: false})))
       })
   }, [])
+
+  const checkAllButton = (isClicked: boolean) => {
+      setData(data.map((v: dataValue) =>
+        v.id ? {...v, isChecked: isClicked ? true : false} : v
+      ))
+  }
+
+  const handelCheckButton = (idx: number) => {
+    setData(data.map((v: dataValue) =>
+      v.id === idx ? {...v, isChecked: !v.isChecked} : v
+    ))
+  }
 
   const sortArray = (sortDivision: string) => {
     if (sortDivision === 'desc') {
@@ -74,11 +96,12 @@ const History = () => {
           <div className={'management-table-container'}>
             <table>
               <thead>
+              <th><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}/></th>
               <th onMouseOver={() => setIsMouseOver(true)}
                   onMouseLeave={() => setIsMouseOver(false)}
               >
                 {
-                  isMouseOver ? (<button>hi</button>) : (<span>학년</span>)
+                  isMouseOver ? (arrowUpButton()) : (<span>학년</span>)
                 }
               </th>
               <th>반</th>
@@ -94,6 +117,7 @@ const History = () => {
               <tbody>
               {Object.values(data).map((value: any, index: number) => (
                 <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)}>
+                  <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/></td>
                   <td>{value.id}</td>
                   <td>{value.userId}</td>
                   <td>{value.regulateId}</td>

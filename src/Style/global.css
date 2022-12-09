@@ -420,3 +420,20 @@
     font-size: 13px;
     color: #267fbc;
 }
+
+.arrowUpButton {
+    border-radius: 5rem;
+    border: none;
+    background-color: #e8f1f8;
+    font-size: 20px;
+    transition: all 0.2s;
+}
+
+.arrow-icon {
+    margin-bottom: -2px;
+}
+
+.arrowUpButton:hover {
+    cursor: pointer;
+    background-color: #d5e0e7;
+}
