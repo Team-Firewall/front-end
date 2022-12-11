@@ -118,15 +118,15 @@ const History = () => {
               {Object.values(data).map((value: any, index: number) => (
                 <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)}>
                   <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/></td>
-                  <td>{value.id}</td>
-                  <td>{value.userId}</td>
-                  <td>{value.regulateId}</td>
+                  <td>{value.grade}</td>
+                  <td>{value.class}</td>
+                  <td>{value.number}</td>
+                  <td>{value.name}</td>
+                  <td className={cs(value.checked === '상점' ? 'plus' : 'minus')}>{value.checked}</td>
+                  <td>{value.regulate}</td>
+                  <td>{value.score}</td>
                   <td>{value.issuer}</td>
-                  <td className={cs(value.regulate.checked === '상점' ? 'plus' : 'minus')}>{value.regulate.checked}</td>
-                  <td>{value.regulate.regulate}</td>
-                  <td>{value.regulate.score}</td>
-                  <td>{value.issuer}</td>
-                  <td>{value.createdAt}</td>
+                  <td>{value.createdDate}</td>
                 </tr>
               ))}
               </tbody>
