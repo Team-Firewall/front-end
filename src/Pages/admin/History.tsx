@@ -11,19 +11,20 @@ const cs = classNames.bind(styles)
 
 interface dataValue {
   id: number,
+  class: number,
   userId: number,
+  number: number,
+  division: string,
   regulateId: number,
   reason: string,
+  score: number,
   issuer: string,
-  createdAt: string,
-  updatedAt: string,
-  regulate: {
-    id: number,
-    checked: string,
-    division: string,
-    regulate: string,
-    score: number
-  },
+  regulate: string,
+  createdDate: string,
+  createdTime: string,
+  updatedDate: string,
+  updatedTime: string,
+  checked: string,
   isChecked: boolean
 }
 
@@ -43,6 +44,7 @@ const History = () => {
     fetch('http://localhost:3001/v1/point')
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setData(data.map((v: any) => ({...v, isChecked: false})))
       })
   }, [])
@@ -61,9 +63,9 @@ const History = () => {
 
   const sortArray = (sortDivision: string) => {
     if (sortDivision === 'desc') {
-      data.sort((a: any, b: any) => (a.createdAt < b.createdAt) ? 1 : -1)
+      data.sort((a: any, b: any) => (a.createdDate < b.createdDate) ? 1 : -1)
     } else if (sortDivision === 'asc') {
-      data.sort((a: any, b: any) => (a.createdAt > b.createdAt) ? 1 : -1)
+      data.sort((a: any, b: any) => (a.createdDate > b.createdDate) ? 1 : -1)
     }
 
     setData([...data])
