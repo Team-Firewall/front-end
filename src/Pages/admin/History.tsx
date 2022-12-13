@@ -6,6 +6,7 @@ import Loading from "../../Components/Loading"
 import classNames from "classnames/bind"
 import styles from '../../Style/History.module.css'
 import {BsArrowUp ,BsArrowDown} from 'react-icons/bs'
+import useThrottle from '../../utils/useThrottle'
 
 const cs = classNames.bind(styles)
 
@@ -39,6 +40,8 @@ const History = () => {
 
   const [data, setData] = useState<dataValue[]>([])
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false)
+  const [text, setText] = useState<string>('');
+  const throttledText = useThrottle(text);
 
   useEffect(() => {
     fetch('http://localhost:3001/v1/point')
@@ -91,7 +94,10 @@ const History = () => {
           </div>
         </div>
 
-        <div className={cs('search-bar')}></div>
+        <div className={cs('search-bar')}>
+          <input onChange={(e) => setText(e.target.value)}/>
+          <div>{throttledText}</div>
+        </div>
         <button onClick={() => sortArray('asc')}>ASC</button>
         <button onClick={() => sortArray('desc')}>DESC</button>
         <div className={'container'}>
