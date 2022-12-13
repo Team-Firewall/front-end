@@ -10,7 +10,7 @@ const MinimalizedPage = () => {
   return (
     <div className={cs('background')}>
       <div className={cs('container')}>
-        <Tilt>
+        <Tilt tiltMaxAngleX={7} tiltMaxAngleY={7}>
           <div className={cs('sub-container')}>
             <div className={cs('img-tag')}>
               <img src={browserSizeBigger} alt={'브라우저의 화면 크기를 키워주세요.'}/>
