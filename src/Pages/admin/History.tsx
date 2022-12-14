@@ -30,16 +30,23 @@ interface dataValue {
 }
 
 const History = () => {
+
+  const changeOrder = () => {
+    setOrder(!order)
+  }
+
   const arrowUpButton = () => {
-    return (<button className={'arrowUpButton'}><BsArrowUp className={'arrow-icon'}/></button>)
+    return (<button className={'arrowUpButton'} onClick={changeOrder}><BsArrowUp className={'arrow-icon'}/></button>)
   }
 
   const arrowDownButton = () => {
-    return (<button><BsArrowDown/></button>)
+    return (<button className={'arrowUpButton'} onClick={changeOrder}><BsArrowDown className={'arrow-icon'}/></button>)
   }
 
   const [data, setData] = useState<dataValue[]>([])
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false)
+
+  const [order, setOrder] = useState<boolean>(false)
   const [text, setText] = useState<string>('');
   const throttledText = useThrottle(text);
 
@@ -109,7 +116,7 @@ const History = () => {
                   onMouseLeave={() => setIsMouseOver(false)}
               >
                 {
-                  isMouseOver ? (arrowUpButton()) : (<span>학년</span>)
+                  isMouseOver ? ( order ? arrowUpButton() : arrowDownButton()) : (<span>학년</span>)
                 }
               </th>
               <th>반</th>
