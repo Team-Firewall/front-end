@@ -33,6 +33,14 @@ const History = () => {
 
   const changeOrder = () => {
     setOrder(!order)
+
+    if (order) {
+      data.sort((a: any, b: any) => (a.createdDate < b.createdDate) ? 1 : -1)
+    } else {
+      data.sort((a: any, b: any) => (a.createdDate > b.createdDate) ? 1 : -1)
+    }
+
+    setData([...data])
   }
 
   const arrowUpButton = () => {
