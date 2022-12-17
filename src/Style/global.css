@@ -368,6 +368,10 @@
     border-bottom: 1px solid #dedede;
 }
 
+.management-table-container .number-value {
+    min-width: 30px;
+}
+
 .change-password-button-container {
     width: auto;
     margin-top: 15px;
