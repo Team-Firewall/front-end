@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -339,7 +340,8 @@
 
 .management-table-container {
     margin-top: 2vh;
-    font-family: 'Nanum Gothic', sans-serif;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    /*font-family: 'Nanum Gothic', sans-serif;*/
     width: 100%;
     height: 100%;
     border-radius: 4px;
@@ -355,12 +357,45 @@
 }
 
 .management-table-container th {
-    height: 45px;
-    color: #333;
+    height: 40px;
     font-size: 15px;
-    background-color: #f1f8fe;
-    color: #4692e7;
+    background-color: #474747;
+    color: #fff;
     font-weight: normal;
+}
+
+.management-table-container th input[type="checkbox"] {
+    margin-top: 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #fff;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: 0;
+    height: 13px;
+    width: 13px;
+}
+
+.management-table-container th input[type="checkbox"]::after {
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    content: '';
+    display: none;
+    height: 40%;
+    left: 40%;
+    position: relative;
+    top: 20%;
+    transform: rotate(45deg);
+    width: 15%;
+}
+
+.management-table-container th input[type="checkbox"]:checked {
+    background: #505bf0;
+}
+
+.management-table-container th input[type="checkbox"]:checked::after {
+    display: block;
 }
 
 .management-table-container tr {

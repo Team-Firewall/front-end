@@ -11,6 +11,9 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from 'date-fns/esm/locale'
 import { AiOutlineCalendar } from 'react-icons/ai'
+import { FiDelete } from 'react-icons/fi'
+import { RiFileExcel2Fill } from 'react-icons/ri'
+import { BsFillPrinterFill } from 'react-icons/bs'
 
 const cs = classNames.bind(styles)
 
@@ -100,7 +103,10 @@ const History = () => {
       })
   }, [])
 
-  const datePickerCustom = ({ value, onClick }: {value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void}) => (
+  const datePickerCustom = ({
+                              value,
+                              onClick
+                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
@@ -139,7 +145,7 @@ const History = () => {
     } else if (title === 'name') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.name > b.name) ? 1 : -1 : (a.name < b.name) ? 1 : -1)
     } else if (title === 'division') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.division < b.division) ? 1 : -1 : (a.division > b.division) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.division > b.division) ? 1 : -1 : (a.division < b.division) ? 1 : -1)
     } else if (title === 'regulate') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.regulate > b.regulate) ? 1 : -1 : (a.regulate < b.regulate) ? 1 : -1)
     } else if (title === 'score') {
@@ -208,13 +214,12 @@ const History = () => {
           </div>
 
 
-
           {/*<input onChange={(e) => setText(e.target.value)}/>*/}
           {/*<div>{throttledText}</div>*/}
         </div>
 
-        <div className={'container'} style={{ marginTop: '1vh' }}>
-          <div className={'management-table-container'}>
+        <div className={'container'} style={{marginTop: '1vh'}}>
+          <div className={'management-table-container'} style={{height: '90%'}}>
             <table>
               <thead>
               <th><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}/></th>
@@ -323,6 +328,11 @@ const History = () => {
               ))}
               </tbody>
             </table>
+          </div>
+          <div className={cs('button-container')}>
+            <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
+            <button className={cs('excel-btn')}><RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장</button>
+            <button className={cs('delete-btn')}><FiDelete className={cs('icon')}/> 선택삭제</button>
           </div>
         </div>
       </div>

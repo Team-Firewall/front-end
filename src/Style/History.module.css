@@ -17,10 +17,33 @@ table {
 }
 
 .search-bar {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
     height: 2.5rem;
     /*border: 1px solid #000;*/
+}
+
+.button-container {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.button-container button {
+    float: right;
+    margin-left: 20px;
+    border: none;
+    height: 30px;
+}
+
+.icon {
+    margin-bottom: -3px;
+}
+
+.print-btn {
+    background: #2f2f2f;
+    border-radius: 5px;
+    width: 90px;
+    color: #fff;
 }
