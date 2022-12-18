@@ -14,6 +14,7 @@ import { AiOutlineCalendar } from 'react-icons/ai'
 import { FiDelete } from 'react-icons/fi'
 import { RiFileExcel2Fill } from 'react-icons/ri'
 import { BsFillPrinterFill } from 'react-icons/bs'
+import { ExcelDownloader } from '../../utils/ExcelDownloader'
 
 const cs = classNames.bind(styles)
 
@@ -39,19 +40,6 @@ interface dataValue {
 }
 
 const History = () => {
-
-  const changeOrder = () => {
-    setOrder(!order)
-
-    if (order) {
-      data.sort((a: any, b: any) => (a.createdDate > b.createdDate) ? 1 : -1)
-    } else {
-      data.sort((a: any, b: any) => (a.createdDate < b.createdDate) ? 1 : -1)
-    }
-
-    setData([...data])
-  }
-
   const arrowUpButton = (title: string) => {
     return (
       <button className={'arrowUpButton'} onClick={() => handleValueSort(title, true)}>
@@ -103,15 +91,13 @@ const History = () => {
       })
   }, [])
 
-  const datePickerCustom = ({
-                              value,
-                              onClick
-                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const datePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
     </button>
   )
+
 
   const checkAllButton = (isClicked: boolean) => {
     setData(data.map((v: dataValue) =>
@@ -181,7 +167,6 @@ const History = () => {
           </div>
         </div>
 
-        <div className={cs('search-bar')}>
           <div className={'date-picker-container'}>
 
             <DatePicker
@@ -210,12 +195,17 @@ const History = () => {
             <div className={'search-btn'}>
               <button>조회</button>
             </div>
-
           </div>
-
-
           {/*<input onChange={(e) => setText(e.target.value)}/>*/}
           {/*<div>{throttledText}</div>*/}
+
+        <div className={cs('search-bar')}>
+          <input/>
+          <input/>
+          <input/>
+          <input/>
+          <input/>
+          <input/>
         </div>
 
         <div className={'container'} style={{marginTop: '1vh'}}>
@@ -331,7 +321,9 @@ const History = () => {
           </div>
           <div className={cs('button-container')}>
             <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
-            <button className={cs('excel-btn')}><RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장</button>
+            <button className={cs('excel-btn')} onClick={() => ExcelDownloader(data, '발급내역', startDate, endDate)}>
+              <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
+            </button>
             <button className={cs('delete-btn')}><FiDelete className={cs('icon')}/> 선택삭제</button>
           </div>
         </div>

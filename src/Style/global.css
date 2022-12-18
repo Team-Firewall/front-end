@@ -478,9 +478,12 @@
 }
 
 .date-picker-container {
+    margin-left: 10%;
+    margin-top: 2rem;
     width: 10rem;
     display: flex;
 }
+
 .date-picker-custom {
     font-family: 'Noto Sans KR', sans-serif;
     width: 8rem;

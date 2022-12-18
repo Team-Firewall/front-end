@@ -17,11 +17,11 @@ table {
 }
 
 .search-bar {
-    margin-top: 2rem;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    height: 2.5rem;
+    height: 1rem;
 }
 
 .button-container {
@@ -31,18 +31,43 @@ table {
 
 .button-container button {
     float: right;
-    margin-left: 20px;
+    margin-left: 16px;
     border: none;
-    height: 30px;
+    height: 35px;
+    border-radius: 5px;
+    color: #fff;
 }
 
 .icon {
-    margin-bottom: -3px;
+    margin-bottom: -2.5px;
 }
 
 .print-btn {
-    background: #2f2f2f;
-    border-radius: 5px;
+    background: #3f3f3f;
     width: 90px;
-    color: #fff;
+}
+
+.print-btn:hover {
+    background: #222;
+    cursor: pointer;
+}
+
+.excel-btn {
+    background: #1ba466;
+    width: 100px;
+}
+
+.excel-btn:hover {
+    background: #1c8658;
+    cursor: pointer;
+}
+
+.delete-btn {
+    width: 85px;
+    background: #ec4b4b;
+}
+
+.delete-btn:hover {
+    background: #d94545;
+    cursor: pointer;
 }
