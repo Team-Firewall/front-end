@@ -231,9 +231,9 @@ const AddUserWithTyping = () => {
         confirmButtonText: '확인',
         cancelButtonText: '취소'
       }).then((res) => {
-        console.log('clicked', insertUserArray)
         if (res.isConfirmed) {
-          axios.post('http://localhost:3001/addUserMany', JSON.stringify(insertUserArray), {
+          console.log(insertUserArray)
+          axios.post('http://localhost:3001/addUser', JSON.stringify(insertUserArray), {
             headers: {"Content-Type": "application/json"}
           }).then((res) => {
             console.log('this is response', res.data)

@@ -480,14 +480,13 @@
 .date-picker-container {
     margin-left: 10%;
     margin-top: 2rem;
-    width: 10rem;
-    display: flex;
+    display: inline-flex;
 }
 
 .date-picker-custom {
     font-family: 'Noto Sans KR', sans-serif;
-    width: 8rem;
     height: 2.5rem;
+    width: 8rem;
     background-color: #fff;
     border: none;
     border-radius: 4px;
@@ -504,12 +503,12 @@
     float: left;
 }
 
-.search-btn {
+.lookup-btn {
     margin-left: 15px;
     background-color: #ccc;
 }
 
-.search-btn button {
+.lookup-btn button {
     height: 2.5rem;
     width: 5rem;
     border: none;
@@ -518,7 +517,7 @@
     background: #474747;
 }
 
-.search-btn button:hover {
+.lookup-btn button:hover {
     background: #2f2f2f;
     cursor: pointer;
 }

@@ -15,6 +15,7 @@ import { FiDelete } from 'react-icons/fi'
 import { RiFileExcel2Fill } from 'react-icons/ri'
 import { BsFillPrinterFill } from 'react-icons/bs'
 import { ExcelDownloader } from '../../utils/ExcelDownloader'
+import { MdSearch, MdSearchOff } from 'react-icons/md'
 
 const cs = classNames.bind(styles)
 
@@ -78,7 +79,7 @@ const History = () => {
     {'title': 'date', 'isHover': false, 'order': true}
   ])
 
-  const [order, setOrder] = useState<boolean>(false)
+  const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
   const [text, setText] = useState<string>('');
   const throttledText = useThrottle(text);
 
@@ -91,7 +92,10 @@ const History = () => {
       })
   }, [])
 
-  const datePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const datePickerCustom = ({
+                              value,
+                              onClick
+                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
@@ -167,54 +171,49 @@ const History = () => {
           </div>
         </div>
 
-          <div className={'date-picker-container'}>
+        <div className={'date-picker-container'}>
+          <DatePicker
+            locale={ko}
+            dateFormat={'yyyy-MM-dd'}
+            selected={startDate}
+            onChange={(date: Date) => setStartDate(date)}
+            startDate={startDate}
+            customInput={React.createElement(datePickerCustom)}
+            endDate={endDate}
+            maxDate={date}
+          />
+          <span className={'date-hyphen'}>-</span>
+          <DatePicker
+            locale={ko}
+            dateFormat={'yyyy-MM-dd'}
+            selected={endDate}
+            onChange={(date: Date) => setEndDate(date)}
+            startDate={startDate}
+            endDate={endDate}
+            customInput={React.createElement(datePickerCustom)}
+            minDate={startDate}
+            maxDate={date}
+          />
 
-            <DatePicker
-              locale={ko}
-              dateFormat={'yyyy-MM-dd'}
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              startDate={startDate}
-              customInput={React.createElement(datePickerCustom)}
-              endDate={endDate}
-              maxDate={date}
-            />
-            <div className={'date-hyphen'}>-</div>
-            <DatePicker
-              locale={ko}
-              dateFormat={'yyyy-MM-dd'}
-              selected={endDate}
-              onChange={(date: Date) => setEndDate(date)}
-              startDate={startDate}
-              endDate={endDate}
-              customInput={React.createElement(datePickerCustom)}
-              minDate={startDate}
-              maxDate={date}
-            />
-
-            <div className={'search-btn'}>
-              <button>조회</button>
-            </div>
+          <div className={'lookup-btn'}>
+            <button>조회</button>
           </div>
-          {/*<input onChange={(e) => setText(e.target.value)}/>*/}
-          {/*<div>{throttledText}</div>*/}
 
-        <div className={cs('search-bar')}>
-          <input/>
-          <input/>
-          <input/>
-          <input/>
-          <input/>
-          <input/>
         </div>
+
+        {/*<input onChange={(e) => setText(e.target.value)}/>*/}
+        {/*<div>{throttledText}</div>*/}
 
         <div className={'container'} style={{marginTop: '1vh'}}>
           <div className={'management-table-container'} style={{height: '90%'}}>
             <table>
               <thead>
-              <th><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}/></th>
+              <th
+                style={{width: '3%'}}
+              ><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}/></th>
 
               <th
+                style={{width: '5%'}}
                 className={'number-value'}
                 onMouseOver={() => handleMouseOver('grade', true)}
                 onMouseLeave={() => handleMouseOver('grade', false)}>
@@ -225,6 +224,7 @@ const History = () => {
               </th>
 
               <th
+                style={{width: '5%'}}
                 className={'number-value'}
                 onMouseOver={() => handleMouseOver('class', true)}
                 onMouseLeave={() => handleMouseOver('class', false)}>
@@ -235,6 +235,7 @@ const History = () => {
               </th>
 
               <th
+                style={{width: '5%'}}
                 className={'number-value'}
                 onMouseOver={() => handleMouseOver('number', true)}
                 onMouseLeave={() => handleMouseOver('number', false)}>
@@ -245,6 +246,7 @@ const History = () => {
               </th>
 
               <th
+                style={{width: '8%'}}
                 onMouseOver={() => handleMouseOver('name', true)}
                 onMouseLeave={() => handleMouseOver('name', false)}>
                 {
@@ -254,6 +256,7 @@ const History = () => {
               </th>
 
               <th
+                style={{width: '6%'}}
                 onMouseOver={() => handleMouseOver('division', true)}
                 onMouseLeave={() => handleMouseOver('division', false)}>
                 {
@@ -263,6 +266,7 @@ const History = () => {
               </th>
 
               <th
+                style={{width: '48%'}}
                 onMouseOver={() => handleMouseOver('regulate', true)}
                 onMouseLeave={() => handleMouseOver('regulate', false)}>
                 {
@@ -301,6 +305,29 @@ const History = () => {
               </thead>
 
               <tbody>
+              {
+                isSearchOpen && (<tr className={cs('search-tr')}>
+                  <td></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')}/></td>
+                  <td><input className={cs('search-input')} /></td>
+                  {/*<td><input className={cs('search-input')} placeholder={'반'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'번호'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'이름'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'구분'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'발급항목'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'점수'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'발급자'}/></td>*/}
+                  {/*<td><input className={cs('search-input')} placeholder={'발급일'}/></td>*/}
+                </tr>)
+              }
+
               {Object.values(data).map((value: any, index: number) => (
                 <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)}>
                   <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
@@ -320,6 +347,13 @@ const History = () => {
             </table>
           </div>
           <div className={cs('button-container')}>
+            <button style={{float: 'left', marginLeft: '0'}} className={cs('search-btn')}
+                    onClick={() => setIsSearchOpen(!isSearchOpen)}>
+              {
+                isSearchOpen ? (<><MdSearchOff className={cs('icon', 'search-icon')}/> 검색 닫기</>) :
+                  (<><MdSearch className={cs('icon', 'search-icon')}/> 검색하기</>)
+              }
+            </button>
             <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
             <button className={cs('excel-btn')} onClick={() => ExcelDownloader(data, '발급내역', startDate, endDate)}>
               <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
