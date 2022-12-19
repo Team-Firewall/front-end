@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar"
 import { AiOutlineHome } from "react-icons/ai"
 import LogoutButton from "../../Components/LogoutButton"
@@ -6,7 +6,6 @@ import Loading from "../../Components/Loading"
 import classNames from "classnames/bind"
 import styles from '../../Style/History.module.css'
 import { BsArrowUp, BsArrowDown } from 'react-icons/bs'
-import useThrottle from '../../utils/useThrottle'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from 'date-fns/esm/locale'
@@ -66,6 +65,7 @@ const History = () => {
   const [endDate, setEndDate] = useState<Date>(date);
 
   const [data, setData] = useState<dataValue[]>([])
+  const [tableData, setTableData] = useState<dataValue[]>([])
 
   const [headContent, setHeadContent] = useState([
     {'title': 'grade', 'isHover': false, 'order': true, 'textValue': ''},
@@ -80,29 +80,36 @@ const History = () => {
   ])
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
-  const [text, setText] = useState<string>('');
-  const throttledText = useThrottle(text);
 
   useEffect(() => {
     fetch('http://localhost:3001/v1/point')
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         setData(data.map((v: any) => ({...v, isChecked: false})))
+        setTableData(data)
       })
   }, [])
 
   const changeTextValue = (title: string, textValue: string) => {
-    setHeadContent(headContent.map((v: any) =>
-      v.title === title ? {...v, textValue: textValue} : v
-    ))
+    setTimeout(() => {
+      setHeadContent(headContent.map((v: any) =>
+        v.title === title ? {...v, textValue: textValue} : v
+      ))
+    }, 500)
   }
 
   useEffect(() => {
-    setData(current => {
-      console.log(current)
-      return current.filter((data: dataValue) => data.name.includes(headContent[3].textValue))
-    })
+    setTableData(Object.values(data).filter((value) => (
+          String(value.grade).includes(headContent[0].textValue) &&
+          String(value.class).includes(headContent[1].textValue) &&
+          String(value.number).includes(headContent[2].textValue) &&
+          value.name.includes(headContent[3].textValue) &&
+          value.checked.includes(headContent[4].textValue) &&
+          value.regulate.includes(headContent[5].textValue) &&
+          String(value.score).includes(headContent[6].textValue) &&
+          value.issuer.includes(headContent[7].textValue) &&
+          value.createdDate.includes(headContent[8].textValue)
+    )))
   }, [headContent])
 
   const datePickerCustom = ({
@@ -117,13 +124,13 @@ const History = () => {
 
 
   const checkAllButton = (isClicked: boolean) => {
-    setData(data.map((v: dataValue) =>
+    setTableData(tableData.map((v: dataValue) =>
       v.id ? {...v, isChecked: isClicked ? true : false} : v
     ))
   }
 
   const handelCheckButton = (idx: number) => {
-    setData(data.map((v: dataValue) =>
+    setTableData(tableData.map((v: dataValue) =>
       v.id === idx ? {...v, isChecked: !v.isChecked} : v
     ))
   }
@@ -214,9 +221,6 @@ const History = () => {
 
         </div>
 
-        {/*<input onChange={(e) => setText(e.target.value)}/>*/}
-        {/*<div>{throttledText}</div>*/}
-        <span>{headContent[0].textValue}</span>
         <div className={'container'} style={{marginTop: '1vh'}}>
           <div className={'management-table-container'} style={{height: '90%'}}>
             <table>
@@ -321,27 +325,28 @@ const History = () => {
               {
                 isSearchOpen && (<tr className={cs('search-tr')}>
                   <td></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)} maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)} maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)} maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)} maxLength={4}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('division', e.target.value)} maxLength={3}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('issuer', e.target.value)}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/></td>
-                  {/*<td><input className={cs('search-input')} placeholder={'반'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'번호'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'이름'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'구분'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'발급항목'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'점수'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'발급자'}/></td>*/}
-                  {/*<td><input className={cs('search-input')} placeholder={'발급일'}/></td>*/}
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)}
+                             maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)}
+                             maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)}
+                             maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)}
+                             maxLength={4}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('division', e.target.value)}
+                             maxLength={3}/></td>
+                  <td><input className={cs('search-input')}
+                             onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/>
+                  </td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('issuer', e.target.value)}/>
+                  </td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/>
+                  </td>
                 </tr>)
               }
 
-              {Object.values(data).map((value: any, index: number) => (
+              {Object.values(tableData).map((value: any, index: number) => (
                 <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)}>
                   <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
                   </td>
