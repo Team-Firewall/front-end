@@ -68,15 +68,15 @@ const History = () => {
   const [data, setData] = useState<dataValue[]>([])
 
   const [headContent, setHeadContent] = useState([
-    {'title': 'grade', 'isHover': false, 'order': true},
-    {'title': 'class', 'isHover': false, 'order': true},
-    {'title': 'number', 'isHover': false, 'order': true},
-    {'title': 'name', 'isHover': false, 'order': true},
-    {'title': 'division', 'isHover': false, 'order': true},
-    {'title': 'regulate', 'isHover': false, 'order': true},
-    {'title': 'score', 'isHover': false, 'order': true},
-    {'title': 'issuer', 'isHover': false, 'order': true},
-    {'title': 'date', 'isHover': false, 'order': true}
+    {'title': 'grade', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'class', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'number', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'name', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'division', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'regulate', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'score', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'issuer', 'isHover': false, 'order': true, 'textValue': ''},
+    {'title': 'date', 'isHover': false, 'order': true, 'textValue': ''}
   ])
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
@@ -91,6 +91,19 @@ const History = () => {
         setData(data.map((v: any) => ({...v, isChecked: false})))
       })
   }, [])
+
+  const changeTextValue = (title: string, textValue: string) => {
+    setHeadContent(headContent.map((v: any) =>
+      v.title === title ? {...v, textValue: textValue} : v
+    ))
+  }
+
+  useEffect(() => {
+    setData(current => {
+      console.log(current)
+      return current.filter((data: dataValue) => data.name.includes(headContent[3].textValue))
+    })
+  }, [headContent])
 
   const datePickerCustom = ({
                               value,
@@ -203,7 +216,7 @@ const History = () => {
 
         {/*<input onChange={(e) => setText(e.target.value)}/>*/}
         {/*<div>{throttledText}</div>*/}
-
+        <span>{headContent[0].textValue}</span>
         <div className={'container'} style={{marginTop: '1vh'}}>
           <div className={'management-table-container'} style={{height: '90%'}}>
             <table>
@@ -308,15 +321,15 @@ const History = () => {
               {
                 isSearchOpen && (<tr className={cs('search-tr')}>
                   <td></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')}/></td>
-                  <td><input className={cs('search-input')} /></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)} maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)} maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)} maxLength={1}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)} maxLength={4}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('division', e.target.value)} maxLength={3}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('issuer', e.target.value)}/></td>
+                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/></td>
                   {/*<td><input className={cs('search-input')} placeholder={'반'}/></td>*/}
                   {/*<td><input className={cs('search-input')} placeholder={'번호'}/></td>*/}
                   {/*<td><input className={cs('search-input')} placeholder={'이름'}/></td>*/}
