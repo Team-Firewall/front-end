@@ -15,6 +15,7 @@ import { RiFileExcel2Fill } from 'react-icons/ri'
 import { BsFillPrinterFill } from 'react-icons/bs'
 import { ExcelDownloader } from '../../utils/ExcelDownloader'
 import { MdSearch, MdSearchOff } from 'react-icons/md'
+import axios from "axios";
 
 const cs = classNames.bind(styles)
 
@@ -63,6 +64,7 @@ const History = () => {
 
   const [startDate, setStartDate] = useState<Date>(new Date(year, month, day - 7));
   const [endDate, setEndDate] = useState<Date>(date);
+  const [headCheckbox, setHeadCheckbox] = useState<boolean>(false)
 
   const [data, setData] = useState<dataValue[]>([])
   const [tableData, setTableData] = useState<dataValue[]>([])
@@ -87,8 +89,16 @@ const History = () => {
       .then((data) => {
         setData(data.map((v: any) => ({...v, isChecked: false})))
         setTableData(data)
+        console.log(data)
       })
   }, [])
+
+  const searchHandler = () => {
+    setHeadContent(headContent.map((it) =>
+      it ? {...it, textValue: ''} : it
+    ))
+    setIsSearchOpen(!isSearchOpen)
+  }
 
   const changeTextValue = (title: string, textValue: string) => {
     setTimeout(() => {
@@ -100,15 +110,15 @@ const History = () => {
 
   useEffect(() => {
     setTableData(Object.values(data).filter((value) => (
-          String(value.grade).includes(headContent[0].textValue) &&
-          String(value.class).includes(headContent[1].textValue) &&
-          String(value.number).includes(headContent[2].textValue) &&
-          value.name.includes(headContent[3].textValue) &&
-          value.checked.includes(headContent[4].textValue) &&
-          value.regulate.includes(headContent[5].textValue) &&
-          String(value.score).includes(headContent[6].textValue) &&
-          value.issuer.includes(headContent[7].textValue) &&
-          value.createdDate.includes(headContent[8].textValue)
+      String(value.grade).includes(headContent[0].textValue) &&
+      String(value.class).includes(headContent[1].textValue) &&
+      String(value.number).includes(headContent[2].textValue) &&
+      value.name.includes(headContent[3].textValue) &&
+      value.checked.includes(headContent[4].textValue) &&
+      value.regulate.includes(headContent[5].textValue) &&
+      String(value.score).includes(headContent[6].textValue) &&
+      value.issuer.includes(headContent[7].textValue) &&
+      value.createdDate.includes(headContent[8].textValue)
     )))
   }, [headContent])
 
@@ -124,6 +134,7 @@ const History = () => {
 
 
   const checkAllButton = (isClicked: boolean) => {
+    setHeadCheckbox(!headCheckbox)
     setTableData(tableData.map((v: dataValue) =>
       v.id ? {...v, isChecked: isClicked ? true : false} : v
     ))
@@ -133,6 +144,17 @@ const History = () => {
     setTableData(tableData.map((v: dataValue) =>
       v.id === idx ? {...v, isChecked: !v.isChecked} : v
     ))
+
+    let flag: boolean = true
+    for (let i = 0; i < tableData.length; i++) {
+      if (!tableData[i].isChecked) {
+        flag = false
+      }
+    }
+
+    if (flag) {
+
+    }
   }
 
   const handleMouseOver = (title: string, hover: boolean) => {
@@ -171,6 +193,27 @@ const History = () => {
     console.log(headContent)
   }
 
+  const lookupDate = () => {
+    const firstDate: string = startDate.getFullYear() + '-' + Number(startDate.getMonth() + 1) + '-' + startDate.getDate()
+    const secondDate: string = endDate.getFullYear() + '-' + Number(endDate.getMonth() + 1) + '-' + endDate.getDate()
+
+    let reqData = {
+      'firstDate': firstDate,
+      'secondDate': secondDate
+    }
+
+    console.log(reqData)
+
+    axios.post('http://localhost:3001/v1/point/date', JSON.stringify(reqData), {
+      headers: {'Content-Type': 'application/json'}
+    }).then((res) => {
+      setData(res.data.data.map((v: any) => ({...v, isChecked: false})))
+      setTableData(res.data.data.map((v: any) => ({...v, isChecked: false})))
+    }).catch(() => {
+      alert('두 날짜 사이의 발급내역이 존재하지 않습니다.')
+    })
+  }
+
   const editHistory = (id: number) => {
     for (let i = 0; i < data.length; i++) {
       if (data[i].id === id) {
@@ -179,7 +222,7 @@ const History = () => {
     }
   }
 
-  if (!data) {
+  if (!tableData) {
     return <Loading/>
   } else {
     return (
@@ -216,7 +259,7 @@ const History = () => {
           />
 
           <div className={'lookup-btn'}>
-            <button>조회</button>
+            <button onClick={lookupDate}>조회</button>
           </div>
 
         </div>
@@ -227,7 +270,7 @@ const History = () => {
               <thead>
               <th
                 style={{width: '3%'}}
-              ><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}/></th>
+              ><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)} checked={headCheckbox}/></th>
 
               <th
                 style={{width: '5%'}}
@@ -347,7 +390,7 @@ const History = () => {
               }
 
               {Object.values(tableData).map((value: any, index: number) => (
-                <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)}>
+                <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)} style={{ backgroundColor: value.isChecked ? '#eff9ff' : ''}}>
                   <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
                   </td>
                   <td>{value.grade}</td>
@@ -366,14 +409,14 @@ const History = () => {
           </div>
           <div className={cs('button-container')}>
             <button style={{float: 'left', marginLeft: '0'}} className={cs('search-btn')}
-                    onClick={() => setIsSearchOpen(!isSearchOpen)}>
+                    onClick={searchHandler}>
               {
                 isSearchOpen ? (<><MdSearchOff className={cs('icon', 'search-icon')}/> 검색 닫기</>) :
                   (<><MdSearch className={cs('icon', 'search-icon')}/> 검색하기</>)
               }
             </button>
             <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
-            <button className={cs('excel-btn')} onClick={() => ExcelDownloader(data, '발급내역', startDate, endDate)}>
+            <button className={cs('excel-btn')} onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
               <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
             </button>
             <button className={cs('delete-btn')}><FiDelete className={cs('icon')}/> 선택삭제</button>
