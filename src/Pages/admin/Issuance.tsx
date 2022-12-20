@@ -424,7 +424,6 @@ const Issuance = () => {
   } else {
     return (
       <div>
-
         <div className={'top-tag'}>
           <AdminSideBar/>
           <div className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 점수 발급

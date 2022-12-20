@@ -16,6 +16,11 @@ import { BsFillPrinterFill } from 'react-icons/bs'
 import { ExcelDownloader } from '../../utils/ExcelDownloader'
 import { MdSearch, MdSearchOff } from 'react-icons/md'
 import axios from "axios";
+import Modal from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { animated, useSpring } from "react-spring";
 
 const cs = classNames.bind(styles)
 
@@ -40,6 +45,37 @@ interface dataValue {
   isChecked: boolean
 }
 
+interface FadeProps {
+  children?: React.ReactElement;
+  in: boolean;
+  onEnter?: () => {};
+  onExited?: () => {};
+}
+
+const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, ref) {
+  const {in: open, children, onEnter, onExited, ...other} = props;
+  const style = useSpring({
+    from: {opacity: 0},
+    to: {opacity: open ? 1 : 0},
+    onStart: () => {
+      if (open && onEnter) {
+        onEnter();
+      }
+    },
+    onRest: () => {
+      if (!open && onExited) {
+        onExited();
+      }
+    },
+  });
+
+  return (
+    <animated.div ref={ref} style={style} {...other}>
+      {children}
+    </animated.div>
+  )
+})
+
 const History = () => {
   const arrowUpButton = (title: string) => {
     return (
@@ -55,6 +91,18 @@ const History = () => {
       </button>
     )
   }
+
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 540,
+    bgcolor: 'background.paper',
+    borderRadius: '6px',
+    boxShadow: 5,
+    p: 4,
+  };
 
   const date = new Date()
 
@@ -82,6 +130,41 @@ const History = () => {
   ])
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [modalValue, setModalValue] = useState({
+    id: 0,
+    grade: 0,
+    class: 0,
+    number: 0,
+    name: '',
+    date: new Date(),
+    regulate: '',
+    issuer: '',
+    // issuerId: '',
+    reason: ''
+  })
+  const changeModalValue = (value: dataValue) => {
+    console.log(value)
+    const date = new Date(value.createdDate)
+
+    setModalValue({
+      id: value.id,
+      grade: value.grade,
+      class: value.class,
+      number: value.number,
+      name: value.name,
+      date: date,
+      regulate: value.regulate,
+      issuer: value.issuer,
+      // issuerId: value.issuerId,
+      reason: value.reason
+    })
+
+    setModalOpen(true)
+  }
+
+  const handleClose = () => setModalOpen(false)
 
   useEffect(() => {
     fetch('http://localhost:3001/v1/point')
@@ -144,8 +227,12 @@ const History = () => {
     setTableData(tableData.map((v: dataValue) =>
       v.id === idx ? {...v, isChecked: !v.isChecked} : v
     ))
+  }
 
+  useEffect(() => {
     let flag: boolean = true
+    if (tableData.length === 0) flag = false
+
     for (let i = 0; i < tableData.length; i++) {
       if (!tableData[i].isChecked) {
         flag = false
@@ -153,9 +240,11 @@ const History = () => {
     }
 
     if (flag) {
-
+      setHeadCheckbox(true)
+    } else {
+      setHeadCheckbox(false)
     }
-  }
+  }, [tableData])
 
   const handleMouseOver = (title: string, hover: boolean) => {
     setHeadContent(headContent.map((v: any) =>
@@ -214,14 +303,6 @@ const History = () => {
     })
   }
 
-  const editHistory = (id: number) => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].id === id) {
-        console.log(data[i])
-      }
-    }
-  }
-
   if (!tableData) {
     return <Loading/>
   } else {
@@ -265,101 +346,104 @@ const History = () => {
         </div>
 
         <div className={'container'} style={{marginTop: '1vh'}}>
+          <Modal
+            aria-labelledby="spring-modal-title"
+            aria-describedby="spring-modal-description"
+            open={modalOpen}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={modalOpen}>
+              <Box sx={style}>
+                <Typography id="spring-modal-title" variant="h6" component="h2">
+                  발급내역 수정
+                </Typography>
+                <Typography id="spring-modal-description" sx={{mt: 2}}>
+                  <table>
+                    <tr>
+                      <td>학생정보</td>
+                      <td>{modalValue.grade}학년 {modalValue.class}학년 {modalValue.number}번 {modalValue.name}</td>
+                    </tr>
+
+                    <tr>
+                      <td>발급일자</td>
+                      <td>{String(modalValue.date)}</td>
+                    </tr>
+
+                    <tr>
+                      <td>발급항목</td>
+                      <td>{modalValue.regulate}</td>
+                    </tr>
+
+                    <tr>
+                      <td>발급자</td>
+                      <td>{modalValue.issuer}</td>
+                    </tr>
+
+                    <tr>
+                      <td>메모</td>
+                      <td>{modalValue.reason}</td>
+                    </tr>
+                  </table>
+                </Typography>
+              </Box>
+            </Fade>
+          </Modal>
+
           <div className={'management-table-container'} style={{height: '90%'}}>
             <table>
               <thead>
-              <th
-                style={{width: '3%'}}
-              ><input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)} checked={headCheckbox}/></th>
-
-              <th
-                style={{width: '5%'}}
-                className={'number-value'}
-                onMouseOver={() => handleMouseOver('grade', true)}
-                onMouseLeave={() => handleMouseOver('grade', false)}>
-                {
-                  headContent[0].isHover ? (headContent[0].order ? arrowDownButton('grade') : arrowUpButton('grade')) : (
-                    <span>학년</span>)
-                }
+              <th style={{width: '3%'}}>
+                <input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}
+                       checked={headCheckbox}/>
               </th>
 
               <th
                 style={{width: '5%'}}
-                className={'number-value'}
-                onMouseOver={() => handleMouseOver('class', true)}
-                onMouseLeave={() => handleMouseOver('class', false)}>
-                {
-                  headContent[1].isHover ? (headContent[1].order ? arrowDownButton('class') : arrowUpButton('class')) : (
-                    <span>반</span>)
-                }
+                className={'number-value'}>
+                <span>학년</span>
               </th>
 
               <th
                 style={{width: '5%'}}
-                className={'number-value'}
-                onMouseOver={() => handleMouseOver('number', true)}
-                onMouseLeave={() => handleMouseOver('number', false)}>
-                {
-                  headContent[2].isHover ? (headContent[2].order ? arrowDownButton('number') : arrowUpButton('number')) : (
-                    <span>번호</span>)
-                }
+                className={'number-value'}>
+                <span>반</span>
               </th>
 
               <th
-                style={{width: '8%'}}
-                onMouseOver={() => handleMouseOver('name', true)}
-                onMouseLeave={() => handleMouseOver('name', false)}>
-                {
-                  headContent[3].isHover ? (headContent[3].order ? arrowDownButton('name') : arrowUpButton('name')) : (
-                    <span>이름</span>)
-                }
+                style={{width: '5%'}}
+                className={'number-value'}>
+                <span>번호</span>
               </th>
 
               <th
-                style={{width: '6%'}}
-                onMouseOver={() => handleMouseOver('division', true)}
-                onMouseLeave={() => handleMouseOver('division', false)}>
-                {
-                  headContent[4].isHover ? (headContent[4].order ? arrowDownButton('division') : arrowUpButton('division')) : (
-                    <span>구분</span>)
-                }
+                style={{width: '8%'}}>
+                <span>이름</span>
+              </th>
+
+              <th style={{width: '6%'}}>
+                <span>구분</span>
+              </th>
+
+              <th style={{width: '48%'}}>
+                <span>발급항목</span>
+              </th>
+
+              <th>
+                <span>점수</span>
               </th>
 
               <th
-                style={{width: '48%'}}
-                onMouseOver={() => handleMouseOver('regulate', true)}
-                onMouseLeave={() => handleMouseOver('regulate', false)}>
-                {
-                  headContent[5].isHover ? (headContent[5].order ? arrowDownButton('regulate') : arrowUpButton('regulate')) : (
-                    <span>발급항목</span>)
-                }
+                style={{minWidth: '45px'}}>
+                <span>발급자</span>
               </th>
 
-              <th onMouseOver={() => handleMouseOver('score', true)}
-                  onMouseLeave={() => handleMouseOver('score', false)}>
-                {
-                  headContent[6].isHover ? (headContent[6].order ? arrowDownButton('score') : arrowUpButton('score')) : (
-                    <span>점수</span>)
-                }
-              </th>
-
-              <th
-                style={{minWidth: '45px'}}
-                onMouseOver={() => handleMouseOver('issuer', true)}
-                onMouseLeave={() => handleMouseOver('issuer', false)}>
-                {
-                  headContent[7].isHover ? (headContent[7].order ? arrowDownButton('issuer') : arrowUpButton('issuer')) : (
-                    <span>발급자</span>)
-                }
-              </th>
-
-              <th
-                onMouseOver={() => handleMouseOver('date', true)}
-                onMouseLeave={() => handleMouseOver('date', false)}>
-                {
-                  headContent[8].isHover ? (headContent[8].order ? arrowDownButton('date') : arrowUpButton('date')) : (
-                    <span>발급일</span>)
-                }
+              <th>
+                <span>발급일</span>
               </th>
 
               </thead>
@@ -390,7 +474,9 @@ const History = () => {
               }
 
               {Object.values(tableData).map((value: any, index: number) => (
-                <tr key={index} className={cs('edit-tr')} onClick={() => editHistory(value.id)} style={{ backgroundColor: value.isChecked ? '#eff9ff' : ''}}>
+                <tr key={index} className={cs('edit-tr')}
+                    style={{backgroundColor: value.isChecked ? '#eff9ff' : ''}}
+                    onDoubleClick={() => changeModalValue(value)}>
                   <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
                   </td>
                   <td>{value.grade}</td>
