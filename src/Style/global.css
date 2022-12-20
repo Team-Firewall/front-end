@@ -533,3 +533,39 @@
     font-size: 25px;
     margin-right: 10px;
 }
+
+.modal-table {
+    font-family: 'Nanum Gothic', sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+.modal-table-info {
+    width: 20%;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+
+.grey-input-tag {
+    margin: 10px auto 5px auto;
+    display: table;
+    width: 90%;
+    background-color: #f7f7f7;
+    height: 2.5rem;
+    border-radius: 5px;
+}
+
+.grey-input-tag span {
+    display: table-cell;
+    padding-left: 15px;
+    vertical-align: middle;
+}
+
+.info-tag {
+    margin-left: 5%;
+    margin-bottom: 10px;
+    font-size: 13px;
+}

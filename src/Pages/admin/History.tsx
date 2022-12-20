@@ -21,6 +21,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { animated, useSpring } from "react-spring";
+import { FcInfo } from 'react-icons/fc'
 
 const cs = classNames.bind(styles)
 
@@ -363,29 +364,36 @@ const History = () => {
                   발급내역 수정
                 </Typography>
                 <Typography id="spring-modal-description" sx={{mt: 2}}>
-                  <table>
+                  <table className={'modal-table'}>
                     <tr>
-                      <td>학생정보</td>
-                      <td>{modalValue.grade}학년 {modalValue.class}학년 {modalValue.number}번 {modalValue.name}</td>
+                      <td className={'modal-table-info'}>학생정보</td>
+                      <td>
+                        <div className={'grey-input-tag'}>
+                          <span>
+                            {modalValue.grade}학년 {modalValue.class}학년 {modalValue.number}번 {modalValue.name}
+                          </span>
+                        </div>
+                        <div className={'info-tag'}> <FcInfo style={{ marginBottom: '-3px' }}/> 학생정보는 수정 하실 수 없습니다.</div>
+                      </td>
                     </tr>
 
                     <tr>
-                      <td>발급일자</td>
+                      <td className={'modal-table-info'}>발급일자</td>
                       <td>{String(modalValue.date)}</td>
                     </tr>
 
                     <tr>
-                      <td>발급항목</td>
+                      <td className={'modal-table-info'}>발급항목</td>
                       <td>{modalValue.regulate}</td>
                     </tr>
 
                     <tr>
-                      <td>발급자</td>
+                      <td className={'modal-table-info'}>발급자</td>
                       <td>{modalValue.issuer}</td>
                     </tr>
 
                     <tr>
-                      <td>메모</td>
+                      <td className={'modal-table-info'}>메모</td>
                       <td>{modalValue.reason}</td>
                     </tr>
                   </table>
