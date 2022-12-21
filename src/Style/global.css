@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+
 @font-face {
     font-family: 'Pretendard-Regular';
     src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -57,13 +58,14 @@
 
 .page-name {
     margin-left: 10%;
-    font-size: 18px;
+    font-size: 20px;
     margin-top: -31px;
     /*display: table-cell;*/
     /*vertical-align: middle;*/
 }
 
 .page-name-icon {
+    color: #000;
     margin-bottom: -3px;
     font-size: 19px;
 }
@@ -73,7 +75,7 @@
     margin-left: auto;
     margin-right: auto;
     float: top;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    /*box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;*/
     height: 70px;
 }
 
@@ -535,26 +537,31 @@
 }
 
 .modal-table {
-    font-family: 'Nanum Gothic', sans-serif;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #ccc;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    border-radius: 7px;
+}
+
+.modal-table td {
+    border: 1px solid #eee;
 }
 
 .modal-table-info {
     width: 20%;
     text-align: center;
-    background-color: #f0f0f0;
+    background-color: #f6f8fa;
+    font-weight: bold;
 }
 
 .grey-input-tag {
     margin: 10px auto 5px auto;
     display: table;
     width: 90%;
-    background-color: #f7f7f7;
-    height: 2.5rem;
+    background-color: #f5f6f9;
+    height: 2.7rem;
     border-radius: 5px;
 }
 
@@ -565,7 +572,115 @@
 }
 
 .info-tag {
-    margin-left: 5%;
+    margin-left: 6%;
     margin-bottom: 10px;
     font-size: 13px;
+}
+
+.modal-date-picker-custom {
+    margin: 10px 5% 10px 5%;
+    height: 2.5rem;
+    width: 35%;
+    border: none;
+    background-color: #f5f6f9;
+    border-radius: 5px;
+    color: #2b68ee;
+    font-size: 15px;
+}
+
+.modal-date-picker-custom:hover {
+    background-color: #e9e9ec;
+    cursor: pointer;
+}
+
+.modal-table .check-division {
+    margin-left: 5%;
+    width: 15%;
+    height: 2rem;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    outline: none;
+    border-radius: 5px;
+    text-align: center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+}
+
+.modal-table .regulate-division {
+    margin-left: 3%;
+    width: 72%;
+    height: 2rem;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    outline: none;
+    border-radius: 5px;
+    text-align: center;
+    text-align-last: center;
+    -ms-text-align-last: center;
+    -moz-text-align-last: center;
+    background-color: #f5f6f9;
+}
+
+.modal-table .reason-input {
+    height: 2.5rem;
+    margin: 10px 5% 10px 5%;
+    width: 87%;
+    display: block;
+    padding-left: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f5f6f9;
+    font-size: 16px;
+}
+
+.modal-table .reason-input::placeholder {
+    font-size: 16px;
+}
+
+.modal-button-container {
+    width: 150px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-button-container button {
+    width: 70px;
+    height: 2rem;
+    border: none;
+    border-radius: 5px;
+}
+
+.cancel-btn {
+    background-color: #e9ecf3;
+}
+
+.save-btn {
+    margin-left: 10px;
+    background-color: #0078ff;
+    color: #fff;
+}
+
+.cancel-btn:hover {
+    cursor: pointer;
+    background-color: #d9dbe3;
+}
+
+.save-btn:hover {
+    background-color: #0063d9;
+    cursor: pointer;
+}
+
+.table-no-data {
+    border: none;
+    font-size: 22px !important;
+}
+
+.table-no-data td {
+    height: 27rem;
 }

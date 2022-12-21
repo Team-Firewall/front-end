@@ -20,6 +20,7 @@ import Button from "@mui/material/Button";
 import { GoThreeBars } from "react-icons/go";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import jwt_decode from "jwt-decode";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 type Anchor = 'left' | 'bottom' | 'right';
 
@@ -105,7 +106,7 @@ export default function AdminSideBar() {
         </ListItem>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('/rule-table')}>
+          <ListItemButton onClick={() => navigate('/admin/statistics')}>
             <ListItemIcon>
               <QueryStatsIcon/>
             </ListItemIcon>
@@ -128,6 +129,15 @@ export default function AdminSideBar() {
               <RuleIcon/>
             </ListItemIcon>
             <ListItemText primary={'상벌점 규정 관리'}/>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem>
+          <ListItemButton onClick={() => navigate('/mypage')}>
+            <ListItemIcon>
+              <AccountCircleIcon/>
+            </ListItemIcon>
+            <ListItemText primary={'마이페이지'}/>
           </ListItemButton>
         </ListItem>
 

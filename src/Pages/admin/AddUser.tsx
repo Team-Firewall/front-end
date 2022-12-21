@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getItemWithExpireTime, Logout } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiOutlineHome } from "react-icons/ai";
+import { FaUserPlus } from "react-icons/fa";
 import LogoutButton from "../../Components/LogoutButton";
 import AddUserWithTyping from "../../Components/AddUserComponents/AddUserWithTyping";
 import AddUserWithFile from "../../Components/AddUserComponents/AddUserWithFile";
@@ -35,7 +35,8 @@ const AddUser = () => {
 
       <div className={'top-tag'}>
         <AdminSideBar/>
-        <div className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 사용자 추가 및 관리
+        <div className={'page-name'}><span>
+          <FaUserPlus className={'page-name-icon'}/> 사용자 추가 및 관리</span>
           <span><LogoutButton/></span>
         </div>
       </div>

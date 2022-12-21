@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiFillCloseCircle, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle, AiOutlineHome } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlineDelete, AiFillInfoCircle, AiFillCheckCircle } from "react-icons/ai";
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 import { animated, useSpring } from "react-spring";
 import Button from "@mui/material/Button";
@@ -15,7 +15,7 @@ import styles from '../../Style/IssuanceTable.module.css'
 import { getTodayDate } from "../../utils/getTodayDate";
 import { FiUserPlus } from 'react-icons/fi'
 import { FaTrashAlt } from 'react-icons/fa'
-import { MdPlaylistAddCheck } from 'react-icons/md'
+import { MdPlaylistAddCheck, MdControlPointDuplicate } from 'react-icons/md'
 import { BsCheckAll } from 'react-icons/bs'
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -173,8 +173,6 @@ const Issuance = () => {
         it.studentId === index ? {...it, regulateId: Number(value)} : it
       ))
     }
-
-    console.log(userArray)
   }
 
   const pushUser = (e: any) => {
@@ -210,8 +208,6 @@ const Issuance = () => {
     } else {
       toast.error(`${tempArray[4]} 학생이 이미 추가되었습니다.`)
     }
-
-    console.log(userArray)
   }
 
   const removeUser = (value: number, name: string) => {
@@ -426,7 +422,8 @@ const Issuance = () => {
       <div>
         <div className={'top-tag'}>
           <AdminSideBar/>
-          <div className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 점수 발급
+          <div className={'page-name'}>
+            <span><MdControlPointDuplicate className={'page-name-icon'}/> 점수 발급</span>
             <span><LogoutButton/></span>
           </div>
         </div>
@@ -581,15 +578,9 @@ const Issuance = () => {
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}
-                                onChange={(e) => {
-                                  editIssuanceList(log.studentId, 'pointDivision', e.target.value)
-                                  console.log('hi', userArray[i].pointDivision, i)
-                                }}
-                                style={{
-                                  background: userArray[i].pointDivision === 0 ? '#f2fff2' : userArray[i].pointDivision === 1 ? '#fff3f3' : '#f3f3ff'
-                                }}
-                                value={userArray[i].pointDivision}
-                        >
+                                onChange={(e) => {editIssuanceList(log.studentId, 'pointDivision', e.target.value)}}
+                                style={{background: userArray[i].pointDivision === 0 ? '#f2fff2' : userArray[i].pointDivision === 1 ? '#fff3f3' : '#f3f3ff'}}
+                                value={userArray[i].pointDivision}>
                           <option value={0}>상점</option>
                           <option value={1}>벌점</option>
                           <option value={2}>상쇄점</option>

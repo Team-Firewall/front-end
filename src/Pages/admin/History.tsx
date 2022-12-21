@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar"
-import { AiOutlineHome } from "react-icons/ai"
+import { AiFillEdit } from "react-icons/ai"
 import LogoutButton from "../../Components/LogoutButton"
 import Loading from "../../Components/Loading"
 import classNames from "classnames/bind"
 import styles from '../../Style/History.module.css'
 import { BsArrowUp, BsArrowDown } from 'react-icons/bs'
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css"
 import { ko } from 'date-fns/esm/locale'
 import { AiOutlineCalendar } from 'react-icons/ai'
 import { FiDelete } from 'react-icons/fi'
@@ -15,12 +15,12 @@ import { RiFileExcel2Fill } from 'react-icons/ri'
 import { BsFillPrinterFill } from 'react-icons/bs'
 import { ExcelDownloader } from '../../utils/ExcelDownloader'
 import { MdSearch, MdSearchOff } from 'react-icons/md'
-import axios from "axios";
-import Modal from "@mui/material/Modal";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { animated, useSpring } from "react-spring";
+import axios from "axios"
+import Modal from "@mui/material/Modal"
+import Backdrop from "@mui/material/Backdrop"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import { animated, useSpring } from "react-spring"
 import { FcInfo } from 'react-icons/fc'
 
 const cs = classNames.bind(styles)
@@ -37,6 +37,7 @@ interface dataValue {
   reason: string,
   score: number,
   issuer: string,
+  issuerId: string,
   regulate: string,
   createdDate: string,
   createdTime: string,
@@ -44,6 +45,12 @@ interface dataValue {
   updatedTime: string,
   checked: string,
   isChecked: boolean
+}
+
+interface optionDivision {
+  id: number,
+  regulate: string,
+  score: number
 }
 
 interface FadeProps {
@@ -113,11 +120,15 @@ const History = () => {
 
   const [startDate, setStartDate] = useState<Date>(new Date(year, month, day - 7));
   const [endDate, setEndDate] = useState<Date>(date);
+
   const [headCheckbox, setHeadCheckbox] = useState<boolean>(false)
+
+  const [bonusPointList, setBonusPointList] = useState<optionDivision[]>([])
+  const [minusPointList, setMinusPointList] = useState<optionDivision[]>([])
+  const [offsetPointList, setOffsetPointList] = useState<optionDivision[]>([])
 
   const [data, setData] = useState<dataValue[]>([])
   const [tableData, setTableData] = useState<dataValue[]>([])
-
   const [headContent, setHeadContent] = useState([
     {'title': 'grade', 'isHover': false, 'order': true, 'textValue': ''},
     {'title': 'class', 'isHover': false, 'order': true, 'textValue': ''},
@@ -140,11 +151,14 @@ const History = () => {
     number: 0,
     name: '',
     date: new Date(),
+    checked: '',
     regulate: '',
+    regulateId: 0,
     issuer: '',
-    // issuerId: '',
+    issuerId: '',
     reason: ''
   })
+
   const changeModalValue = (value: dataValue) => {
     console.log(value)
     const date = new Date(value.createdDate)
@@ -156,9 +170,11 @@ const History = () => {
       number: value.number,
       name: value.name,
       date: date,
+      checked: value.checked,
       regulate: value.regulate,
+      regulateId: value.regulateId,
       issuer: value.issuer,
-      // issuerId: value.issuerId,
+      issuerId: value.issuerId,
       reason: value.reason
     })
 
@@ -175,7 +191,24 @@ const History = () => {
         setTableData(data)
         console.log(data)
       })
+    setOptionValues()
   }, [])
+
+  const setOptionValues = () => {
+    for (let i = 0; i < 3; i++) {
+      fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${i === 0 ? '상점' : i === 1 ? '벌점' : '상쇄점'}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (i === 0) {
+            setBonusPointList(data)
+          } else if (i === 1) {
+            setMinusPointList(data)
+          } else if (i === 2) {
+            setOffsetPointList(data)
+          }
+        })
+    }
+  }
 
   const searchHandler = () => {
     setHeadContent(headContent.map((it) =>
@@ -206,13 +239,19 @@ const History = () => {
     )))
   }, [headContent])
 
-  const datePickerCustom = ({
-                              value,
-                              onClick
-                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const datePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
+    </button>
+  )
+
+  const modalDatePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+    <button className="modal-date-picker-custom" onClick={onClick}>
+      <span>
+        <AiOutlineCalendar className={'calendar-icon'} style={{ marginTop: '1px' }}/>
+        {value}
+      </span>
     </button>
   )
 
@@ -311,7 +350,8 @@ const History = () => {
       <div>
         <div className={'top-tag'}>
           <AdminSideBar/>
-          <div className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 발급 내역
+          <div className={'page-name'}>
+            <span><AiFillEdit className={'page-name-icon'} style={{ fontSize: '21px' }}/> 발급내역 수정</span>
             <span><LogoutButton/></span>
           </div>
         </div>
@@ -366,11 +406,13 @@ const History = () => {
                 <Typography id="spring-modal-description" sx={{mt: 2}}>
                   <table className={'modal-table'}>
                     <tr>
-                      <td className={'modal-table-info'}>학생정보</td>
+                      <td className={'modal-table-info'}
+                          style={{ borderTopLeftRadius: '7px' }}
+                      >학생정보</td>
                       <td>
                         <div className={'grey-input-tag'}>
                           <span>
-                            {modalValue.grade}학년 {modalValue.class}학년 {modalValue.number}번 {modalValue.name}
+                            {modalValue.grade}학년 {modalValue.class}반 {modalValue.number}번 {modalValue.name}
                           </span>
                         </div>
                         <div className={'info-tag'}> <FcInfo style={{ marginBottom: '-3px' }}/> 학생정보는 수정 하실 수 없습니다.</div>
@@ -379,24 +421,69 @@ const History = () => {
 
                     <tr>
                       <td className={'modal-table-info'}>발급일자</td>
-                      <td>{String(modalValue.date)}</td>
+                      <td>
+                        <DatePicker
+                          locale={ko}
+                          dateFormat={'yyyy-MM-dd'}
+                          selected={modalValue.date}
+                          onChange={(changedDate: Date) => setModalValue((v) => ({...v, date: changedDate}))}
+                          customInput={React.createElement(modalDatePickerCustom)}
+                          maxDate={date}
+                        />
+                      </td>
                     </tr>
 
                     <tr>
                       <td className={'modal-table-info'}>발급항목</td>
-                      <td>{modalValue.regulate}</td>
+                      <td>
+                        <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                          <select className={'check-division'}
+                                  onChange={(e) => setModalValue((v) => ({...v, checked: e.target.value}))}
+                                  style={{background: modalValue.checked === '상점' ? '#f2fff2' : modalValue.checked === '벌점' ? '#fff3f3' : '#f3f3ff'}}
+                                  value={modalValue.checked}>
+                            <option value={'상점'}>상점</option>
+                            <option value={'벌점'}>벌점</option>
+                            <option value={'상쇄점'}>상쇄점</option>
+                          </select>
+
+                          <select
+                                  className={'regulate-division'}
+                                  onChange={(e) => setModalValue((v) => ({...v, regulateId: Number(e.target.value)}))}
+                                  value={modalValue.regulateId}>
+
+                            <option value={0}> ------ 항목을 선택 해 주세요 ------</option>
+                            {Object.values(modalValue.checked === '상점' ? bonusPointList : modalValue.checked === '벌점' ? minusPointList : offsetPointList).map((value: any, index: number) => (
+                              <option key={index} value={value.id}>{`[${value.score}점] ${value.regulate}`}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
                     </tr>
 
                     <tr>
                       <td className={'modal-table-info'}>발급자</td>
-                      <td>{modalValue.issuer}</td>
+                      <td>
+                        <div className={'grey-input-tag'}>
+                          <span>
+                            {modalValue.issuer}({modalValue.issuerId})
+                          </span>
+                        </div>
+                        <div className={'info-tag'}> <FcInfo style={{ marginBottom: '-3px' }}/> 발급자는 수정 하실 수 없습니다.</div>
+                      </td>
                     </tr>
 
                     <tr>
                       <td className={'modal-table-info'}>메모</td>
-                      <td>{modalValue.reason}</td>
+                      <td>
+                        <input className={'reason-input'} placeholder={modalValue.reason}/>
+                      </td>
                     </tr>
                   </table>
+
+                  <div className={'modal-button-container'}>
+                    <button className={'cancel-btn'} onClick={() => setModalOpen(false)}>취소</button>
+                    <button className={'save-btn'}>저장</button>
+                  </div>
                 </Typography>
               </Box>
             </Fade>
@@ -481,11 +568,21 @@ const History = () => {
                 </tr>)
               }
 
+              {
+                tableData.length === 0 && (
+                  <tr className={'table-no-data'} style={{ border: 'none' }}>
+                    <br/>
+                    <td colSpan={10}>검색하신 결과가 존재하지 않습니다.</td>
+                  </tr>
+                )
+              }
+
               {Object.values(tableData).map((value: any, index: number) => (
                 <tr key={index} className={cs('edit-tr')}
                     style={{backgroundColor: value.isChecked ? '#eff9ff' : ''}}
                     onDoubleClick={() => changeModalValue(value)}>
-                  <td><input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
+                  <td>
+                    <input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
                   </td>
                   <td>{value.grade}</td>
                   <td>{value.class}</td>

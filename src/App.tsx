@@ -6,6 +6,7 @@ import MyPage from "./Pages/Mypage";
 import Issuance from "./Pages/admin/Issuance";
 import AddUser from "./Pages/admin/AddUser";
 import History from "./Pages/admin/History";
+import Statistics from "./Pages/admin/Statistics";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <Route path={'/admin/issuance'} element={<Issuance/>}/>
       <Route path={'/admin/manage'} element={<AddUser/>}/>
       <Route path={'/admin/history'} element={<History/>}/>
+      <Route path={'/admin/statistics'} element={<Statistics/>}/>
       </Routes>
   )
 }
