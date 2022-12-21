@@ -15,13 +15,15 @@ import { RiFileExcel2Fill } from 'react-icons/ri'
 import { BsFillPrinterFill } from 'react-icons/bs'
 import { ExcelDownloader } from '../../utils/ExcelDownloader'
 import { MdSearch, MdSearchOff } from 'react-icons/md'
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import Modal from "@mui/material/Modal"
 import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { animated, useSpring } from "react-spring"
 import { FcInfo } from 'react-icons/fc'
+import LinesEllipsis from 'react-lines-ellipsis'
+import Swal from 'sweetalert2'
 
 const cs = classNames.bind(styles)
 
@@ -156,7 +158,8 @@ const History = () => {
     regulateId: 0,
     issuer: '',
     issuerId: '',
-    reason: ''
+    reason: '',
+    newReason: ''
   })
 
   const changeModalValue = (value: dataValue) => {
@@ -175,7 +178,8 @@ const History = () => {
       regulateId: value.regulateId,
       issuer: value.issuer,
       issuerId: value.issuerId,
-      reason: value.reason
+      reason: value.reason,
+      newReason: ''
     })
 
     setModalOpen(true)
@@ -239,17 +243,23 @@ const History = () => {
     )))
   }, [headContent])
 
-  const datePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const datePickerCustom = ({
+                              value,
+                              onClick
+                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
     </button>
   )
 
-  const modalDatePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const modalDatePickerCustom = ({
+                                   value,
+                                   onClick
+                                 }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="modal-date-picker-custom" onClick={onClick}>
       <span>
-        <AiOutlineCalendar className={'calendar-icon'} style={{ marginTop: '1px' }}/>
+        <AiOutlineCalendar className={'calendar-icon'} style={{marginTop: '1px'}}/>
         {value}
       </span>
     </button>
@@ -343,6 +353,35 @@ const History = () => {
     })
   }
 
+  const modifyHistory = () => {
+    const date: string = modalValue.date.getFullYear() + '-' + Number(modalValue.date.getMonth() + 1) + '-' + modalValue.date.getDate()
+
+    console.log(date)
+
+    let data = [
+      {
+        'id': modalValue.id,
+        'regulateId': modalValue.regulateId,
+        'reason': modalValue.newReason,
+        'createAt': date
+      }
+    ]
+
+    console.log(data)
+
+    if (window.confirm(`${modalValue.name}학생의 발급내역을 수정하시겠습니까?`)) {
+      axios.put('http://localhost:3001/v1/point', JSON.stringify(data), {
+        headers: {'Content-Type': 'application/json'}
+      }).then((res: AxiosResponse<any>) => {
+        console.log(res.data.success)
+        if (res.data.success) {
+          alert('발급내역이 수정되었습니다.')
+          window.location.reload()
+        }
+      })
+    }
+  }
+
   if (!tableData) {
     return <Loading/>
   } else {
@@ -351,7 +390,7 @@ const History = () => {
         <div className={'top-tag'}>
           <AdminSideBar/>
           <div className={'page-name'}>
-            <span><AiFillEdit className={'page-name-icon'} style={{ fontSize: '21px' }}/> 발급내역 수정</span>
+            <span><AiFillEdit className={'page-name-icon'} style={{fontSize: '21px'}}/> 발급내역 수정</span>
             <span><LogoutButton/></span>
           </div>
         </div>
@@ -407,15 +446,16 @@ const History = () => {
                   <table className={'modal-table'}>
                     <tr>
                       <td className={'modal-table-info'}
-                          style={{ borderTopLeftRadius: '7px' }}
-                      >학생정보</td>
+                          style={{borderTopLeftRadius: '7px'}}
+                      >학생정보
+                      </td>
                       <td>
                         <div className={'grey-input-tag'}>
                           <span>
                             {modalValue.grade}학년 {modalValue.class}반 {modalValue.number}번 {modalValue.name}
                           </span>
                         </div>
-                        <div className={'info-tag'}> <FcInfo style={{ marginBottom: '-3px' }}/> 학생정보는 수정 하실 수 없습니다.</div>
+                        <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 학생정보는 수정 하실 수 없습니다.</div>
                       </td>
                     </tr>
 
@@ -436,7 +476,7 @@ const History = () => {
                     <tr>
                       <td className={'modal-table-info'}>발급항목</td>
                       <td>
-                        <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+                        <div style={{marginTop: '10px', marginBottom: '10px'}}>
                           <select className={'check-division'}
                                   onChange={(e) => setModalValue((v) => ({...v, checked: e.target.value}))}
                                   style={{background: modalValue.checked === '상점' ? '#f2fff2' : modalValue.checked === '벌점' ? '#fff3f3' : '#f3f3ff'}}
@@ -447,9 +487,9 @@ const History = () => {
                           </select>
 
                           <select
-                                  className={'regulate-division'}
-                                  onChange={(e) => setModalValue((v) => ({...v, regulateId: Number(e.target.value)}))}
-                                  value={modalValue.regulateId}>
+                            className={'regulate-division'}
+                            onChange={(e) => setModalValue((v) => ({...v, regulateId: Number(e.target.value)}))}
+                            value={modalValue.regulateId}>
 
                             <option value={0}> ------ 항목을 선택 해 주세요 ------</option>
                             {Object.values(modalValue.checked === '상점' ? bonusPointList : modalValue.checked === '벌점' ? minusPointList : offsetPointList).map((value: any, index: number) => (
@@ -468,21 +508,22 @@ const History = () => {
                             {modalValue.issuer}({modalValue.issuerId})
                           </span>
                         </div>
-                        <div className={'info-tag'}> <FcInfo style={{ marginBottom: '-3px' }}/> 발급자는 수정 하실 수 없습니다.</div>
+                        <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 발급자는 수정 하실 수 없습니다.</div>
                       </td>
                     </tr>
 
                     <tr>
                       <td className={'modal-table-info'}>메모</td>
                       <td>
-                        <input className={'reason-input'} placeholder={modalValue.reason}/>
+                        <input className={'reason-input'} placeholder={modalValue.reason}
+                               onChange={(e) => setModalValue((v) => ({...v, newReason: e.target.value}))}/>
                       </td>
                     </tr>
                   </table>
 
                   <div className={'modal-button-container'}>
                     <button className={'cancel-btn'} onClick={() => setModalOpen(false)}>취소</button>
-                    <button className={'save-btn'}>저장</button>
+                    <button className={'save-btn'} onClick={modifyHistory}>저장</button>
                   </div>
                 </Typography>
               </Box>
@@ -570,7 +611,7 @@ const History = () => {
 
               {
                 tableData.length === 0 && (
-                  <tr className={'table-no-data'} style={{ border: 'none' }}>
+                  <tr className={'table-no-data'} style={{border: 'none'}}>
                     <br/>
                     <td colSpan={10}>검색하신 결과가 존재하지 않습니다.</td>
                   </tr>
@@ -589,7 +630,16 @@ const History = () => {
                   <td>{value.number}</td>
                   <td>{value.name}</td>
                   <td className={cs(value.checked === '상점' ? 'plus' : 'minus')}>{value.checked}</td>
-                  <td>{value.regulate}</td>
+                  <td>
+                    <LinesEllipsis
+                      text={value.regulate}
+                      maxLine='1'
+                      ellipsis='...'
+                      trimRight
+                      basedOn='letters'
+                    />
+
+                  </td>
                   <td>{value.score}</td>
                   <td>{value.issuer}</td>
                   <td>{value.createdDate}</td>
