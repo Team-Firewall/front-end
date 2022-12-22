@@ -23,7 +23,8 @@ import Typography from "@mui/material/Typography"
 import { animated, useSpring } from "react-spring"
 import { FcInfo } from 'react-icons/fc'
 import LinesEllipsis from 'react-lines-ellipsis'
-import Swal from 'sweetalert2'
+import Swal, { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
+import { Action } from "redux";
 
 const cs = classNames.bind(styles)
 
@@ -353,6 +354,50 @@ const History = () => {
     })
   }
 
+  const deleteHistory = () => {
+    let data: { id: number }[] = []
+    for (let i = 0; i < tableData.length; i++) {
+      if (tableData[i].isChecked)
+        data.push({'id': tableData[i].id})
+    }
+
+    if (data.length === 0) {
+      Swal.fire({
+        html: '<div style="font-size: 25px">삭제 할 항목을 선택하지 않으셨습니다.</div>',
+        icon: 'error',
+        confirmButtonText: '확인'
+      })
+    } else {
+      Swal.fire({
+        text: `총 ${data.length}개의 발급내역을 삭제하시겠습니까?`,
+        icon: 'question',
+        iconColor: '#fc7f03',
+        showCancelButton: true,
+        cancelButtonColor: '#dc3545',
+        confirmButtonColor: '#28a745',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소'
+      }).then((res:SweetAlertResult<Action<any>>) => {
+        if (res.isConfirmed) {
+          axios.delete('http://localhost:3001/v1/point' ,{data: data})
+            .then((res: AxiosResponse<any>) => {
+              if (res.data.success) {
+                Swal.fire({
+                  title: '삭제 완료',
+                  text: '발급항목 삭제가 완료되었습니다.',
+                  icon: 'success',
+                  confirmButtonText: '확인'
+                }).then(() => {
+                  window.location.reload()
+                })
+              }
+            })
+            .catch((error) => alert('error'))
+        }
+      })
+    }
+  }
+
   const modifyHistory = () => {
     const date: string = modalValue.date.getFullYear() + '-' + Number(modalValue.date.getMonth() + 1) + '-' + modalValue.date.getDate()
 
@@ -660,7 +705,7 @@ const History = () => {
             <button className={cs('excel-btn')} onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
               <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
             </button>
-            <button className={cs('delete-btn')}><FiDelete className={cs('icon')}/> 선택삭제</button>
+            <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제</button>
           </div>
         </div>
       </div>
