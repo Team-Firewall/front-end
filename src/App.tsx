@@ -7,6 +7,7 @@ import Issuance from "./Pages/admin/Issuance";
 import AddUser from "./Pages/admin/AddUser";
 import History from "./Pages/admin/History";
 import Statistics from "./Pages/admin/Statistics";
+import Regulation from "./Pages/admin/Regulation";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Route path={'/admin/manage'} element={<AddUser/>}/>
       <Route path={'/admin/history'} element={<History/>}/>
       <Route path={'/admin/statistics'} element={<Statistics/>}/>
+      <Route path={'/admin/regulation'} element={<Regulation/>}/>
       </Routes>
   )
 }

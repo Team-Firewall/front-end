@@ -124,7 +124,7 @@ export default function AdminSideBar() {
         </ListItem>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('/admin/add-user')}>
+          <ListItemButton onClick={() => navigate('/admin/regulation')}>
             <ListItemIcon>
               <RuleIcon/>
             </ListItemIcon>
@@ -158,8 +158,8 @@ export default function AdminSideBar() {
     <div>
       {(['left'] as const).map((anchor: "left") => (
         <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}><GoThreeBars
-            className={'bar-icon'}/></Button>
+          <Button onClick={toggleDrawer(anchor, true)} style={{marginLeft: '15px', marginTop: '15px'}}>
+            <GoThreeBars className={'bar-icon'}/></Button>
           <SwipeableDrawer
             anchor={anchor}
             open={state[anchor]}

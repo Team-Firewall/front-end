@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
@@ -38,15 +38,15 @@ export default function SwipeableTemporaryDrawer() {
       let token = getItemWithExpireTime()
       token = jwt_decode(token)
 
-      if (token.iat && token.position === 3 || token.position === 4) {
+      if (token.iat && token.permission === 3 || token.permission === 4) {
         navigate('/points')
-      } else if (token.iat && token.position > 0 - 2) {
+      } else if (token.iat && token.permission > 0 - 2) {
         navigate('/admin/issuance')
       }
     }
   }, [])
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,

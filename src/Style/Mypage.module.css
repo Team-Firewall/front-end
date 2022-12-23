@@ -96,3 +96,8 @@
     font-size: 18px;
     color: #0098b9;
 }
+
+
+.activated-btn {
+    background-color: #d6f4ff !important;
+}

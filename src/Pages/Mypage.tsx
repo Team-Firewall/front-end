@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getItemWithExpireTime, Logout } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
-import { AiOutlineHome } from "react-icons/ai";
+import { FaUserCircle } from "react-icons/fa";
 import LogoutButton from "../Components/LogoutButton";
 import styles from '../Style/Mypage.module.css'
 import classNames from "classnames/bind";
@@ -27,17 +27,18 @@ const MyPage = () => {
 
   return (
     <div>
-     <AdminSideBar/>
 
       <div className={'top-tag'}>
-        <span className={'page-name'}><span><AiOutlineHome className={'page-name-icon'}/></span> {'>'} 마이페이지</span>
-        <span><LogoutButton/></span>
-        <div className={'divider-line'}/>
+        <AdminSideBar/>
+        <div className={'page-name'}>
+          <span><FaUserCircle className={'page-name-icon'}/> 마이페이지</span>
+          <span><LogoutButton/></span>
+        </div>
       </div>
 
       <div className={cs('my-page-container')}>
 
-        <div className={cs('username-tag')}>{username}님의 정보</div>
+        <div className={cs('username-tag')}><span style={{ color: '#00ac7c' }}>{username}</span>님의 정보</div>
 
         <div className={cs('edit-box-container')}>
           <div className={cs('edit-box', 'first-edit-box')}>
@@ -46,7 +47,7 @@ const MyPage = () => {
               <div className={cs('div-tag-bottom')}>이름, 전화번호, 학번, 상벌점</div>
             </div>
 
-            <button onClick={() => setInformationState(0)}>보기</button>
+            <button onClick={() => setInformationState(0)} className={cs(informationState === 0 && 'activated-btn')}>보기</button>
           </div>
 
           <div className={cs('gap')}/>
@@ -57,7 +58,7 @@ const MyPage = () => {
               <div className={cs('div-tag-bottom')}>학부모, 담임선생님 정보</div>
             </div>
 
-            <button onClick={() => setInformationState(1)}>보기</button>
+            <button onClick={() => setInformationState(1)} className={cs(informationState === 1 && 'activated-btn')}>보기</button>
           </div>
 
           <div className={cs('gap')}/>
@@ -65,10 +66,10 @@ const MyPage = () => {
           <div className={cs('edit-box', 'third-edit-box')}>
             <div className={cs('text-container')}>
               <div className={cs('div-tag-top')}>비밀번호 변경</div>
-              <div className={cs('div-tag-bottom')}>비밀번호를 변경합니다.</div>
+              <div className={cs('div-tag-bottom')} >비밀번호를 변경합니다.</div>
             </div>
 
-            <button onClick={() => setInformationState(2)}>수정</button>
+            <button onClick={() => setInformationState(2)} className={cs(informationState === 2 && 'activated-btn')}>수정</button>
           </div>
 
         </div>
