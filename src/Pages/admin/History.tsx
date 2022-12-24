@@ -90,15 +90,15 @@ const Fade = React.forwardRef<HTMLDivElement, FadeProps>(function Fade(props, re
 const History = () => {
   const arrowUpButton = (title: string) => {
     return (
-      <button className={'arrowUpButton'} onClick={() => handleValueSort(title, true)}>
-        <BsArrowUp className={'arrow-icon'}/>
+      <button className={'sort-btn'} onClick={() => handleValueSort(title, true)}>
+        ▲
       </button>)
   }
 
   const arrowDownButton = (title: string) => {
     return (
-      <button className={'arrowUpButton'} onClick={() => handleValueSort(title, false)}>
-        <BsArrowDown className={'arrow-icon'}/>
+      <button className={'sort-btn'} onClick={() => handleValueSort(title, false)}>
+        ▼
       </button>
     )
   }
@@ -309,11 +309,11 @@ const History = () => {
     ))
 
     if (title === 'grade') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.grade < b.grade) ? 1 : -1 : (a.grade > b.grade) ? 1 : -1)
+      tableData.sort((a: dataValue, b: dataValue) => asc ? (a.grade > b.grade) ? 1 : -1 : (a.grade < b.grade) ? 1 : -1)
     } else if (title === 'class') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.class < b.class) ? 1 : -1 : (a.class > b.class) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.class > b.class) ? 1 : -1 : (a.class < b.class) ? 1 : -1)
     } else if (title === 'number') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.number < b.number) ? 1 : -1 : (a.number > b.number) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.number > b.number) ? 1 : -1 : (a.number < b.number) ? 1 : -1)
     } else if (title === 'name') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.name > b.name) ? 1 : -1 : (a.name < b.name) ? 1 : -1)
     } else if (title === 'division') {
@@ -321,9 +321,9 @@ const History = () => {
     } else if (title === 'regulate') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.regulate > b.regulate) ? 1 : -1 : (a.regulate < b.regulate) ? 1 : -1)
     } else if (title === 'score') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.score < b.score) ? 1 : -1 : (a.score > b.score) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.score > b.score) ? 1 : -1 : (a.score < b.score) ? 1 : -1)
     } else if (title === 'issuer') {
-      data.sort((a: dataValue, b: dataValue) => asc ? (a.issuer < b.issuer) ? 1 : -1 : (a.issuer > b.issuer) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.issuer > b.issuer) ? 1 : -1 : (a.issuer < b.issuer) ? 1 : -1)
     } else if (title === 'date') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.createdDate > b.createdDate) ? 1 : -1 : (a.createdDate < b.createdDate) ? 1 : -1)
     }
@@ -377,9 +377,9 @@ const History = () => {
         confirmButtonColor: '#28a745',
         confirmButtonText: '확인',
         cancelButtonText: '취소'
-      }).then((res:SweetAlertResult<Action<any>>) => {
+      }).then((res: SweetAlertResult<Action<any>>) => {
         if (res.isConfirmed) {
-          axios.delete('http://localhost:3001/v1/point' ,{data: data})
+          axios.delete('http://localhost:3001/v1/point', {data: data})
             .then((res: AxiosResponse<any>) => {
               if (res.data.success) {
                 Swal.fire({
@@ -584,47 +584,109 @@ const History = () => {
               </th>
 
               <th
-                style={{width: '5%'}}
-                className={'number-value'}>
-                <span>학년</span>
+                style={{ minWidth: '46px'}}
+                className={'number-value'}
+              >
+                <span onMouseOver={() => handleMouseOver('grade', true)}
+                      onMouseLeave={() => handleMouseOver('grade', false)}>
+                  학년
+                  {
+                    headContent[0].isHover ? headContent[0].order ? arrowDownButton('grade') : arrowUpButton('grade') : ''
+                  }
+                  </span>
               </th>
 
               <th
-                style={{width: '5%'}}
-                className={'number-value'}>
-                <span>반</span>
+                style={{ minWidth: '46px'}}
+                className={'number-value'}
+              >
+                <span
+                  onMouseOver={() => handleMouseOver('class', true)}
+                  onMouseLeave={() => handleMouseOver('class', false)}>
+                  반
+                  {
+                    headContent[1].isHover ? headContent[1].order ? arrowDownButton('class') : arrowUpButton('class') : ''
+                  }
+                </span>
               </th>
 
               <th
-                style={{width: '5%'}}
+                style={{ minWidth: '46px'}}
                 className={'number-value'}>
-                <span>번호</span>
+                <span
+                  onMouseOver={() => handleMouseOver('number', true)}
+                  onMouseLeave={() => handleMouseOver('number', false)}>
+                  번호
+                  {
+                    headContent[2].isHover ? headContent[2].order ? arrowDownButton('number') : arrowUpButton('number') : ''
+                  }
+                </span>
               </th>
 
               <th
                 style={{width: '8%'}}>
-                <span>이름</span>
+                <span
+                  onMouseOver={() => handleMouseOver('name', true)}
+                  onMouseLeave={() => handleMouseOver('name', false)}>
+                  이름
+                  {
+                    headContent[3].isHover ? headContent[3].order ? arrowDownButton('name') : arrowUpButton('name') : ''
+                  }
+                </span>
               </th>
 
               <th style={{width: '6%'}}>
-                <span>구분</span>
+                <span
+                  onMouseOver={() => handleMouseOver('division', true)}
+                  onMouseLeave={() => handleMouseOver('division', false)}>
+                  구분
+                  {
+                    headContent[4].isHover ? headContent[4].order ? arrowDownButton('division') : arrowUpButton('division') : ''
+                  }
+                </span>
               </th>
 
               <th style={{width: '48%'}}>
-                <span>발급항목</span>
+                <span
+                  onMouseOver={() => handleMouseOver('regulate', true)}
+                  onMouseLeave={() => handleMouseOver('regulate', false)}>
+                  발급항목
+                  {
+                    headContent[5].isHover ? headContent[5].order ? arrowDownButton('regulate') : arrowUpButton('regulate') : ''
+                  }
+                </span>
               </th>
 
-              <th>
-                <span>점수</span>
+              <th style={{minWidth: '48px'}}>
+                <span onMouseOver={() => handleMouseOver('score', true)}
+                      onMouseLeave={() => handleMouseOver('score', false)}>
+                  점수
+                  {
+                    headContent[6].isHover ? headContent[6].order ? arrowDownButton('score') : arrowUpButton('score') : ''
+                  }
+                </span>
               </th>
 
               <th
-                style={{minWidth: '45px'}}>
-                <span>발급자</span>
+                style={{minWidth: '60px'}}>
+                <span
+                  onMouseOver={() => handleMouseOver('issuer', true)}
+                  onMouseLeave={() => handleMouseOver('issuer', false)}>
+                  발급자
+                  {
+                    headContent[7].isHover ? headContent[7].order ? arrowDownButton('issuer') : arrowUpButton('issuer') : ''
+                  }
+                </span>
               </th>
 
               <th>
-                <span>발급일</span>
+                <span onMouseOver={() => handleMouseOver('date', true)}
+                      onMouseLeave={() => handleMouseOver('date', false)}>
+                  발급일
+                  {
+                    headContent[8].isHover ? headContent[8].order ? arrowDownButton('date') : arrowUpButton('date') : ''
+                  }
+                </span>
               </th>
 
               </thead>
@@ -705,7 +767,8 @@ const History = () => {
             <button className={cs('excel-btn')} onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
               <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
             </button>
-            <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제</button>
+            <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제
+            </button>
           </div>
         </div>
       </div>

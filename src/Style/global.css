@@ -110,7 +110,8 @@
 }
 
 .container {
-    margin-top: 4vh;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    margin-top: 1vh;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -683,4 +684,16 @@
 
 .table-no-data td {
     height: 27rem;
+}
+
+.sort-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+}
+
+.sort-btn:hover {
+    cursor: pointer;
+    color: #ddd;
 }

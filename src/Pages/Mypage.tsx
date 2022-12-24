@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getItemWithExpireTime, Logout } from "../utils/ControllToken";
+import { getItemWithExpireTime } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
 import { FaUserCircle } from "react-icons/fa";
 import LogoutButton from "../Components/LogoutButton";
@@ -9,6 +9,7 @@ import UserInformation from "../Components/MyPageComponents/UserInformation";
 import ParentsInformation from "../Components/MyPageComponents/ParentsInformation";
 import ChangePassword from "../Components/MyPageComponents/ChangePassword";
 import AdminSideBar from "../Components/Sidebar/AdminSideBar";
+import UserSideBar from "../Components/Sidebar/UserSideBar";
 
 const cs = classNames.bind(styles)
 
@@ -16,20 +17,23 @@ const MyPage = () => {
 
   const [username, setUserName] = useState<string>('')
   const [informationState, setInformationState] = useState<number>(0)
+  const [permission, setPermission] = useState<number>()
+  let token: any
 
   useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setUserName(decodeToken.name)
+    let token = getItemWithExpireTime()
+    token = jwt_decode(token)
+    setUserName(token.name)
+    setPermission(token.permission)
   }, [])
 
   return (
     <div>
 
       <div className={'top-tag'}>
-        <AdminSideBar/>
+        {
+          permission === 3 || permission === 4 ? (<UserSideBar/>) : (<AdminSideBar/>)
+        }
         <div className={'page-name'}>
           <span><FaUserCircle className={'page-name-icon'}/> 마이페이지</span>
           <span><LogoutButton/></span>
@@ -38,7 +42,7 @@ const MyPage = () => {
 
       <div className={cs('my-page-container')}>
 
-        <div className={cs('username-tag')}><span style={{ color: '#00ac7c' }}>{username}</span>님의 정보</div>
+        <div className={cs('username-tag')}><span style={{ color: '#8685ef'}}>{username}</span>님의 정보</div>
 
         <div className={cs('edit-box-container')}>
           <div className={cs('edit-box', 'first-edit-box')}>

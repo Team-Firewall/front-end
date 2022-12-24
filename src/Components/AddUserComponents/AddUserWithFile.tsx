@@ -1,9 +1,27 @@
-import React from "react"
+import React, { FormEvent } from "react"
+import axios from "axios";
 
 const AddUserWithFile = () => {
+
+  const fileHandler = (e: any) => {
+    e.preventDefault()
+
+    const formData = new FormData()
+    formData.append('file', e.target.file)
+
+    axios.post('http://localhost:8082/trance', formData, {
+      headers: {'Content-Type':'multipart/form-data'}
+    }).then((res) => {
+      console.log(res.data)
+    })
+  }
+
   return (
     <div>
-      파일로 사용자 추가
+      <form onSubmit={fileHandler}>
+        <input type={'file'} required={true}/>
+        <button type={'submit'}>하이</button>
+      </form>
     </div>
   )
 }

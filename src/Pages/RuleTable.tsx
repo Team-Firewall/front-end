@@ -11,8 +11,9 @@ const cs = classNames.bind(style)
 
 const RuleTable = () => {
   const navigate = useNavigate()
-  const {data, error} = useSWR('http://localhost:8889/getRegulate', fetcher)
+  const {data, error} = useSWR('http://localhost:3001/v1/regulate', fetcher)
 
+  console.log(data)
   let bonusPoint: Array<any> = []
   let minusPoint: Array<any> = []
 
@@ -24,7 +25,7 @@ const RuleTable = () => {
     const keyData = data
 
     for (let i = 0; i < keyData.length; i++) {
-      if (keyData[i].point === '상점') {
+      if (keyData[i].checked === '상점') {
         bonusPoint.push(keyData[i])
       } else {
         minusPoint.push(keyData[i])
@@ -51,8 +52,8 @@ const RuleTable = () => {
                 {Object.values(minusPoint).map((log: any, index: number) => (
                   <tr key={index}>
                     <td className={cs('division')}>{log.division}</td>
-                    <td className={cs('paragraph')}>{log.paragraph}</td>
-                    <td className={cs('contents')}><span/>{log.contents}</td>
+                    <td className={cs('paragraph')}>{log.id}</td>
+                    <td className={cs('contents')}><span/>{log.regulate}</td>
                     <td className={cs('score')}>{log.score}</td>
                   </tr>
                 ))}
@@ -77,8 +78,8 @@ const RuleTable = () => {
                 {Object.values(bonusPoint).map((log: any, index: number) => (
                   <tr key={index}>
                     <td className={cs('division')}>{log.division}</td>
-                    <td className={cs('paragraph')}>{log.paragraph}</td>
-                    <td className={cs('contents')}><span/>{log.contents}</td>
+                    <td className={cs('paragraph')}>{log.id}</td>
+                    <td className={cs('contents')}><span/>{log.regulate}</td>
                     <td className={cs('score')}>{log.score}</td>
                   </tr>
                 ))}
