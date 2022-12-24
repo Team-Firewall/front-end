@@ -1,7 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 
 .username-tag {
-    margin-bottom: 2%;
     font-family: 'Nanum Gothic', sans-serif;
     font-size: 20px;
+    float: left;
+    margin-top: 1.5rem;
+}
+
+.points-header {
+    width: 100%;
+    height: 5rem;
+    margin-bottom: 1rem;
+}
+
+.sum-point-table {
+    width: 15rem;
+    float: right;
+    border-collapse: collapse;
+}
+.sum-point-table table {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.sum-point-table table th {
+    background: #1f97cf;
+    color: #fff;
+    font-weight: normal;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 14px;
+}
+
+.sum-point-table table tr {
+    text-align: center;
+}
+
+.sum-point-table table div {
+    font-size: 12px;
+}
+
+.sum-point-table table span {
+    font-size: 14px;
+}
+
+.sum-point-table table td {
+    border: 1px solid #eee3fa;
 }

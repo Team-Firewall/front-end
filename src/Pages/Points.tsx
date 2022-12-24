@@ -57,8 +57,33 @@ const Points = () => {
         </div>
 
         <div className={'container'}>
-          <div className={cs('username-tag')}><span style={{color: '#8685ef'}}>{username}</span>님의 상벌점 이력</div>
-          <div>{year}학년도 총계 상점 3점 벌점 -4점 누계 32점</div>
+          <div className={cs('points-header')}>
+            <div className={cs('username-tag')}><span style={{color: '#8685ef'}}>{username}</span>님의 상벌점 이력</div>
+            <div className={cs('sum-point-table')}>
+              <table>
+                <thead>
+                <th colSpan={3}>{year}학년도 총계</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div style={{ color: '#04ad04' }}>상점</div>
+                      <span>23점</span>
+                    </td>
+                    <td>
+                      <div style={{ color: '#ce2c2c' }}>벌점</div>
+                      <span>-44점</span>
+                    </td>
+                    <td>
+                      <div style={{ color: '#3a5fcb' }}>누계</div>
+                      <span>32점</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
           <PointTable data={data}/>
           <PointTimeLine data={data}/>
         </div>
