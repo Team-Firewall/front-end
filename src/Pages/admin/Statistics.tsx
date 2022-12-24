@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminSideBar from "../../Components/Sidebar/AdminSideBar";
 import { TbDeviceAnalytics } from "react-icons/tb";
 import LogoutButton from "../../Components/LogoutButton";
@@ -15,6 +15,8 @@ import { BsFillPrinterFill } from "react-icons/bs";
 import { ExcelDownloader } from "../../utils/ExcelDownloader";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { FiDelete } from "react-icons/fi";
+import { getItemWithExpireTime } from "../../utils/ControllToken";
+import jwt_decode from "jwt-decode";
 
 interface dataValue {
   id: number,
@@ -39,22 +41,35 @@ interface dataValue {
 }
 
 const Statistics = () => {
+  const [permission, setPermission] = useState<number>(NaN)
 
-  return (
-    <div>
-      <div className={'top-tag'}>
-        <AdminSideBar/>
-        <div className={'page-name'}>
-          <span><TbDeviceAnalytics className={'page-name-icon'}/> 자료 조회 및 통계</span>
-          <span><LogoutButton/></span>
+  useEffect(() => {
+    let token = getItemWithExpireTime()
+    if (token) {
+      token = jwt_decode(token)
+      setPermission(token.permission)
+    }
+  }, [])
+
+  if (![0, 1, 2].includes(permission)) {
+    return (<div>notFound</div>)
+  } else {
+    return (
+      <div>
+        <div className={'top-tag'}>
+          <AdminSideBar/>
+          <div className={'page-name'}>
+            <span><TbDeviceAnalytics className={'page-name-icon'}/> 자료 조회 및 통계</span>
+            <span><LogoutButton/></span>
+          </div>
+        </div>
+
+        <div className={'container'} style={{marginTop: '1vh'}}>
+          <div className={'management-table-container'} style={{height: '90%'}}>
+          </div>
         </div>
       </div>
-
-      <div className={'container'} style={{marginTop: '1vh'}}>
-        <div className={'management-table-container'} style={{height: '90%'}}>
-        </div> 
-      </div>
-    </div>
-  )
+    )
+  }
 }
 export default Statistics

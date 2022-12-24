@@ -13,67 +13,51 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import classNames from "classnames/bind";
 import styles from "../Style/Timeline.module.css";
 import { Timeline, TimelineItem } from "@mui/lab";
-import { getItemWithExpireTime } from "../utils/ControllToken";
-import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
-const PointTimeLine = () => {
-  const [id, setId] = useState<number>()
+const PointTimeLine = (props: any) => {
 
-  useEffect(() => {
-    let decodeToken: any
-    let temp_token = getItemWithExpireTime()
-    temp_token = jwt_decode(temp_token)
-    decodeToken = temp_token
-    setId(decodeToken.userid)
-  }, [])
+  console.log(props.data)
 
-  const {data, error} = useSWR(`http://localhost:8889/getUserPoint?id=${id}`, fetcher)
+  return (
+    <div className={cs('timeline-container')}>
+      <Timeline position="alternate">
+        {Object.values(props.data).map((log: any, index: number) => (
+          <TimelineItem key={index}>
+            <TimelineOppositeContent
+              sx={{m: 'auto 0'}}
+              variant="body2"
+              color="text.secondary"
+            >
+              <div>
+                <span style={{color: log.score < 0 ? '#ce2c2c' : '#04ad04'}}>{log.score > 0 ? '상점' : '벌점'} {Math.abs(log.score)}점</span>
+              </div>
+              <div>총 <span style={{color: '#2951c7'}}>{log.accumulate}점 </span></div>
+            </TimelineOppositeContent>
 
-  if (error) {
-    return <div>Error</div>
-  } else if (!data) {
-    return <Loading/>
-  } else {
-    return (
-      <div className={cs('timeline-container')}>
-        <Timeline position="alternate">
-          {Object.values(data).map((log: any, index: number) => (
-            <TimelineItem key={index}>
-              <TimelineOppositeContent
-                sx={{m: 'auto 0'}}
-                variant="body2"
-                color="text.secondary"
-              >
+            <TimelineSeparator>
+              <TimelineConnector/>
+              <TimelineDot style={{backgroundColor: log.score < 0 ? '#ce2c2c' : '#04ad04'}}>
+                {
+                  log.score < 0 ? <RemoveIcon/> : <AddIcon/>
+                }
+              </TimelineDot>
+              <TimelineConnector/>
+            </TimelineSeparator>
 
-                <div><span style={{ color: log.point < 0 ? '#ce2c2c' : '#04ad04' }}>{log.point > 0 ? '상점' : '벌점'} {Math.abs(log.point)}점</span></div>
-                <div>총 <span style={{ color: '#2951c7' }}>{log.accumulate}점 </span></div>
-              </TimelineOppositeContent>
+            <TimelineContent sx={{py: '12px', px: 2}}>
+              <Typography variant="h6" component="span">
+                <div className={cs('division')}>{log.division}</div>
+              </Typography>
+              <Typography><span className={cs('date')}>{log.createdDate}</span></Typography>
+            </TimelineContent>
 
-              <TimelineSeparator>
-                <TimelineConnector/>
-                <TimelineDot style={{backgroundColor: log.point < 0 ? '#ce2c2c' : '#04ad04'}}>
-                  {
-                    log.point < 0 ? <RemoveIcon/> : <AddIcon/>
-                  }
-                </TimelineDot>
-                <TimelineConnector/>
-              </TimelineSeparator>
-
-              <TimelineContent sx={{py: '12px', px: 2}}>
-                <Typography variant="h6" component="span">
-                  <div className={cs('division')}>{log.division}</div>
-                </Typography>
-                <Typography><span className={cs('date')}>{log.date}</span></Typography>
-              </TimelineContent>
-
-            </TimelineItem>
-          ))}
-        </Timeline>
-      </div>
-    )
-  }
+          </TimelineItem>
+        ))}
+      </Timeline>
+    </div>
+  )
 }
 
 export default PointTimeLine

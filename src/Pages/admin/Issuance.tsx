@@ -104,7 +104,7 @@ interface apiSenderOption {
 }
 
 const Issuance = () => {
-  const [userPosition, setUserPosition] = useState<number>()
+  const [permission, setPermission] = useState<number>(NaN)
   const [issuanceName, setIssuanceName] = useState<string>('')
   const [open, setOpen] = useState(false);
   const [isSearched, setIsSearched] = useState<boolean>(false)
@@ -119,25 +119,25 @@ const Issuance = () => {
   const [bonusPointList, setBonusPointList] = useState<optionDivision[]>([])
   const [minusPointList, setMinusPointList] = useState<optionDivision[]>([])
   const [offsetPointList, setOffsetPointList] = useState<optionDivision[]>([])
-  const [apiSender, setApiSender] = useState<apiSenderOption[]>([])
   const [token, setToken] = useState<string>('')
+
+  useEffect(() => {
+    let token = getItemWithExpireTime()
+    if (token) {
+      setToken(token)
+      token = jwt_decode(token)
+      setPermission(token.permission)
+      setIssuanceName(token.name)
+      setOptionValues()
+    }
+  }, [])
 
   const handleMouseEnter = () => {
     setIsHover(true);
-  };
+  }
   const handleMouseLeave = () => {
     setIsHover(false);
-  };
-
-  useEffect(() => {
-    let decodeToken: any
-    let tmp_token = getItemWithExpireTime()
-    setToken(tmp_token)
-    decodeToken = jwt_decode(tmp_token)
-    setUserPosition(decodeToken.position)
-    setIssuanceName(decodeToken.name)
-    setOptionValues()
-  }, [])
+  }
 
   const setOptionValues = () => {
     for (let i = 0; i < 3; i++) {
@@ -413,10 +413,8 @@ const Issuance = () => {
   };
   const handleClose = () => setOpen(false);
 
-  if (userPosition === 3 || userPosition === 4) {
-    return (
-      <div>notFound</div>
-    )
+  if (![0, 1, 2].includes(permission)) {
+    return (<div>notFound</div>)
   } else {
     return (
       <div>
@@ -578,7 +576,9 @@ const Issuance = () => {
                       <td>{log.name}</td>
                       <td style={{width: '6vw'}}>
                         <select className={cs('select-division')}
-                                onChange={(e) => {editIssuanceList(log.studentId, 'pointDivision', e.target.value)}}
+                                onChange={(e) => {
+                                  editIssuanceList(log.studentId, 'pointDivision', e.target.value)
+                                }}
                                 style={{background: userArray[i].pointDivision === 0 ? '#f2fff2' : userArray[i].pointDivision === 1 ? '#fff3f3' : '#f3f3ff'}}
                                 value={userArray[i].pointDivision}>
                           <option value={0}>상점</option>

@@ -5,7 +5,6 @@ import LogoutButton from "../../Components/LogoutButton"
 import Loading from "../../Components/Loading"
 import classNames from "classnames/bind"
 import styles from '../../Style/History.module.css'
-import { BsArrowUp, BsArrowDown } from 'react-icons/bs'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import { ko } from 'date-fns/esm/locale'
@@ -25,6 +24,8 @@ import { FcInfo } from 'react-icons/fc'
 import LinesEllipsis from 'react-lines-ellipsis'
 import Swal, { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
 import { Action } from "redux";
+import { getItemWithExpireTime } from "../../utils/ControllToken";
+import jwt_decode from "jwt-decode";
 
 const cs = classNames.bind(styles)
 
@@ -120,7 +121,7 @@ const History = () => {
   const year = date.getFullYear()
   const month = date.getMonth()
   const day = date.getDate()
-
+  const [permission, setPermission] = useState<number>(NaN)
   const [startDate, setStartDate] = useState<Date>(new Date(year, month, day - 7));
   const [endDate, setEndDate] = useState<Date>(date);
 
@@ -189,14 +190,19 @@ const History = () => {
   const handleClose = () => setModalOpen(false)
 
   useEffect(() => {
-    fetch('http://localhost:3001/v1/point')
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data.map((v: any) => ({...v, isChecked: false})))
-        setTableData(data)
-        console.log(data)
-      })
-    setOptionValues()
+    let token = getItemWithExpireTime()
+    if (token) {
+      token = jwt_decode(token)
+      setPermission(token.permission)
+
+      fetch('http://localhost:3001/v1/point')
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data.map((v: any) => ({...v, isChecked: false})))
+          setTableData(data)
+        })
+      setOptionValues()
+    }
   }, [])
 
   const setOptionValues = () => {
@@ -427,166 +433,170 @@ const History = () => {
     }
   }
 
-  if (!tableData) {
-    return <Loading/>
+
+  if (![0, 1, 2].includes(permission)) {
+    return (<div>notFound</div>)
   } else {
-    return (
-      <div>
-        <div className={'top-tag'}>
-          <AdminSideBar/>
-          <div className={'page-name'}>
-            <span><AiFillEdit className={'page-name-icon'} style={{fontSize: '21px'}}/> 발급내역 수정</span>
-            <span><LogoutButton/></span>
-          </div>
-        </div>
-
-        <div className={'date-picker-container'}>
-          <DatePicker
-            locale={ko}
-            dateFormat={'yyyy-MM-dd'}
-            selected={startDate}
-            onChange={(date: Date) => setStartDate(date)}
-            startDate={startDate}
-            customInput={React.createElement(datePickerCustom)}
-            endDate={endDate}
-            maxDate={date}
-          />
-          <span className={'date-hyphen'}>-</span>
-          <DatePicker
-            locale={ko}
-            dateFormat={'yyyy-MM-dd'}
-            selected={endDate}
-            onChange={(date: Date) => setEndDate(date)}
-            startDate={startDate}
-            endDate={endDate}
-            customInput={React.createElement(datePickerCustom)}
-            minDate={startDate}
-            maxDate={date}
-          />
-
-          <div className={'lookup-btn'}>
-            <button onClick={lookupDate}>조회</button>
+    if (!tableData) {
+      return <Loading/>
+    } else {
+      return (
+        <div>
+          <div className={'top-tag'}>
+            <AdminSideBar/>
+            <div className={'page-name'}>
+              <span><AiFillEdit className={'page-name-icon'} style={{fontSize: '21px'}}/> 발급내역 수정</span>
+              <span><LogoutButton/></span>
+            </div>
           </div>
 
-        </div>
+          <div className={'date-picker-container'}>
+            <DatePicker
+              locale={ko}
+              dateFormat={'yyyy-MM-dd'}
+              selected={startDate}
+              onChange={(date: Date) => setStartDate(date)}
+              startDate={startDate}
+              customInput={React.createElement(datePickerCustom)}
+              endDate={endDate}
+              maxDate={endDate}
+            />
+            <span className={'date-hyphen'}>-</span>
+            <DatePicker
+              locale={ko}
+              dateFormat={'yyyy-MM-dd'}
+              selected={endDate}
+              onChange={(date: Date) => setEndDate(date)}
+              startDate={startDate}
+              endDate={endDate}
+              customInput={React.createElement(datePickerCustom)}
+              minDate={startDate}
+              maxDate={date}
+            />
 
-        <div className={'container'} style={{marginTop: '1vh'}}>
-          <Modal
-            aria-labelledby="spring-modal-title"
-            aria-describedby="spring-modal-description"
-            open={modalOpen}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={modalOpen}>
-              <Box sx={style}>
-                <Typography id="spring-modal-title" variant="h6" component="h2">
-                  발급내역 수정
-                </Typography>
-                <Typography id="spring-modal-description" sx={{mt: 2}}>
-                  <table className={'modal-table'}>
-                    <tr>
-                      <td className={'modal-table-info'}
-                          style={{borderTopLeftRadius: '7px'}}
-                      >학생정보
-                      </td>
-                      <td>
-                        <div className={'grey-input-tag'}>
+            <div className={'lookup-btn'}>
+              <button onClick={lookupDate}>조회</button>
+            </div>
+
+          </div>
+
+          <div className={'container'} style={{marginTop: '1vh'}}>
+            <Modal
+              aria-labelledby="spring-modal-title"
+              aria-describedby="spring-modal-description"
+              open={modalOpen}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={modalOpen}>
+                <Box sx={style}>
+                  <Typography id="spring-modal-title" variant="h6" component="h2">
+                    발급내역 수정
+                  </Typography>
+                  <Typography id="spring-modal-description" sx={{mt: 2}}>
+                    <table className={'modal-table'}>
+                      <tr>
+                        <td className={'modal-table-info'}
+                            style={{borderTopLeftRadius: '7px'}}
+                        >학생정보
+                        </td>
+                        <td>
+                          <div className={'grey-input-tag'}>
                           <span>
                             {modalValue.grade}학년 {modalValue.class}반 {modalValue.number}번 {modalValue.name}
                           </span>
-                        </div>
-                        <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 학생정보는 수정 하실 수 없습니다.</div>
-                      </td>
-                    </tr>
+                          </div>
+                          <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 학생정보는 수정 하실 수 없습니다.</div>
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td className={'modal-table-info'}>발급일자</td>
-                      <td>
-                        <DatePicker
-                          locale={ko}
-                          dateFormat={'yyyy-MM-dd'}
-                          selected={modalValue.date}
-                          onChange={(changedDate: Date) => setModalValue((v) => ({...v, date: changedDate}))}
-                          customInput={React.createElement(modalDatePickerCustom)}
-                          maxDate={date}
-                        />
-                      </td>
-                    </tr>
+                      <tr>
+                        <td className={'modal-table-info'}>발급일자</td>
+                        <td>
+                          <DatePicker
+                            locale={ko}
+                            dateFormat={'yyyy-MM-dd'}
+                            selected={modalValue.date}
+                            onChange={(changedDate: Date) => setModalValue((v) => ({...v, date: changedDate}))}
+                            customInput={React.createElement(modalDatePickerCustom)}
+                            maxDate={date}
+                          />
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td className={'modal-table-info'}>발급항목</td>
-                      <td>
-                        <div style={{marginTop: '10px', marginBottom: '10px'}}>
-                          <select className={'check-division'}
-                                  onChange={(e) => setModalValue((v) => ({...v, checked: e.target.value}))}
-                                  style={{background: modalValue.checked === '상점' ? '#f2fff2' : modalValue.checked === '벌점' ? '#fff3f3' : '#f3f3ff'}}
-                                  value={modalValue.checked}>
-                            <option value={'상점'}>상점</option>
-                            <option value={'벌점'}>벌점</option>
-                            <option value={'상쇄점'}>상쇄점</option>
-                          </select>
+                      <tr>
+                        <td className={'modal-table-info'}>발급항목</td>
+                        <td>
+                          <div style={{marginTop: '10px', marginBottom: '10px'}}>
+                            <select className={'check-division'}
+                                    onChange={(e) => setModalValue((v) => ({...v, checked: e.target.value}))}
+                                    style={{background: modalValue.checked === '상점' ? '#f2fff2' : modalValue.checked === '벌점' ? '#fff3f3' : '#f3f3ff'}}
+                                    value={modalValue.checked}>
+                              <option value={'상점'}>상점</option>
+                              <option value={'벌점'}>벌점</option>
+                              <option value={'상쇄점'}>상쇄점</option>
+                            </select>
 
-                          <select
-                            className={'regulate-division'}
-                            onChange={(e) => setModalValue((v) => ({...v, regulateId: Number(e.target.value)}))}
-                            value={modalValue.regulateId}>
+                            <select
+                              className={'regulate-division'}
+                              onChange={(e) => setModalValue((v) => ({...v, regulateId: Number(e.target.value)}))}
+                              value={modalValue.regulateId}>
 
-                            <option value={0}> ------ 항목을 선택 해 주세요 ------</option>
-                            {Object.values(modalValue.checked === '상점' ? bonusPointList : modalValue.checked === '벌점' ? minusPointList : offsetPointList).map((value: any, index: number) => (
-                              <option key={index} value={value.id}>{`[${value.score}점] ${value.regulate}`}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
+                              <option value={0}> ------ 항목을 선택 해 주세요 ------</option>
+                              {Object.values(modalValue.checked === '상점' ? bonusPointList : modalValue.checked === '벌점' ? minusPointList : offsetPointList).map((value: any, index: number) => (
+                                <option key={index} value={value.id}>{`[${value.score}점] ${value.regulate}`}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td className={'modal-table-info'}>발급자</td>
-                      <td>
-                        <div className={'grey-input-tag'}>
+                      <tr>
+                        <td className={'modal-table-info'}>발급자</td>
+                        <td>
+                          <div className={'grey-input-tag'}>
                           <span>
                             {modalValue.issuer}({modalValue.issuerId})
                           </span>
-                        </div>
-                        <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 발급자는 수정 하실 수 없습니다.</div>
-                      </td>
-                    </tr>
+                          </div>
+                          <div className={'info-tag'}><FcInfo style={{marginBottom: '-3px'}}/> 발급자는 수정 하실 수 없습니다.</div>
+                        </td>
+                      </tr>
 
-                    <tr>
-                      <td className={'modal-table-info'}>메모</td>
-                      <td>
-                        <input className={'reason-input'} placeholder={modalValue.reason}
-                               onChange={(e) => setModalValue((v) => ({...v, newReason: e.target.value}))}/>
-                      </td>
-                    </tr>
-                  </table>
+                      <tr>
+                        <td className={'modal-table-info'}>메모</td>
+                        <td>
+                          <input className={'reason-input'} placeholder={modalValue.reason}
+                                 onChange={(e) => setModalValue((v) => ({...v, newReason: e.target.value}))}/>
+                        </td>
+                      </tr>
+                    </table>
 
-                  <div className={'modal-button-container'}>
-                    <button className={'cancel-btn'} onClick={() => setModalOpen(false)}>취소</button>
-                    <button className={'save-btn'} onClick={modifyHistory}>저장</button>
-                  </div>
-                </Typography>
-              </Box>
-            </Fade>
-          </Modal>
+                    <div className={'modal-button-container'}>
+                      <button className={'cancel-btn'} onClick={() => setModalOpen(false)}>취소</button>
+                      <button className={'save-btn'} onClick={modifyHistory}>저장</button>
+                    </div>
+                  </Typography>
+                </Box>
+              </Fade>
+            </Modal>
 
-          <div className={'management-table-container'} style={{height: '90%'}}>
-            <table>
-              <thead>
-              <th style={{width: '3%'}}>
-                <input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}
-                       checked={headCheckbox}/>
-              </th>
+            <div className={'management-table-container'} style={{height: '90%'}}>
+              <table>
+                <thead>
+                <th style={{width: '3%'}}>
+                  <input type={"checkbox"} onClick={(e) => checkAllButton(e.currentTarget.checked)}
+                         checked={headCheckbox}/>
+                </th>
 
-              <th
-                style={{ minWidth: '46px'}}
-                className={'number-value'}
-              >
+                <th
+                  style={{minWidth: '46px'}}
+                  className={'number-value'}
+                >
                 <span onMouseOver={() => handleMouseOver('grade', true)}
                       onMouseLeave={() => handleMouseOver('grade', false)}>
                   학년
@@ -594,12 +604,12 @@ const History = () => {
                     headContent[0].isHover ? headContent[0].order ? arrowDownButton('grade') : arrowUpButton('grade') : ''
                   }
                   </span>
-              </th>
+                </th>
 
-              <th
-                style={{ minWidth: '46px'}}
-                className={'number-value'}
-              >
+                <th
+                  style={{minWidth: '46px'}}
+                  className={'number-value'}
+                >
                 <span
                   onMouseOver={() => handleMouseOver('class', true)}
                   onMouseLeave={() => handleMouseOver('class', false)}>
@@ -608,11 +618,11 @@ const History = () => {
                     headContent[1].isHover ? headContent[1].order ? arrowDownButton('class') : arrowUpButton('class') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th
-                style={{ minWidth: '46px'}}
-                className={'number-value'}>
+                <th
+                  style={{minWidth: '46px'}}
+                  className={'number-value'}>
                 <span
                   onMouseOver={() => handleMouseOver('number', true)}
                   onMouseLeave={() => handleMouseOver('number', false)}>
@@ -621,10 +631,10 @@ const History = () => {
                     headContent[2].isHover ? headContent[2].order ? arrowDownButton('number') : arrowUpButton('number') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th
-                style={{width: '8%'}}>
+                <th
+                  style={{width: '8%'}}>
                 <span
                   onMouseOver={() => handleMouseOver('name', true)}
                   onMouseLeave={() => handleMouseOver('name', false)}>
@@ -633,9 +643,9 @@ const History = () => {
                     headContent[3].isHover ? headContent[3].order ? arrowDownButton('name') : arrowUpButton('name') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th style={{width: '6%'}}>
+                <th style={{width: '6%'}}>
                 <span
                   onMouseOver={() => handleMouseOver('division', true)}
                   onMouseLeave={() => handleMouseOver('division', false)}>
@@ -644,9 +654,9 @@ const History = () => {
                     headContent[4].isHover ? headContent[4].order ? arrowDownButton('division') : arrowUpButton('division') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th style={{width: '48%'}}>
+                <th style={{width: '48%'}}>
                 <span
                   onMouseOver={() => handleMouseOver('regulate', true)}
                   onMouseLeave={() => handleMouseOver('regulate', false)}>
@@ -655,9 +665,9 @@ const History = () => {
                     headContent[5].isHover ? headContent[5].order ? arrowDownButton('regulate') : arrowUpButton('regulate') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th style={{minWidth: '48px'}}>
+                <th style={{minWidth: '48px'}}>
                 <span onMouseOver={() => handleMouseOver('score', true)}
                       onMouseLeave={() => handleMouseOver('score', false)}>
                   점수
@@ -665,10 +675,10 @@ const History = () => {
                     headContent[6].isHover ? headContent[6].order ? arrowDownButton('score') : arrowUpButton('score') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th
-                style={{minWidth: '60px'}}>
+                <th
+                  style={{minWidth: '60px'}}>
                 <span
                   onMouseOver={() => handleMouseOver('issuer', true)}
                   onMouseLeave={() => handleMouseOver('issuer', false)}>
@@ -677,9 +687,9 @@ const History = () => {
                     headContent[7].isHover ? headContent[7].order ? arrowDownButton('issuer') : arrowUpButton('issuer') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              <th>
+                <th>
                 <span onMouseOver={() => handleMouseOver('date', true)}
                       onMouseLeave={() => handleMouseOver('date', false)}>
                   발급일
@@ -687,93 +697,97 @@ const History = () => {
                     headContent[8].isHover ? headContent[8].order ? arrowDownButton('date') : arrowUpButton('date') : ''
                   }
                 </span>
-              </th>
+                </th>
 
-              </thead>
+                </thead>
 
-              <tbody>
-              {
-                isSearchOpen && (<tr className={cs('search-tr')}>
-                  <td></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)}
-                             maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)}
-                             maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)}
-                             maxLength={1}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)}
-                             maxLength={4}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('division', e.target.value)}
-                             maxLength={3}/></td>
-                  <td><input className={cs('search-input')}
-                             onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/>
-                  </td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('issuer', e.target.value)}/>
-                  </td>
-                  <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/>
-                  </td>
-                </tr>)
-              }
+                <tbody>
+                {
+                  isSearchOpen && (<tr className={cs('search-tr')}>
+                    <td></td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)}
+                               maxLength={1}/></td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)}
+                               maxLength={1}/></td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)}
+                               maxLength={1}/></td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)}
+                               maxLength={4}/></td>
+                    <td><input className={cs('search-input')}
+                               onChange={(e) => changeTextValue('division', e.target.value)}
+                               maxLength={3}/></td>
+                    <td><input className={cs('search-input')}
+                               onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/>
+                    </td>
+                    <td><input className={cs('search-input')}
+                               onChange={(e) => changeTextValue('issuer', e.target.value)}/>
+                    </td>
+                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/>
+                    </td>
+                  </tr>)
+                }
 
-              {
-                tableData.length === 0 && (
-                  <tr className={'table-no-data'} style={{border: 'none'}}>
-                    <br/>
-                    <td colSpan={10}>검색하신 결과가 존재하지 않습니다.</td>
+                {
+                  tableData.length === 0 && (
+                    <tr className={'table-no-data'} style={{border: 'none'}}>
+                      <br/>
+                      <td colSpan={10}>검색하신 결과가 존재하지 않습니다.</td>
+                    </tr>
+                  )
+                }
+
+                {Object.values(tableData).map((value: any, index: number) => (
+                  <tr key={index} className={cs('edit-tr')}
+                      style={{backgroundColor: value.isChecked ? '#eff9ff' : ''}}
+                      onDoubleClick={() => changeModalValue(value)}>
+                    <td>
+                      <input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
+                    </td>
+                    <td>{value.grade}</td>
+                    <td>{value.class}</td>
+                    <td>{value.number}</td>
+                    <td>{value.name}</td>
+                    <td className={cs(value.checked === '상점' ? 'plus' : 'minus')}>{value.checked}</td>
+                    <td>
+                      <LinesEllipsis
+                        text={value.regulate}
+                        maxLine='1'
+                        ellipsis='...'
+                        trimRight
+                        basedOn='letters'
+                      />
+
+                    </td>
+                    <td>{value.score}</td>
+                    <td>{value.issuer}</td>
+                    <td>{value.createdDate}</td>
                   </tr>
-                )
-              }
-
-              {Object.values(tableData).map((value: any, index: number) => (
-                <tr key={index} className={cs('edit-tr')}
-                    style={{backgroundColor: value.isChecked ? '#eff9ff' : ''}}
-                    onDoubleClick={() => changeModalValue(value)}>
-                  <td>
-                    <input type={"checkbox"} checked={value.isChecked} onClick={() => handelCheckButton(value.id)}/>
-                  </td>
-                  <td>{value.grade}</td>
-                  <td>{value.class}</td>
-                  <td>{value.number}</td>
-                  <td>{value.name}</td>
-                  <td className={cs(value.checked === '상점' ? 'plus' : 'minus')}>{value.checked}</td>
-                  <td>
-                    <LinesEllipsis
-                      text={value.regulate}
-                      maxLine='1'
-                      ellipsis='...'
-                      trimRight
-                      basedOn='letters'
-                    />
-
-                  </td>
-                  <td>{value.score}</td>
-                  <td>{value.issuer}</td>
-                  <td>{value.createdDate}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
-          <div className={cs('button-container')}>
-            <button style={{float: 'left', marginLeft: '0'}} className={cs('search-btn')}
-                    onClick={searchHandler}>
-              {
-                isSearchOpen ? (<><MdSearchOff className={cs('icon', 'search-icon')}/> 검색 닫기</>) :
-                  (<><MdSearch className={cs('icon', 'search-icon')}/> 검색하기</>)
-              }
-            </button>
-            <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
-            <button className={cs('excel-btn')} onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
-              <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
-            </button>
-            <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제
-            </button>
+                ))}
+                </tbody>
+              </table>
+            </div>
+            <div className={cs('button-container')}>
+              <button style={{float: 'left', marginLeft: '0'}} className={cs('search-btn')}
+                      onClick={searchHandler}>
+                {
+                  isSearchOpen ? (<><MdSearchOff className={cs('icon', 'search-icon')}/> 검색 닫기</>) :
+                    (<><MdSearch className={cs('icon', 'search-icon')}/> 검색하기</>)
+                }
+              </button>
+              <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
+              <button className={cs('excel-btn')}
+                      onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
+                <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
+              </button>
+              <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 
-export default History;
+export default History

@@ -17,8 +17,7 @@ const MyPage = () => {
 
   const [username, setUserName] = useState<string>('')
   const [informationState, setInformationState] = useState<number>(0)
-  const [permission, setPermission] = useState<number>()
-  let token: any
+  const [permission, setPermission] = useState<number>(NaN)
 
   useEffect(() => {
     let token = getItemWithExpireTime()
@@ -32,7 +31,7 @@ const MyPage = () => {
 
       <div className={'top-tag'}>
         {
-          permission === 3 || permission === 4 ? (<UserSideBar/>) : (<AdminSideBar/>)
+          [0, 1, 2].includes(permission) ? (<AdminSideBar/>) : (<UserSideBar/>)
         }
         <div className={'page-name'}>
           <span><FaUserCircle className={'page-name-icon'}/> 마이페이지</span>

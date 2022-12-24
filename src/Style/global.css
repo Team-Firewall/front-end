@@ -682,10 +682,6 @@
     font-size: 22px !important;
 }
 
-.table-no-data td {
-    height: 27rem;
-}
-
 .sort-btn {
     background: none;
     border: none;

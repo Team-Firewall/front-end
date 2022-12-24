@@ -115,7 +115,7 @@ export default function AdminSideBar() {
         </ListItem>
 
         <ListItem>
-          <ListItemButton onClick={() => navigate('/admin/manage')}>
+          <ListItemButton onClick={() => navigate('/admin/management')}>
             <ListItemIcon>
               <PersonAddIcon/>
             </ListItemIcon>
