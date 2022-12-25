@@ -4,14 +4,18 @@ import axios from "axios";
 const AddUserWithFile = () => {
   const [selectedFile, setSelectedFile] = useState<any>()
 
-  const fileHandler = (e: any) => {
+  const fileHandler = (e: FormEvent) => {
     e.preventDefault()
     const formData = new FormData();
-    formData.append("selectedFile", selectedFile);
+    formData.append("file_set", selectedFile);
     console.log(formData)
 
     axios.post('http://localhost:8082/trance', formData, {
-      headers: {'Content-Type':'multipart/form-data'}
+      headers: {
+        'Content-Type':'multipart/form-data',
+        'Accept': 'application/json'
+      },
+      withCredentials: true
     }).then((res) => {
       console.log(res.data)
     })
