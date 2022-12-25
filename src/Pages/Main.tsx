@@ -14,6 +14,7 @@ import styles from '../Style/Login.module.css'
 import { FiLogIn } from 'react-icons/fi'
 import { GoThreeBars } from 'react-icons/go'
 import Logo from '../images/ScoolFullLogo.png'
+import gbswLogo from '../images/gbsw-logo.png'
 import LoginContainer from '../Components/LoginContainer'
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -127,7 +128,7 @@ export default function SwipeableTemporaryDrawer() {
           <div className={cs('login-container')}>
             <div className={cs('sub-container')}>
               <div className={cs('title')}>
-                <img src={'https://raw.github.com/GBSWHS/CI-Signature/main/symbol/symbol-only.png'}
+                <img src={gbswLogo}
                      className={cs('gbsw-logo')} alt={'school-logo'}/>
                 <div className={cs('tag-top')}>경북소프트웨어고등학교</div>
                 <div className={cs('tag-bottom')}>상벌점 시스템</div>

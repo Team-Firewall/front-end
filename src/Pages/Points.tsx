@@ -13,28 +13,50 @@ import Loading from "../Components/Loading";
 
 const cs = classNames.bind(styles)
 
+
 const Points = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isError, setIsError] = useState<boolean>(false)
   const [username, setUserName] = useState<string>('')
   const [data, setData] = useState<Object>([])
+  const [bonus, setBonus] = useState<number>(NaN)
+  const [minus, setMinus] = useState<number>(NaN)
+  const [offset, setOffset] = useState<number>(NaN)
+  const [total, setTotal] = useState<number>(NaN)
 
   useEffect(() => {
     let token = getItemWithExpireTime()
     token = jwt_decode(token)
     setUserName(token.name)
     fetchUserHistory(token.userid)
+    fetchTotalHistory(token.userid)
   }, [])
 
   const fetchUserHistory = (id: number) => {
     let data = {'userId': id}
-    console.log(id)
     axios.post('http://localhost:3001/v1/point/history', JSON.stringify(data), {
       headers: {'Content-Type': 'application/json'}
     })
       .then((res: AxiosResponse<any>) => {
         if (res.status === 200) {
           setData(res.data)
+        }
+      })
+      .catch((error) => console.log(error))
+  }
+
+  const fetchTotalHistory = (id: number) => {
+    let data = {'userId': id}
+    axios.post('http://localhost:3001/v1/point/user', JSON.stringify(data), {
+      headers: {'Content-Type': 'application/json'}
+    })
+      .then((res: AxiosResponse<any>) => {
+        console.log(res)
+        if (res.status === 200) {
+          setBonus(res.data.bonus)
+          setMinus(res.data.minus)
+          setOffset(res.data.offset)
+          setTotal(res.data.total)
           setIsLoading(false)
         }
       })
@@ -62,23 +84,27 @@ const Points = () => {
             <div className={cs('sum-point-table')}>
               <table>
                 <thead>
-                <th colSpan={3}>{year}학년도 총계</th>
+                <th colSpan={4}>{year}학년도 총계</th>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <div style={{ color: '#04ad04' }}>상점</div>
-                      <span>23점</span>
-                    </td>
-                    <td>
-                      <div style={{ color: '#ce2c2c' }}>벌점</div>
-                      <span>-44점</span>
-                    </td>
-                    <td>
-                      <div style={{ color: '#3a5fcb' }}>누계</div>
-                      <span>32점</span>
-                    </td>
-                  </tr>
+                <tr>
+                  <td>
+                    <div style={{color: '#04ad04'}}>상점</div>
+                    <span>{bonus}점</span>
+                  </td>
+                  <td>
+                    <div style={{color: '#ce2c2c'}}>벌점</div>
+                    <span>{minus}점</span>
+                  </td>
+                  <td>
+                    <div style={{color: '#9766cf'}}>상쇄점</div>
+                    <span>{offset}점</span>
+                  </td>
+                  <td>
+                    <div style={{color: '#3a5fcb'}}>누계</div>
+                    <span>{total}점</span>
+                  </td>
+                </tr>
                 </tbody>
               </table>
 
