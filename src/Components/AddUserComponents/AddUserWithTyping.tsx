@@ -270,17 +270,17 @@ const AddUserWithTyping = () => {
 
             {
               newUserArray.length === 0 && (
-                <div className={cs('no-user-tag')}>
-                  <div className={cs('tag1')}>
-                    <FiUserPlus className={cs('add-user-icon')}/> <span>사용자를 추가해 주세요.</span>
+                <div className={'no-user-tag'}>
+                  <div className={'tag1'}>
+                    <FiUserPlus className={'add-user-icon'}/> <span>사용자를 추가해 주세요.</span>
                   </div>
 
-                  <div className={cs('tag2')}>
+                  <div className={'tag2'}>
                     <div>
-                      <AiOutlineCheck className={cs('check-icon')}/> <span>담당하는 학급이 있는 선생님은 [담임선생님] 권한을 선택해주세요.</span>
+                      <AiOutlineCheck className={'check-icon'}/> <span>담당하는 학급이 있는 선생님은 [담임선생님] 권한을 선택해주세요.</span>
                     </div>
-                    <div className={cs('tag3')}>
-                      <AiOutlineCheck className={cs('check-icon')}/> <span>담임선생님 선택 시, 담당하는 학급의 학년과 반을 입력해주세요.</span>
+                    <div className={'tag3'}>
+                      <AiOutlineCheck className={'check-icon'}/> <span>담임선생님 선택 시, 담당하는 학급의 학년과 반을 입력해주세요.</span>
                     </div>
                   </div>
                 </div>

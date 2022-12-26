@@ -26,45 +26,6 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
-.no-user-tag {
-    transition: all 0.3s;
-    width: 100%;
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-}
-
-.no-user-tag .tag1 {
-    font-size: 35px;
-}
-
-.no-user-tag .tag1 span {
-    margin-left: 10px;
-}
-
-.add-user-icon {
-    color: #1daf56;
-    margin-bottom: -5px;
-}
-
-.no-user-tag .tag2 {
-    font-size: 16px;
-    margin-top: 2vh;
-}
-
-.no-user-tag .tag2 span {
-    margin-left: 8px;
-}
-
-.no-user-tag .tag2 .tag3 {
-    margin-top: 0.5vh;
-}
-
-.check-icon {
-    color: #2d80ea;
-    margin-bottom: -4px;
-}
-
 .button-container {
     margin-top: 2vh;
 }
