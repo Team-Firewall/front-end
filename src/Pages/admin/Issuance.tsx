@@ -401,7 +401,6 @@ const Issuance = () => {
     }
   }
 
-
   const handleOpen = () => {
     setStudentDivision(3)
     setGrade(0)
@@ -614,7 +613,6 @@ const Issuance = () => {
                 </table>
               )
             }
-
           </div>
 
           <div className={cs('bottom-button-container')}>

@@ -22,7 +22,7 @@ import Typography from "@mui/material/Typography"
 import { animated, useSpring } from "react-spring"
 import { FcInfo } from 'react-icons/fc'
 import LinesEllipsis from 'react-lines-ellipsis'
-import Swal, { SweetAlertOptions, SweetAlertResult } from 'sweetalert2'
+import Swal, { SweetAlertResult } from 'sweetalert2'
 import { Action } from "redux";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
@@ -348,8 +348,6 @@ const History = () => {
       'secondDate': secondDate
     }
 
-    console.log(reqData)
-
     axios.post('http://localhost:3001/v1/point/date', JSON.stringify(reqData), {
       headers: {'Content-Type': 'application/json'}
     }).then((res) => {
@@ -406,9 +404,6 @@ const History = () => {
 
   const modifyHistory = () => {
     const date: string = modalValue.date.getFullYear() + '-' + Number(modalValue.date.getMonth() + 1) + '-' + modalValue.date.getDate()
-
-    console.log(date)
-
     let data = [
       {
         'id': modalValue.id,
@@ -417,8 +412,6 @@ const History = () => {
         'createAt': date
       }
     ]
-
-    console.log(data)
 
     if (window.confirm(`${modalValue.name}학생의 발급내역을 수정하시겠습니까?`)) {
       axios.put('http://localhost:3001/v1/point', JSON.stringify(data), {
@@ -703,28 +696,21 @@ const History = () => {
 
                 <tbody>
                 {
-                  isSearchOpen && (<tr className={cs('search-tr')}>
-                    <td></td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('grade', e.target.value)}
+                  isSearchOpen && (<tr className={'search-tr'}>
+                    <td><input onChange={(e) => changeTextValue('grade', e.target.value)}
                                maxLength={1}/></td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('class', e.target.value)}
+                    <td><input onChange={(e) => changeTextValue('class', e.target.value)}
                                maxLength={1}/></td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('number', e.target.value)}
+                    <td><input onChange={(e) => changeTextValue('number', e.target.value)}
                                maxLength={1}/></td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('name', e.target.value)}
+                    <td><input onChange={(e) => changeTextValue('name', e.target.value)}
                                maxLength={4}/></td>
-                    <td><input className={cs('search-input')}
-                               onChange={(e) => changeTextValue('division', e.target.value)}
+                    <td><input onChange={(e) => changeTextValue('division', e.target.value)}
                                maxLength={3}/></td>
-                    <td><input className={cs('search-input')}
-                               onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('score', e.target.value)}/>
-                    </td>
-                    <td><input className={cs('search-input')}
-                               onChange={(e) => changeTextValue('issuer', e.target.value)}/>
-                    </td>
-                    <td><input className={cs('search-input')} onChange={(e) => changeTextValue('date', e.target.value)}/>
-                    </td>
+                    <td><input onChange={(e) => changeTextValue('regulate', e.target.value)}/></td>
+                    <td><input onChange={(e) => changeTextValue('score', e.target.value)}/></td>
+                    <td><input onChange={(e) => changeTextValue('issuer', e.target.value)}/></td>
+                    <td><input onChange={(e) => changeTextValue('date', e.target.value)}/></td>
                   </tr>)
                 }
 

@@ -1,9 +1,12 @@
 import React, { useState } from "react"
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import classNames from "classnames/bind";
 import styles from '../../Style/FileInput.module.css'
 import { RiFileExcel2Line } from "react-icons/ri";
 import { AiOutlineCheck } from "react-icons/ai";
+import Swal from "sweetalert2";
+import { HiOutlineUserAdd } from 'react-icons/hi'
+import { AiOutlineDelete } from 'react-icons/ai'
 
 const cs = classNames.bind(styles)
 
@@ -15,34 +18,78 @@ const AddUserWithFile = () => {
     const formData = new FormData()
     formData.append("file_set", file)
 
-    // fetch('http://localhost:8083/trance', {
-    //   method: "POST",
-    //   headers: {'Content-Type': 'multipart/form-data'},
-    //   body: formData
-    // })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err))
-
-    axios.post('http://localhost:8082/trance', formData, {
+    axios.post('http://localhost:8082/trance-student', formData, {
       headers: {'Content-Type' : 'multipart/form-data'}
-    }).then((res) => {
+    }).then((res: AxiosResponse<any>) => {
       console.log(res)
       if (res.status === 200) {
-        console.log(res.data)
         setResponseObject(res.data)
         setFileName(file.name)
       }
-    }).catch((err) => console.log(err))
+    }).catch((err) => {
+      Swal.fire({
+        icon: 'error',
+        html: '<div style="font-size: 20px; text-align: center">파일 형식이 일치하지 않습니다.<br>파일 형식 수정 후 다시 시도하여 주세요.</div>'
+      })
+    })
   }
 
   const handleFileSelect = (e: any) => {
-    if (window.confirm('적용하겠노 ?')) {
-      fileHandler(e.target.files[0])
-    }
+    Swal.fire({
+      html: `<div style="font-size: 17px">파일을 적용하시겠습니까?</div>`,
+      icon: 'question',
+      iconColor: '#3249de',
+      showCancelButton: true,
+      confirmButtonColor: '#1fb051',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
+    })
+      .then((res) => {
+        if (res.isConfirmed) {
+          fileHandler(e.target.files[0])
+        }
+      })
   }
 
   const handleSheetPage = () => {
     window.open('https://docs.google.com/spreadsheets/d/1wnBAxmb78hZ__yjJKR73DAKR5UUMH67ZiP3FrHwvMjg/edit#gid=0', '_blank')
+  }
+
+  const resetData = () => {
+    setFileName('')
+    setResponseObject([])
+  }
+
+  const handleUserAdd = () => {
+    Swal.fire({
+      text: `총 ${responseObject.length}명의 사용자를 추가하시겠습니까?`,
+      icon: 'question',
+      iconColor: '#2682ec',
+      showCancelButton: true,
+      cancelButtonColor: '#dc3545',
+      confirmButtonColor: '#28a745',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소'
+    }).then((res) => {
+      if (res.isConfirmed) {
+        axios.post('http://localhost:3001/addUser', JSON.stringify(responseObject), {
+          headers: {"Content-Type": "application/json"}
+        }).then((res) => {
+          console.log('this is response', res.data)
+          if (res.data.success) {
+            Swal.fire({
+              title: '유저 추가 완료',
+              text: '유저 추가가 완료되었습니다.',
+              icon: 'success',
+              confirmButtonText: '확인'
+            }).then(() => {
+              window.location.reload()
+            })
+          }
+        })
+      }
+    })
   }
 
   return (
@@ -53,7 +100,7 @@ const AddUserWithFile = () => {
         <input type={'file'} name={'file'} id={'file'} required={true} onChange={handleFileSelect}/>
       </div>
 
-      <div className={'add-user-container'} style={{marginTop: '1.5rem', height: '64vh', display: !fileName ? 'table' : ''}}>
+      <div className={'add-user-container'} style={{marginTop: '1.5rem', height: '63vh', display: !fileName ? 'table' : ''}}>
         {
           !fileName ?
             (
@@ -107,6 +154,14 @@ const AddUserWithFile = () => {
                   </tbody>
                 </table>
               </div>)
+        }
+        {
+          fileName && (
+            <div className={'button-container'}>
+              <button className={'add-user-btn'} onClick={handleUserAdd}><HiOutlineUserAdd className={'icon'}/> 유저 추가</button>
+              <button className={'reset-btn'} onClick={resetData}><AiOutlineDelete className={'icon'}/> 데이터 초기화</button>
+            </div>
+          )
         }
       </div>
     </div>

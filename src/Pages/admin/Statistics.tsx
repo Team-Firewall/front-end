@@ -13,10 +13,18 @@ import LinesEllipsis from "react-lines-ellipsis";
 import { MdSearch, MdSearchOff } from "react-icons/md";
 import { BsFillPrinterFill } from "react-icons/bs";
 import { ExcelDownloader } from "../../utils/ExcelDownloader";
-import { RiFileExcel2Fill } from "react-icons/ri";
-import { FiDelete } from "react-icons/fi";
+import { RiFileListLine } from "react-icons/ri";
 import { getItemWithExpireTime } from "../../utils/ControllToken";
 import jwt_decode from "jwt-decode";
+import { FaUser, FaUserTie } from "react-icons/fa";
+import AddUserWithTyping from "../../Components/AddUserComponents/AddUserWithTyping";
+import AddUserWithFile from "../../Components/AddUserComponents/AddUserWithFile";
+import StudentParentManagement from "../../Components/AddUserComponents/StudentParentManagement";
+import classNames from "classnames/bind";
+import styles from '../../Style/Statistics.module.css'
+import UserStatistics from "../../Components/StaticsComponents/UserStatistics";
+
+const cs = classNames.bind(styles)
 
 interface dataValue {
   id: number,
@@ -41,6 +49,7 @@ interface dataValue {
 }
 
 const Statistics = () => {
+  const [componentState, setComponentState] = useState<number>(0)
   const [permission, setPermission] = useState<number>(NaN)
 
   useEffect(() => {
@@ -64,10 +73,34 @@ const Statistics = () => {
           </div>
         </div>
 
-        <div className={'container'} style={{marginTop: '1vh'}}>
-          <div className={'management-table-container'} style={{height: '90%'}}>
+        <div className={'container'}>
+          <div className={cs('button-container')}>
+            <button onClick={() => setComponentState(0)}
+                    className={cs(componentState === 0 ? 'active-button' : 'not-active-btn', 'button-border-right-none')}
+                    style={{borderTopLeftRadius: '5px', borderBottomLeftRadius: '5px'}}>
+              <FaUser className={cs('icon')}/> <span>학생별 누계자료</span>
+            </button>
+
+            <button onClick={() => setComponentState(1)}
+                    className={cs(componentState === 1 ? 'active-button' : 'not-active-btn', 'button-border-right-none')}>
+              <RiFileListLine className={cs('icon')}/> <span>항목별 통계</span>
+            </button>
+
+            <button onClick={() => setComponentState(2)}
+                    className={cs(componentState === 2 ? 'active-button' : 'not-active-btn', 'button-border-right')}>
+              <FaUserTie className={cs('icon')}/> <span>교사별 통계</span>
+            </button>
+          </div>
+
+          <div>
+            {componentState === 0 && (<UserStatistics/>)}
+
+            {componentState === 1 && (<AddUserWithFile/>)}
+
+            {componentState === 2 && (<StudentParentManagement/>)}
           </div>
         </div>
+
       </div>
     )
   }
