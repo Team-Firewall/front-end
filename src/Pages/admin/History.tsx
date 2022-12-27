@@ -250,20 +250,14 @@ const History = () => {
     )))
   }, [headContent])
 
-  const datePickerCustom = ({
-                              value,
-                              onClick
-                            }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const datePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
       {value}
     </button>
   )
 
-  const modalDatePickerCustom = ({
-                                   value,
-                                   onClick
-                                 }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+  const modalDatePickerCustom = ({ value, onClick }: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="modal-date-picker-custom" onClick={onClick}>
       <span>
         <AiOutlineCalendar className={'calendar-icon'} style={{marginTop: '1px'}}/>
@@ -443,37 +437,37 @@ const History = () => {
             </div>
           </div>
 
-          <div className={'date-picker-container'}>
-            <DatePicker
-              locale={ko}
-              dateFormat={'yyyy-MM-dd'}
-              selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              startDate={startDate}
-              customInput={React.createElement(datePickerCustom)}
-              endDate={endDate}
-              maxDate={endDate}
-            />
-            <span className={'date-hyphen'}>-</span>
-            <DatePicker
-              locale={ko}
-              dateFormat={'yyyy-MM-dd'}
-              selected={endDate}
-              onChange={(date: Date) => setEndDate(date)}
-              startDate={startDate}
-              endDate={endDate}
-              customInput={React.createElement(datePickerCustom)}
-              minDate={startDate}
-              maxDate={date}
-            />
+          <div className={'container'} style={{marginTop: '1vh'}}>
+            <div className={'date-picker-container'}>
+              <DatePicker
+                locale={ko}
+                dateFormat={'yyyy-MM-dd'}
+                selected={startDate}
+                onChange={(date: Date) => setStartDate(date)}
+                startDate={startDate}
+                customInput={React.createElement(datePickerCustom)}
+                endDate={endDate}
+                maxDate={endDate}
+              />
+              <span className={'date-hyphen'}>-</span>
+              <DatePicker
+                locale={ko}
+                dateFormat={'yyyy-MM-dd'}
+                selected={endDate}
+                onChange={(date: Date) => setEndDate(date)}
+                startDate={startDate}
+                endDate={endDate}
+                customInput={React.createElement(datePickerCustom)}
+                minDate={startDate}
+                maxDate={date}
+              />
 
-            <div className={'lookup-btn'}>
-              <button onClick={lookupDate}>조회</button>
+              <div className={'lookup-btn'}>
+                <button onClick={lookupDate}>조회</button>
+              </div>
+
             </div>
 
-          </div>
-
-          <div className={'container'} style={{marginTop: '1vh'}}>
             <Modal
               aria-labelledby="spring-modal-title"
               aria-describedby="spring-modal-description"
@@ -697,6 +691,7 @@ const History = () => {
                 <tbody>
                 {
                   isSearchOpen && (<tr className={'search-tr'}>
+                    <td/>
                     <td><input onChange={(e) => changeTextValue('grade', e.target.value)}
                                maxLength={1}/></td>
                     <td><input onChange={(e) => changeTextValue('class', e.target.value)}
@@ -753,21 +748,28 @@ const History = () => {
                 </tbody>
               </table>
             </div>
-            <div className={cs('button-container')}>
-              <button style={{float: 'left', marginLeft: '0'}} className={cs('search-btn')}
+            <div className={'search-button-container'}>
+              <button style={{float: 'left', marginLeft: '0'}} className={'search-btn'}
                       onClick={searchHandler}>
                 {
-                  isSearchOpen ? (<><MdSearchOff className={cs('icon', 'search-icon')}/> 검색 닫기</>) :
-                    (<><MdSearch className={cs('icon', 'search-icon')}/> 검색하기</>)
+                  isSearchOpen ? (<><MdSearchOff className={'icon, search-icon'}/> 검색 닫기</>) :
+                    (<><MdSearch className={'icon, search-icon'}/> 검색하기</>)
                 }
               </button>
-              <button className={cs('print-btn')}><BsFillPrinterFill className={cs('icon')}/> 인쇄하기</button>
-              <button className={cs('excel-btn')}
+
+              <button className={'print-btn'}>
+                <BsFillPrinterFill className={'icon'}/> 인쇄하기
+              </button>
+
+              <button className={'excel-btn'}
                       onClick={() => ExcelDownloader(tableData, '발급내역', startDate, endDate)}>
-                <RiFileExcel2Fill className={cs('icon')}/> 엑셀로 저장
+                <RiFileExcel2Fill className={'icon'}/> 엑셀로 저장
               </button>
-              <button className={cs('delete-btn')} onClick={deleteHistory}><FiDelete className={cs('icon')}/> 선택삭제
+
+              <button className={'delete-btn'} onClick={deleteHistory}>
+                <FiDelete className={'icon'}/> 선택삭제
               </button>
+
             </div>
           </div>
         </div>

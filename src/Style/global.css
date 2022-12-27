@@ -115,7 +115,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 80%;
-    height: 75vh;
+    height: 41rem;
     /*max-height: 800px;*/
     border-radius: 5px;
     /*border: 1px solid #000;*/
@@ -366,12 +366,11 @@
 .management-table-container th {
     position: sticky;
     top: 0;
-    height: 40px;
+    height: 2.5rem;
     font-size: 15px;
-    background-color: #606060;
+    background-color: #474747;
     color: #fff;
     font-weight: normal;
-    border: 1px solid #605f5f;
 }
 
 .management-table-container th input[type="checkbox"] {
@@ -409,7 +408,7 @@
 }
 
 .management-table-container tr {
-    height: 43px;
+    height: 2.5rem;
     font-size: 14px;
     border-bottom: 1px solid #dedede;
 }
@@ -489,8 +488,7 @@
 }
 
 .date-picker-container {
-    margin-left: 10%;
-    margin-top: 2rem;
+    margin-top: 1rem;
     display: inline-flex;
 }
 
@@ -800,12 +798,14 @@
 }
 
 .search-tr {
-    height: 2.5rem;
+    position: sticky;
+    height: 2.3rem;
+    top: 2.7rem;
 }
 
 .search-tr td {
     border: 1px solid #eee;
-    background-color: #f9f9f9;
+    background-color: #f3f3f3;
 }
 
 .search-tr input {
@@ -822,11 +822,88 @@
     text-align: center;
 }
 
+.border-tr {
+    font-size: 0.9rem !important;
+    height: 2rem !important;
+}
+
 .border-tr td {
     border: 1px solid #eee;
+}
+
+.border-tr:hover {
+    background-color: #ecf2fc !important;
+    cursor: pointer;
 }
 
 .search-active {
     background-color: #edf1f8;
     border: 1px solid #dae0ea !important;
+}
+
+.tr-hover:hover {
+    background-color: #2b68ee;
+}
+
+.search-button-container {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.search-button-container button {
+    float: right;
+    margin-left: 16px;
+    border: none;
+    height: 35px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.search-button-container .icon {
+    margin-bottom: -2.5px;
+}
+
+.search-button-container .print-btn {
+    background: #3f3f3f;
+    width: 90px;
+}
+
+.search-button-container .print-btn:hover {
+    background: #222;
+    cursor: pointer;
+}
+
+.search-button-container .excel-btn {
+    background: #1ba466;
+    width: 100px;
+}
+
+.search-button-container .excel-btn:hover {
+    background: #1c8658;
+    cursor: pointer;
+}
+
+.search-button-container .delete-btn {
+    width: 85px;
+    background: #ec4b4b;
+}
+
+.delete-btn:hover {
+    background: #d94545;
+    cursor: pointer;
+}
+
+.search-btn {
+    width: 100px;
+    background: #4a7dd9;
+}
+
+.search-btn:hover {
+    background: #3f6ec2;
+    cursor: pointer;
+}
+
+.search-icon {
+    font-size: 18px;
+    margin-bottom: -5px;
 }

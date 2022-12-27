@@ -3,6 +3,11 @@ import Loading from "../Loading";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { AiOutlineCalendar } from "react-icons/ai";
+import { MdSearch, MdSearchOff } from "react-icons/md";
+import { BsFillPrinterFill } from "react-icons/bs";
+import { ExcelDownloader } from "../../utils/ExcelDownloader";
+import { RiFileExcel2Fill } from "react-icons/ri";
+import { FiDelete } from "react-icons/fi";
 
 interface userTotalType {
   userId: number,
@@ -75,6 +80,13 @@ const UserStatistics = () => {
     )))
   }, [headContent])
 
+  const searchHandler = () => {
+    setHeadContent(headContent.map((it) =>
+      it ? {...it, textValue: ''} : it
+    ))
+    setIsSearchOpen(!isSearchOpen)
+  }
+
   const datePickerCustom = ({value, onClick}: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
     <button className="date-picker-custom" onClick={onClick}>
       <AiOutlineCalendar className={'calendar-icon'}/>
@@ -86,7 +98,7 @@ const UserStatistics = () => {
   else if (isLoading) return <Loading/>
   else {
     return (
-      <div className={'container'} style={{width: '100%', height: '70vh'}}>
+      <div className={'container'} style={{width: '100%', height: '63vh'}}>
         <div className={'date-picker-container'}>
           <DatePicker
             locale={ko}
@@ -169,7 +181,20 @@ const UserStatistics = () => {
             </tbody>
           </table>
         </div>
-        <button onClick={() => setIsSearchOpen(!isSearchOpen)}>검색창 오픈</button>
+        <div className={'search-button-container'}>
+          <button style={{float: 'left', marginLeft: '0'}} className={'search-btn'}
+                  onClick={searchHandler}>
+            {
+              isSearchOpen ? (<><MdSearchOff className={'icon, search-icon'}/> 검색 닫기</>) :
+                (<><MdSearch className={'icon, search-icon'}/> 검색하기</>)
+            }
+          </button>
+          <button className={'print-btn'}><BsFillPrinterFill className={'icon'}/> 인쇄하기</button>
+          <button className={'excel-btn'}
+                  onClick={() => ExcelDownloader(userTotalValue, '발급내역', startDate, endDate)}>
+            <RiFileExcel2Fill className={'icon'}/> 엑셀로 저장
+          </button>
+        </div>
       </div>
     )
   }

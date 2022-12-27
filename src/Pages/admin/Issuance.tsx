@@ -534,7 +534,7 @@ const Issuance = () => {
               </Box>
             </Fade>
           </Modal>
-          <div className={'recipient-table-container'} style={{display: userArray.length < 1 ? 'table' : ''}}>
+          <div className={'management-table-container'} style={{display: userArray.length < 1 ? 'table' : ''}}>
 
             {
               userArray.length === 0 && (
