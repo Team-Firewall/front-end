@@ -349,7 +349,7 @@
     height: 100%;
     border-radius: 4px;
     overflow: auto;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    /*box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;*/
     transition: all 0.2s;
 }
 
@@ -359,12 +359,19 @@
     border-collapse: collapse;
 }
 
+.management-table-container table tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
 .management-table-container th {
+    position: sticky;
+    top: 0;
     height: 40px;
     font-size: 15px;
-    background-color: #474747;
+    background-color: #606060;
     color: #fff;
     font-weight: normal;
+    border: 1px solid #605f5f;
 }
 
 .management-table-container th input[type="checkbox"] {
@@ -797,6 +804,7 @@
 }
 
 .search-tr td {
+    border: 1px solid #eee;
     background-color: #f9f9f9;
 }
 
@@ -812,4 +820,13 @@
 
 .search-tr input::placeholder {
     text-align: center;
+}
+
+.border-tr td {
+    border: 1px solid #eee;
+}
+
+.search-active {
+    background-color: #edf1f8;
+    border: 1px solid #dae0ea !important;
 }

@@ -13,7 +13,6 @@ import Loading from "../Components/Loading";
 
 const cs = classNames.bind(styles)
 
-
 const Points = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isError, setIsError] = useState<boolean>(false)
