@@ -586,7 +586,7 @@ const Issuance = () => {
                         </select>
                       </td>
                       <td style={{width: '30vw'}}>
-                        <select className={cs(userArray[i].regulateId === 0 ? 'select-point' : 'select-point')}
+                        <select className={cs('select-point')}
                                 onChange={(e) => editIssuanceList(log.studentId, 'selectOption', e.target.value)}
                                 value={userArray[i].selectOption}
                         >
@@ -597,10 +597,13 @@ const Issuance = () => {
                           ))}
                         </select>
                       </td>
-                      <td><input onChange={(e) => editIssuanceList(log.studentId, 'memo', e.target.value)}
+
+                      <td>
+                        <input onChange={(e) => editIssuanceList(log.studentId, 'memo', e.target.value)}
                                  className={cs('input-memo')} placeholder={'메모를 입력하세요.'}
-                                 value={userArray[i].memo}
-                      /></td>
+                                 value={userArray[i].memo}/>
+                      </td>
+
                       <td>{getTodayDate()}</td>
                       <td style={{width: '40px', backgroundColor: '#fff'}}>
                         <button onClick={() => removeUser(log.studentNumber, log.name)} value={log.studentNumber}

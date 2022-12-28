@@ -159,7 +159,7 @@
 }
 
 .select-point {
-    background: #f5f6ff;
+    background: #f2f7fe;
     border: none;
     border-radius: 5px;
     -ms-text-align-last: center;
@@ -172,7 +172,7 @@
 
 .input-memo {
     padding-left: 10px;
-    background: #f5f6ff;
+    background: #f2f7fe;
     border: none;
     border-radius: 5px;
     height: 25px;

@@ -144,6 +144,8 @@ const History = () => {
     {'title': 'issuer', 'isHover': false, 'order': true, 'textValue': ''},
     {'title': 'date', 'isHover': false, 'order': true, 'textValue': ''}
   ])
+  const [isLoading, setIsLoading]= useState<boolean>(true)
+  const [isError, setIsError] = useState<boolean>(false)
 
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
 
@@ -201,6 +203,8 @@ const History = () => {
           setData(data.map((v: any) => ({...v, isChecked: false})))
           setTableData(data)
         })
+        .then(() => setIsLoading(false))
+        .catch(() => setIsError(true))
       setOptionValues()
     }
   }, [])
@@ -309,7 +313,7 @@ const History = () => {
     ))
 
     if (title === 'grade') {
-      tableData.sort((a: dataValue, b: dataValue) => asc ? (a.grade > b.grade) ? 1 : -1 : (a.grade < b.grade) ? 1 : -1)
+      data.sort((a: dataValue, b: dataValue) => asc ? (a.grade > b.grade) ? 1 : -1 : (a.grade < b.grade) ? 1 : -1)
     } else if (title === 'class') {
       data.sort((a: dataValue, b: dataValue) => asc ? (a.class > b.class) ? 1 : -1 : (a.class < b.class) ? 1 : -1)
     } else if (title === 'number') {
@@ -329,8 +333,6 @@ const History = () => {
     }
 
     setData([...data])
-
-    console.log(headContent)
   }
 
   const lookupDate = () => {
@@ -424,9 +426,9 @@ const History = () => {
   if (![0, 1, 2].includes(permission)) {
     return (<div>notFound</div>)
   } else {
-    if (!tableData) {
-      return <Loading/>
-    } else {
+    if (isError) return <h1>Error</h1>
+    else if (isLoading) return <Loading/>
+    else {
       return (
         <div>
           <div className={'top-tag'}>
@@ -581,7 +583,7 @@ const History = () => {
                 </th>
 
                 <th
-                  style={{minWidth: '46px'}}
+                  style={{minWidth: '46px', width: '6%'}}
                   className={'number-value'}
                 >
                 <span onMouseOver={() => handleMouseOver('grade', true)}
@@ -594,7 +596,7 @@ const History = () => {
                 </th>
 
                 <th
-                  style={{minWidth: '46px'}}
+                  style={{minWidth: '46px', width: '6%'}}
                   className={'number-value'}
                 >
                 <span
@@ -608,7 +610,7 @@ const History = () => {
                 </th>
 
                 <th
-                  style={{minWidth: '46px'}}
+                  style={{minWidth: '46px', width: '6%'}}
                   className={'number-value'}>
                 <span
                   onMouseOver={() => handleMouseOver('number', true)}
@@ -643,7 +645,7 @@ const History = () => {
                 </span>
                 </th>
 
-                <th style={{width: '48%'}}>
+                <th style={{width: '40%'}}>
                 <span
                   onMouseOver={() => handleMouseOver('regulate', true)}
                   onMouseLeave={() => handleMouseOver('regulate', false)}>
@@ -654,7 +656,7 @@ const History = () => {
                 </span>
                 </th>
 
-                <th style={{minWidth: '48px'}}>
+                <th style={{minWidth: '48px', width: '6%'}}>
                 <span onMouseOver={() => handleMouseOver('score', true)}
                       onMouseLeave={() => handleMouseOver('score', false)}>
                   점수
@@ -664,8 +666,7 @@ const History = () => {
                 </span>
                 </th>
 
-                <th
-                  style={{minWidth: '60px'}}>
+                <th style={{ width: '10%' }}>
                 <span
                   onMouseOver={() => handleMouseOver('issuer', true)}
                   onMouseLeave={() => handleMouseOver('issuer', false)}>
@@ -676,7 +677,7 @@ const History = () => {
                 </span>
                 </th>
 
-                <th>
+                <th style={{ width: '12%' }}>
                 <span onMouseOver={() => handleMouseOver('date', true)}
                       onMouseLeave={() => handleMouseOver('date', false)}>
                   발급일

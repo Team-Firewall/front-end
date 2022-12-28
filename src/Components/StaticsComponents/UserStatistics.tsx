@@ -23,6 +23,21 @@ interface userTotalType {
 }
 
 const UserStatistics = () => {
+  const arrowUpButton = (title: string) => {
+    return (
+      <button className={'sort-btn'} onClick={() => handleValueSort(title, true)}>
+        ▲
+      </button>)
+  }
+
+  const arrowDownButton = (title: string) => {
+    return (
+      <button className={'sort-btn'} onClick={() => handleValueSort(title, false)}>
+        ▼
+      </button>
+    )
+  }
+
   const [responseData, setResponseData] = useState<userTotalType[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isError, setIsError] = useState<boolean>(false)
@@ -94,6 +109,38 @@ const UserStatistics = () => {
     </button>
   )
 
+  const handleValueSort = (title: string, asc: boolean) => {
+    setHeadContent(headContent.map((v: any) =>
+      v.title === title ? {...v, order: asc ? true : false} : v
+    ))
+
+    if (title === 'grade') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.grade > b.grade) ? 1 : -1 : (a.grade < b.grade) ? 1 : -1)
+    } else if (title === 'class') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.class > b.class) ? 1 : -1 : (a.class < b.class) ? 1 : -1)
+    } else if (title === 'number') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.number > b.number) ? 1 : -1 : (a.number < b.number) ? 1 : -1)
+    } else if (title === 'name') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.name > b.name) ? 1 : -1 : (a.name < b.name) ? 1 : -1)
+    } else if (title === 'division') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.division > b.division) ? 1 : -1 : (a.division < b.division) ? 1 : -1)
+    } else if (title === 'bonus') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.bonus > b.bonus) ? 1 : -1 : (a.bonus < b.bonus) ? 1 : -1)
+    } else if (title === 'minus') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.minus > b.minus) ? 1 : -1 : (a.minus < b.minus) ? 1 : -1)
+    } else if (title === 'total') {
+      responseData.sort((a: userTotalType, b: userTotalType) => asc ? (a.total > b.total) ? 1 : -1 : (a.total < b.total) ? 1 : -1)
+    }
+
+    setResponseData([...responseData])
+  }
+
+  const handleMouseOver = (title: string, hover: boolean) => {
+    setHeadContent(headContent.map((v: any) =>
+      v.title === title ? {...v, isHover: hover ? true : false} : v
+    ))
+  }
+
   if (isError) return <h1>ERROR</h1>
   else if (isLoading) return <Loading/>
   else {
@@ -132,16 +179,80 @@ const UserStatistics = () => {
           <table style={{ width: '99.5%', margin: 'auto' }}>
             <thead>
             <tr>
-              <th style={{ width: '15%' }}>구분</th>
-              <th style={{ width: '8.75%' }}>학년</th>
-              <th style={{ width: '8.75%' }}>반</th>
-              <th style={{ width: '8.75%' }}>번호</th>
-              <th style={{ width: '15%' }}>이름</th>
-              <th style={{ width: '8.75%' }}>상점</th>
-              <th style={{ width: '8.75%' }}>벌점</th>
+              <th style={{ width: '15%' }}>
+                <span onMouseOver={() => handleMouseOver('division', true)}
+                      onMouseLeave={() => handleMouseOver('division', false)}>
+                  구분
+                  {
+                    headContent[0].isHover ? headContent[0].order ? arrowDownButton('division') : arrowUpButton('division') : ''
+                  }
+                  </span>
+              </th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('grade', true)}
+                      onMouseLeave={() => handleMouseOver('grade', false)}>
+                  학년
+                  {
+                    headContent[1].isHover ? headContent[1].order ? arrowDownButton('grade') : arrowUpButton('grade') : ''
+                  }
+                  </span>
+              </th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('class', true)}
+                      onMouseLeave={() => handleMouseOver('class', false)}>
+                  반
+                  {
+                    headContent[2].isHover ? headContent[2].order ? arrowDownButton('class') : arrowUpButton('class') : ''
+                  }
+                </span>
+              </th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('number', true)}
+                      onMouseLeave={() => handleMouseOver('number', false)}>
+                  번호
+                  {
+                    headContent[3].isHover ? headContent[3].order ? arrowDownButton('number') : arrowUpButton('number') : ''
+                  }
+                </span>
+              </th>
+              <th style={{ width: '15%' }}>
+                <span onMouseOver={() => handleMouseOver('name', true)}
+                      onMouseLeave={() => handleMouseOver('name', false)}>
+                  이름
+                  {
+                    headContent[4].isHover ? headContent[4].order ? arrowDownButton('name') : arrowUpButton('name') : ''
+                  }
+                </span>
+              </th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('bonus', true)}
+                      onMouseLeave={() => handleMouseOver('bonus', false)}>
+                  상점
+                  {
+                    headContent[5].isHover ? headContent[5].order ? arrowDownButton('bonus') : arrowUpButton('bonus') : ''
+                  }
+                </span>
+              </th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('minus', true)}
+                      onMouseLeave={() => handleMouseOver('minus', false)}>
+                  벌점
+                  {
+                    headContent[6].isHover ? headContent[6].order ? arrowDownButton('minus') : arrowUpButton('minus') : ''
+                  }
+                </span>
+              </th>
               <th style={{ width: '8.75%' }}>상쇄점</th>
               <th style={{ width: '8.75%' }}>이월점수</th>
-              <th style={{ width: '8.75%' }}>누계</th>
+              <th style={{ width: '8.75%' }}>
+                <span onMouseOver={() => handleMouseOver('total', true)}
+                      onMouseLeave={() => handleMouseOver('total', false)}>
+                  누계
+                  {
+                    headContent[7].isHover ? headContent[7].order ? arrowDownButton('total') : arrowUpButton('total') : ''
+                  }
+                </span>
+              </th>
             </tr>
             </thead>
 
@@ -160,7 +271,11 @@ const UserStatistics = () => {
                            maxLength={4}/></td>
                 <td><input onChange={(e) => changeTextValue('bonus', e.target.value)}
                            maxLength={3}/></td>
-                <td><input onChange={(e) => changeTextValue('minus', e.target.value)}/></td>
+                <td><input onChange={(e) => changeTextValue('minus', e.target.value)}
+                           maxLength={3}/></td>
+                <td><input onChange={(e) => changeTextValue('', e.target.value)}
+                           maxLength={3}/></td>
+                <td><input onChange={(e) => changeTextValue('', e.target.value)}/></td>
                 <td><input onChange={(e) => changeTextValue('total', e.target.value)}/></td>
               </tr>)
             }
@@ -171,11 +286,11 @@ const UserStatistics = () => {
                 <td className={ headContent[2].textValue ? 'search-active' : ''}>{v.class}</td>
                 <td className={ headContent[3].textValue ? 'search-active' : ''}>{v.number}</td>
                 <td className={ headContent[4].textValue ? 'search-active' : ''}>{v.name}</td>
-                <td>{v.bonus}</td>
-                <td>{v.minus}</td>
+                <td className={ headContent[5].textValue ? 'search-active' : ''}>{v.bonus}</td>
+                <td className={ headContent[6].textValue ? 'search-active' : ''}>{v.minus}</td>
                 <td>{0}</td>
                 <td>{0}</td>
-                <td>{v.total}</td>
+                <td className={ headContent[7].textValue ? 'search-active' : ''}>{v.total}</td>
               </tr>
             ))}
             </tbody>
