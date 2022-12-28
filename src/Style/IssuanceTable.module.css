@@ -46,7 +46,6 @@
 }
 
 .add-user-btn {
-    /*margin-top: 2px;*/
     width: 95%;
     height: 80%;
     text-align: center;
@@ -70,7 +69,7 @@
 
 .modal-btn {
     float: left;
-    width: 150px;
+    width: 9.5rem;
 }
 
 .modal-btn span {
@@ -79,7 +78,7 @@
 
 .bottom-button-container {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 1rem;
 }
 
 .delete-all-btn {
@@ -88,8 +87,8 @@
     float: left;
     color: #f33737;
     border: none;
-    width: 100px;
-    height: 35px;
+    width: 7rem;
+    height: 2.2rem;
     border-radius: 4px;
     font-size: 15px;
     transition: all 0.2s;
@@ -107,8 +106,8 @@
     background-color: #f3eeff;
     color: #7637f3;
     border: none;
-    width: 130px;
-    height: 35px;
+    width: 9rem;
+    height: 2.2rem;
     border-radius: 4px;
     font-size: 15px;
 }
@@ -124,8 +123,8 @@
     background-color: #effff9;
     color: #1daf56;
     border: none;
-    width: 130px;
-    height: 40px;
+    width: 8rem;
+    height: 2.2rem;
     border-radius: 4px;
     font-size: 15px;
 }

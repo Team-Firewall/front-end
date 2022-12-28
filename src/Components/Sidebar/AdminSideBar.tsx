@@ -119,7 +119,7 @@ export default function AdminSideBar() {
             <ListItemIcon>
               <PersonAddIcon/>
             </ListItemIcon>
-            <ListItemText primary={'사용자 추가 및 관리'}/>
+            <ListItemText primary={'사용자 관리'}/>
           </ListItemButton>
         </ListItem>
 
