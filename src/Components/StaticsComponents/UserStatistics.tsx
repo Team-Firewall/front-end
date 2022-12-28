@@ -8,6 +8,7 @@ import { BsFillPrinterFill } from "react-icons/bs";
 import { ExcelDownloader } from "../../utils/ExcelDownloader";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { FiDelete } from "react-icons/fi";
+import axios from "axios";
 
 interface userTotalType {
   userId: number,
@@ -64,11 +65,11 @@ const UserStatistics = () => {
   ])
 
   useEffect(() => {
-    fetch('http://localhost:3001/v1/point/total')
-      .then((res) => res.json())
-      .then((data) => {
-        setResponseData(data.map((v: any) => ({...v, division: v.permission === 3 ? '고등학생' : '중학생'})))
-        setUserTotalValue(data.map((v: any) => ({...v, division: v.permission === 3 ? '고등학생' : '중학생'})))
+    axios.post('http://localhost:3001/v1/user/total')
+      .then((res) => {
+        console.log(res.data)
+        setResponseData(res.data.map((v: any) => ({...v, division: v.permission === 3 ? '고등학생' : '중학생'})))
+        setUserTotalValue(res.data.map((v: any) => ({...v, division: v.permission === 3 ? '고등학생' : '중학생'})))
       })
       .then(() => setIsLoading(false))
       .catch(() => setIsError(false))
@@ -145,7 +146,7 @@ const UserStatistics = () => {
   else if (isLoading) return <Loading/>
   else {
     return (
-      <div className={'container'} style={{width: '100%', height: '63vh'}}>
+      <div className={'container'} style={{width: '100%', height: '66vh'}}>
         <div className={'date-picker-container'}>
           <DatePicker
             locale={ko}

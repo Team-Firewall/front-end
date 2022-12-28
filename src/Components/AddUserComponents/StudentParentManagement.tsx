@@ -97,6 +97,7 @@ const StudentParentManagement = () => {
             <table>
               <thead>
               <th>구분</th>
+              <th>아이디</th>
               <th>학년</th>
               <th>반</th>
               <th>번호</th>
@@ -104,12 +105,12 @@ const StudentParentManagement = () => {
               <th>학생 전화번호</th>
               <th>학부모 전화번호1</th>
               <th>학부모 전화번호2</th>
-              <th>비밀번호 초기화</th>
               </thead>
               <tbody>
               {Object.values(data).map((value: any, index: number) => (
                 <tr key={index}>
                   <td>{value.permission === 3 ? '고등학생' : '중학생'}</td>
+                  <td>{value.account}</td>
                   <td>{value.grade}</td>
                   <td>{value.classNum}</td>
                   <td>{value.number}</td>
@@ -117,45 +118,6 @@ const StudentParentManagement = () => {
                   <td>{phoneNumberAutoFormat(value.phone)}</td>
                   <td>{value.parents[0]?.phone ? phoneNumberAutoFormat(value.parents[0].phone) : '-'}</td>
                   <td>{value.parents[1]?.phone ? phoneNumberAutoFormat(value.parents[1].phone) : '-'}</td>
-                  <td style={{width: '20vw'}}>
-                    {
-                      isChangePasswordOpen === false &&
-                      (<button onClick={() => handleBoxOpen(value.id, value.name)} className={'password-reset-btn'}><LockResetIcon
-                        style={{color: '#267fbc', marginBottom: '-3px', fontSize: '16.5px'}}/> <span>초기화</span></button>)
-                    }
-                    {
-                      isChangePasswordOpen === true && values.userid === value.id && (
-                        <>
-                          <FormControl sx={{m: 1, width: '60%'}} variant="standard">
-                            <Input
-                              id="standard-adornment-password"
-                              type={values.showPassword ? 'text' : 'password'}
-                              value={values.password}
-                              placeholder={'새 비밀번호 입력'}
-                              onChange={handleChange('password')}
-                              endAdornment={
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                  >
-                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
-                                  </IconButton>
-                                </InputAdornment>
-                              }
-                            />
-                          </FormControl>
-                          <div className={'change-password-button-container'}>
-                            <button onClick={handleChangePasswordClose} className={'close-button'}>
-                              <IoMdClose className={'change-password-icon'}/></button>
-                            <button className={'check-button'}><IoMdCheckmark className={'change-password-icon'}/>
-                            </button>
-                          </div>
-                        </>
-                      )
-                    }
-                  </td>
                 </tr>
               ))}
               </tbody>
