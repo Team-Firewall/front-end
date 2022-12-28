@@ -731,7 +731,7 @@ const History = () => {
                     <td>{value.number}</td>
                     <td>{value.name}</td>
                     <td className={cs(value.checked === '상점' ? 'plus' : 'minus')}>{value.checked}</td>
-                    <td>
+                    <td style={{ textAlign: 'left', paddingLeft: '1rem', paddingRight: '1rem' }}>
                       <LinesEllipsis
                         text={value.regulate}
                         maxLine='1'
@@ -739,7 +739,6 @@ const History = () => {
                         trimRight
                         basedOn='letters'
                       />
-
                     </td>
                     <td>{value.score}</td>
                     <td>{value.issuer}</td>

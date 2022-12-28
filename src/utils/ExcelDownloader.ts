@@ -29,39 +29,41 @@ const dateFormat = (date: Date) => {
   return year + '-' + month + '-' + day
 }
 
-export function ExcelDownloader (excelData: any, title: string, startDate: Date, endDate: Date) {
+export function ExcelDownloader (excelData: any, title: string, startDate?: Date, endDate?: Date) {
   const excelFileName = title + ' ' + getTodayDate();
-  const ws = XLSX.utils.aoa_to_sheet([
-    [`상벌점 발급내역 (${dateFormat(startDate)} ~ ${dateFormat(endDate)})`],
-    [],
-    ['제목', '내용']
-  ]);
-  excelData.map((data: any) => {
-    XLSX.utils.sheet_add_aoa(
-      ws,
-      [
+  if (startDate && endDate) {
+    const ws = XLSX.utils.aoa_to_sheet([
+      [`상벌점 발급내역 (${dateFormat(startDate)} ~ ${dateFormat(endDate)})`],
+      [],
+      ['제목', '내용']
+    ]);
+    excelData.map((data: any) => {
+      XLSX.utils.sheet_add_aoa(
+        ws,
         [
-          data.grade,
-          data.class,
-          data.number,
-          data.name,
-          data.checked ,
-          data.regulate,
-          data.score,
-          data.issuer,
-          data.createdDate
-        ]
-      ],
-      {origin: -1}
-    );
-    ws['!cols'] = [
-      { wpx: 200 },
-      { wpx: 200 }
-    ]
-    return false;
-  });
-  const wb: any = {Sheets: { data: ws }, SheetNames: ['data']};
-  const excelButter = XLSX.write(wb, { bookType: 'xlsx', type: 'array'});
-  const excelFile = new Blob([excelButter], { type: excelFileType});
-  FileSaver.saveAs(excelFile, excelFileName + excelFileExtension);
+          [
+            data.grade,
+            data.class,
+            data.number,
+            data.name,
+            data.checked,
+            data.regulate,
+            data.score,
+            data.issuer,
+            data.createdDate
+          ]
+        ],
+        {origin: -1}
+      );
+      ws['!cols'] = [
+        {wpx: 200},
+        {wpx: 200}
+      ]
+      return false;
+    })
+    const wb: any = {Sheets: {data: ws}, SheetNames: ['data']};
+    const excelButter = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
+    const excelFile = new Blob([excelButter], {type: excelFileType});
+    FileSaver.saveAs(excelFile, excelFileName + excelFileExtension);
+  }
 }

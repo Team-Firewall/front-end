@@ -48,9 +48,7 @@ const UserStatistics = () => {
   const date = new Date()
 
   const year = date.getFullYear()
-  const month = date.getMonth()
-  const day = date.getDate()
-  const [startDate, setStartDate] = useState<Date>(new Date(year, month, day - 7));
+  const [startDate, setStartDate] = useState<Date>(new Date(year, 2, 1));
   const [endDate, setEndDate] = useState<Date>(date);
 
   const [headContent, setHeadContent] = useState([

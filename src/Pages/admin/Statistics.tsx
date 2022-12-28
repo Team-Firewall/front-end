@@ -23,6 +23,7 @@ import StudentParentManagement from "../../Components/AddUserComponents/StudentP
 import classNames from "classnames/bind";
 import styles from '../../Style/Statistics.module.css'
 import UserStatistics from "../../Components/StaticsComponents/UserStatistics";
+import ItemStatistics from "../../Components/StaticsComponents/ItemStatistics";
 
 const cs = classNames.bind(styles)
 
@@ -95,7 +96,7 @@ const Statistics = () => {
           <div>
             {componentState === 0 && (<UserStatistics/>)}
 
-            {componentState === 1 && (<AddUserWithFile/>)}
+            {componentState === 1 && (<ItemStatistics/>)}
 
             {componentState === 2 && (<StudentParentManagement/>)}
           </div>
