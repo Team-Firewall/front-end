@@ -141,7 +141,7 @@ const Issuance = () => {
 
   const setOptionValues = () => {
     for (let i = 0; i < 3; i++) {
-      fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${i === 0 ? '상점' : i === 1 ? '벌점' : '상쇄점'}`)
+      fetch(`${process.env.REACT_APP_API_URL}/v1/regulate/scoreDivision?checked=${i === 0 ? '상점' : i === 1 ? '벌점' : '상쇄점'}`)
         .then((response) => response.json())
         .then((data) => {
           if (i === 0) {
@@ -249,7 +249,7 @@ const Issuance = () => {
       })
     }
 
-    fetch('http://localhost:3001/v1/user/student', requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/v1/user/student`, requestOptions)
       .then(res => res.json())
       .then(data => {
         setUserTmpArray(data)
@@ -381,7 +381,7 @@ const Issuance = () => {
         cancelButtonText: '취소'
       }).then((res) => {
         if (res.isConfirmed) {
-          axios.post('http://localhost:3001/v1/point', JSON.stringify(data), {
+          axios.post(`${process.env.REACT_APP_API_URL}/v1/point`, JSON.stringify(data), {
             headers: {"Content-Type": "application/json"}
           }).then((res) => {
             if (res.data.success) {

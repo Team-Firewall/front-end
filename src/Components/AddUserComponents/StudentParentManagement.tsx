@@ -27,7 +27,7 @@ const StudentParentManagement = () => {
     username: string,
   }
 
-  const {data, error} = useSWR('http://localhost:3001/v1/user', fetcher)
+  const {data, error} = useSWR(`${process.env.REACT_APP_API_URL}/v1/user`, fetcher)
 
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState<boolean>(false)
   const [values, setValues] = useState<changePasswordType>({

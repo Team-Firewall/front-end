@@ -50,7 +50,7 @@ const ItemStatistics = () => {
   ])
 
   useEffect(() => {
-    axios.get('http://localhost:3001/v1/regulate/total')
+    axios.get(`${process.env.REACT_APP_API_URL}/v1/regulate/total`)
       .then((res: AxiosResponse<any>) => {
         if (res.status === 200) {
           setResponseData(res.data.data)

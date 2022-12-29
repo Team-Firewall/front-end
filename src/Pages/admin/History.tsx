@@ -198,7 +198,7 @@ const History = () => {
       token = jwt_decode(token)
       setPermission(token.permission)
 
-      fetch('http://localhost:3001/v1/point')
+      fetch(`${process.env.REACT_APP_API_URL}/v1/point`)
         .then((response) => response.json())
         .then((data) => {
           setData(data.map((v: any) => ({...v, isChecked: false})))
@@ -212,7 +212,7 @@ const History = () => {
 
   const setOptionValues = () => {
     for (let i = 0; i < 3; i++) {
-      fetch(`http://localhost:3001/v1/regulate/scoreDivision?checked=${i === 0 ? '상점' : i === 1 ? '벌점' : '상쇄점'}`)
+      fetch(`${process.env.REACT_APP_API_URL}/v1/regulate/scoreDivision?checked=${i === 0 ? '상점' : i === 1 ? '벌점' : '상쇄점'}`)
         .then((response) => response.json())
         .then((data) => {
           if (i === 0) {
@@ -345,7 +345,7 @@ const History = () => {
       'secondDate': secondDate
     }
 
-    axios.post('http://localhost:3001/v1/point/date', JSON.stringify(reqData), {
+    axios.post(`${process.env.REACT_APP_API_URL}/v1/point/date`, JSON.stringify(reqData), {
       headers: {'Content-Type': 'application/json'}
     }).then((res) => {
       setData(res.data.data.map((v: any) => ({...v, isChecked: false})))
@@ -380,7 +380,7 @@ const History = () => {
         cancelButtonText: '취소'
       }).then((res: SweetAlertResult<Action<any>>) => {
         if (res.isConfirmed) {
-          axios.delete('http://localhost:3001/v1/point', {data: data})
+          axios.delete(`${process.env.REACT_APP_API_URL}/v1/point`, {data: data})
             .then((res: AxiosResponse<any>) => {
               if (res.data.success) {
                 Swal.fire({
@@ -411,7 +411,7 @@ const History = () => {
     ]
 
     if (window.confirm(`${modalValue.name}학생의 발급내역을 수정하시겠습니까?`)) {
-      axios.put('http://localhost:3001/v1/point', JSON.stringify(data), {
+      axios.put(`${process.env.REACT_APP_API_URL}/v1/point`, JSON.stringify(data), {
         headers: {'Content-Type': 'application/json'}
       }).then((res: AxiosResponse<any>) => {
         console.log(res.data.success)

@@ -63,7 +63,7 @@ const UserStatistics = () => {
   ])
 
   useEffect(() => {
-    axios.post('http://localhost:3001/v1/user/total')
+    axios.post(`${process.env.REACT_APP_API_URL}/v1/user/total`)
       .then((res) => {
         console.log(res.data)
         setResponseData(res.data.map((v: any) => ({...v, division: v.permission === 3 ? '고등학생' : '중학생'})))

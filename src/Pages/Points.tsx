@@ -46,7 +46,7 @@ const Points = () => {
 
   const fetchUserHistory = (id: number) => {
     let data = {'id': id}
-    axios.post('http://localhost:3001/v1/point/history', JSON.stringify(data), {
+    axios.post(`${process.env.REACT_APP_API_URL}/v1/point/history`, JSON.stringify(data), {
       headers: {'Content-Type': 'application/json'}
     })
       .then((res: AxiosResponse<any>) => {
@@ -59,7 +59,7 @@ const Points = () => {
 
   const fetchTotalHistory = (id: number) => {
     let data = {'userId': id}
-    axios.post('http://localhost:3001/v1/point/user', JSON.stringify(data), {
+    axios.post(`${process.env.REACT_APP_API_URL}/v1/point/user`, JSON.stringify(data), {
       headers: {'Content-Type': 'application/json'}
     })
       .then((res: AxiosResponse<any>) => {

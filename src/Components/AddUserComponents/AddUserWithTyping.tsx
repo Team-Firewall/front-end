@@ -233,7 +233,7 @@ const AddUserWithTyping = () => {
       }).then((res) => {
         if (res.isConfirmed) {
           console.log(insertUserArray)
-          axios.post('http://localhost:3001/addUser', JSON.stringify(insertUserArray), {
+          axios.post(`${process.env.REACT_APP_FILE_API_URL}/addUser`, JSON.stringify(insertUserArray), {
             headers: {"Content-Type": "application/json"}
           }).then((res) => {
             console.log('this is response', res.data)

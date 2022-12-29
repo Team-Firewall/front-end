@@ -18,7 +18,7 @@ const AddUserWithFile = () => {
     const formData = new FormData()
     formData.append("file_set", file)
 
-    axios.post('http://localhost:8082/trance-student', formData, {
+    axios.post(`${process.env.REACT_APP_FILE_API_URL}/trance-student`, formData, {
       headers: {'Content-Type' : 'multipart/form-data'}
     }).then((res: AxiosResponse<any>) => {
       console.log(res)
@@ -73,7 +73,7 @@ const AddUserWithFile = () => {
       cancelButtonText: '취소'
     }).then((res) => {
       if (res.isConfirmed) {
-        axios.post('http://localhost:3001/addUser', JSON.stringify(responseObject), {
+        axios.post(`${process.env.REACT_APP_API_URL}/addUser`, JSON.stringify(responseObject), {
           headers: {"Content-Type": "application/json"}
         }).then((res) => {
           console.log('this is response', res.data)

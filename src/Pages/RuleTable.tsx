@@ -11,7 +11,7 @@ const cs = classNames.bind(style)
 
 const RuleTable = () => {
   const navigate = useNavigate()
-  const {data, error} = useSWR('http://localhost:3001/v1/regulate', fetcher)
+  const {data, error} = useSWR(`${process.env.REACT_APP_API_URL}/v1/regulate`, fetcher)
 
   console.log(data)
   let bonusPoint: Array<any> = []
