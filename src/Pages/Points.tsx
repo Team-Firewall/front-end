@@ -3,13 +3,16 @@ import { getItemWithExpireTime } from "../utils/ControllToken";
 import jwt_decode from "jwt-decode";
 import classNames from "classnames/bind";
 import styles from '../Style/Points.module.css'
-import PointTimeLine from "../Components/PointTimeLine";
 import PointTable from "../Components/PointTable";
 import { RiAwardLine } from 'react-icons/ri'
 import LogoutButton from "../Components/LogoutButton";
 import UserSideBar from "../Components/Sidebar/UserSideBar";
 import axios, { AxiosResponse } from "axios";
 import Loading from "../Components/Loading";
+import { AiOutlineCalendar } from "react-icons/ai";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import { useSessionStorage } from "react-use";
 
 const cs = classNames.bind(styles)
 
@@ -18,10 +21,20 @@ const Points = () => {
   const [isError, setIsError] = useState<boolean>(false)
   const [username, setUserName] = useState<string>('')
   const [data, setData] = useState<Object>([])
-  const [bonus, setBonus] = useState<number>(NaN)
-  const [minus, setMinus] = useState<number>(NaN)
-  const [offset, setOffset] = useState<number>(NaN)
-  const [total, setTotal] = useState<number>(NaN)
+  const [totalData, setTotalData] = useState<Object>([])
+
+  const date = new Date()
+  const year = date.getFullYear()
+
+  const [startDate, setStartDate] = useState<Date>(new Date(year, 2, 2));
+  const [endDate, setEndDate] = useState<Date>(date);
+
+  const datePickerCustom = ({value, onClick}: { value: string; onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void }) => (
+    <button className="date-picker-custom" onClick={onClick}>
+      <AiOutlineCalendar className={'calendar-icon'}/>
+      {value}
+    </button>
+  )
 
   useEffect(() => {
     let token = getItemWithExpireTime()
@@ -32,13 +45,13 @@ const Points = () => {
   }, [])
 
   const fetchUserHistory = (id: number) => {
-    let data = {'userId': id}
+    let data = {'id': id}
     axios.post('http://localhost:3001/v1/point/history', JSON.stringify(data), {
       headers: {'Content-Type': 'application/json'}
     })
       .then((res: AxiosResponse<any>) => {
         if (res.status === 200) {
-          setData(res.data)
+          setData(res.data.finalResult)
         }
       })
       .catch((error) => console.log(error))
@@ -50,19 +63,13 @@ const Points = () => {
       headers: {'Content-Type': 'application/json'}
     })
       .then((res: AxiosResponse<any>) => {
-        console.log(res)
         if (res.status === 200) {
-          setBonus(res.data.bonus)
-          setMinus(res.data.minus)
-          setOffset(res.data.offset)
-          setTotal(res.data.total)
+          setTotalData(res.data)
           setIsLoading(false)
         }
       })
       .catch(() => setIsError(true))
   }
-
-  const year = new Date().getFullYear()
 
   if (isError) return <h1>ERROR</h1>
   else if (isLoading) return <Loading/>
@@ -78,39 +85,41 @@ const Points = () => {
         </div>
 
         <div className={'container'}>
-          <div className={cs('points-header')}>
-            <div className={cs('username-tag')}><span style={{color: '#8685ef'}}>{username}</span>님의 상벌점 이력</div>
-            <div className={cs('sum-point-table')}>
-              <table>
-                <thead>
-                <th colSpan={4}>{year}학년도 총계</th>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>
-                    <div style={{color: '#04ad04'}}>상점</div>
-                    <span>{bonus}점</span>
-                  </td>
-                  <td>
-                    <div style={{color: '#ce2c2c'}}>벌점</div>
-                    <span>{minus}점</span>
-                  </td>
-                  <td>
-                    <div style={{color: '#9766cf'}}>상쇄점</div>
-                    <span>{offset}점</span>
-                  </td>
-                  <td>
-                    <div style={{color: '#3a5fcb'}}>누계</div>
-                    <span>{total}점</span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
 
+          <div className={cs('points-header')}>
+            <span style={{color: '#1363DF'}}>{username}</span>님의 상벌점 이력
+            <div className={'date-picker-container'} style={{ float: 'right', marginTop: '0' }}>
+              <DatePicker
+                locale={ko}
+                dateFormat={'yyyy-MM-dd'}
+                selected={startDate}
+                onChange={(date: Date) => setStartDate(date)}
+                startDate={startDate}
+                customInput={React.createElement(datePickerCustom)}
+                endDate={endDate}
+                maxDate={endDate}
+              />
+              <span className={'date-hyphen'}>-</span>
+              <DatePicker
+                locale={ko}
+                dateFormat={'yyyy-MM-dd'}
+                selected={endDate}
+                onChange={(date: Date) => setEndDate(date)}
+                startDate={startDate}
+                endDate={endDate}
+                customInput={React.createElement(datePickerCustom)}
+                minDate={startDate}
+                maxDate={date}
+              />
+
+              <div className={'lookup-btn'}>
+                <button>조회</button>
+              </div>
             </div>
           </div>
-          <PointTable data={data}/>
-          <PointTimeLine data={data}/>
+
+          <PointTable data={data} totalData={totalData}/>
+          {/*<PointTimeLine data={data}/>*/}
         </div>
 
       </div>

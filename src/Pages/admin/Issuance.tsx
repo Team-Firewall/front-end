@@ -529,7 +529,6 @@ const Issuance = () => {
                       </>
                     )
                   }
-
                 </Typography>
               </Box>
             </Fade>

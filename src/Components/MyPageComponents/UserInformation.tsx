@@ -27,7 +27,7 @@ const UserInformation = () => {
 
   return (
     <div className={cs('user-information-box')}>
-      <div className={'main-heading'} style={{ color: '#258c09' }}>기본 정보</div>
+      <div className={'main-heading'} style={{ color: '#0275d8' }}>기본 정보</div>
       <div className={cs('basic-information-container')}>
         <div>
           <div>
@@ -48,24 +48,24 @@ const UserInformation = () => {
           {userPosition === 0 && '경북소프트웨어고등학교'} {userPosition === 1 && '봉양중학교'} {userGrade}학년 {userClass}반 {userNumber}번
         </div>
         <div className={'division'}>전화번호</div>
-        <div className={cs('general-sentence')}>010-9285-9593</div>
+        <div className={cs('general-sentence')}>010-3004-5276</div>
       </div>
 
       <div className={cs('point-information-container')}>
         <div className={'subheading'}>
           상벌점 정보
-          <div style={{fontSize: '15px', color: '#264893', fontWeight: 'bold'}}>
+          <div style={{fontSize: '15px', color: '#3a33a2', fontWeight: 'bold'}}>
             {new Date().getFullYear()}학년도 상벌점 현황
           </div>
         </div>
         <div className={cs('general-sentence-point')}>
-          <span style={{color: '#17a617', fontWeight: 'bold'}}>상점</span> 총 35점
+          <span style={{color: '#17a617'}}>상점</span> 총 35점
         </div>
         <div className={cs('general-sentence-point')}>
-          <span style={{color: '#d51515', fontWeight: 'bold'}}>벌점</span> 총 20점
+          <span style={{color: '#d51515'}}>벌점</span> 총 20점
         </div>
         <div className={cs('general-sentence-point')}>
-          <span style={{color: '#3E62BD', fontWeight: 'bold'}}>누계점수</span> 총 15점
+          <span style={{color: '#3E62BD'}}>누계점수</span> 총 15점
         </div>
       </div>
 

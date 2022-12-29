@@ -78,3 +78,22 @@
 .span-align {
     text-align: center;
 }
+
+.total-value {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.total-value table {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.total-value table tr {
+    height: 2.5rem;
+}
+
+.total-value td {
+    text-align: center;
+}

@@ -121,6 +121,7 @@ const History = () => {
   const year = date.getFullYear()
   const month = date.getMonth()
   const day = date.getDate()
+
   const [permission, setPermission] = useState<number>(NaN)
   const [startDate, setStartDate] = useState<Date>(new Date(year, month, day - 7));
   const [endDate, setEndDate] = useState<Date>(date);
