@@ -35,7 +35,9 @@ const RuleTable = () => {
     return (
       <div className={cs('rule-table')}>
         <div className={cs('title')}>2022학년도 그린 마일리지(상·벌점제) 운영 기준</div>
+        
         <div className={cs('table-container')}>
+          
           <div className={cs('minusPoint-table-container')}>
             <div className={cs('table-name')} style={{color: '#c5040a'}}>벌점 규정</div>
             <div className={cs('minusPoint-table')}>
