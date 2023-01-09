@@ -46,9 +46,10 @@ const UserStatistics = () => {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false)
 
   const date = new Date()
-
+  const month = date.getMonth()
+  const day = date.getDate()
   const year = date.getFullYear()
-  const [startDate, setStartDate] = useState<Date>(new Date(year, 2, 1));
+  const [startDate, setStartDate] = useState<Date>(month > 2 ? new Date(year, 2, 1) : new Date(year, month, day - 7));
   const [endDate, setEndDate] = useState<Date>(date);
 
   const [headContent, setHeadContent] = useState([
